@@ -2,17 +2,22 @@ $(function () {
   const gameNode = document.getElementById('header');
   let testBoard = document.createElement('table');
 
-  for (let i = 0; i < 5; i++) {
-    testBoard.appendChild(document.createElement('tr'));
-    for (let j = 0; j < 5; j ++) {
+  for (let i = 0; i < 10; i++) {
+    let trNode = document.createElement('tr');
+    for (let j = 0; j < 10; j ++) {
       let tdNode = document.createElement('td');
-      tdNode.textContent = i + ', ' + j;
-      testBoard.appendChild(tdNode);
+      tdNode.textContent = i + ',' + j;
+      trNode.appendChild(tdNode);
+      tdNode = null;
     }
+    testBoard.appendChild(trNode);
+    trNode = null;
   }
 
   $('#play-button').on('click', function () {
-    gameNode.appendChild(testBoard);
+    gameNode.prepend(testBoard);
+    $('#restart-button').show();
+    $('#header').css("padding-top", ".3%");
     $('#title-h1').hide();
     $('#play-button').hide();
   });

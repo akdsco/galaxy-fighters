@@ -7,3 +7,18 @@ header {
 h1 {
     color: #ffffff;
 }
+
+#restart-button {
+    display: none;
+}
+
+table {
+    margin: auto;
+}
+
+td {
+    height: 60px;
+    width: 60px;
+    border: 1px solid grey;
+    background-color: azure;
+}
