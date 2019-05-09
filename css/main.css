@@ -1,0 +1,9 @@
+header {
+    background: url('../img/trooper.jpg') center no-repeat;
+    min-height: 100vh;
+    padding-top: 20%;
+}
+
+h1 {
+    color: #ffffff;
+}
