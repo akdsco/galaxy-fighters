@@ -3,24 +3,34 @@ class Location {
     this.row = row;
     this.col = col;
     this.isBlocked = false;
-    this.isOccupied = false;
     this.weapon = null;
+    this.player = null;
   }
 
   addLocationNode() {
-    let locationNode = document.createElement('td');
-    locationNode.setAttribute('id','loc_' + this.row + '_' + this.col);
+    let tdNode = document.createElement('td');
+    let pNode = document.createElement('p');
+    tdNode.setAttribute('id','loc_' + this.row + '_' + this.col);
 
     if (this.isBlocked) {
-      locationNode.classList.add('blocked');
+      tdNode.classList.add('blocked');
     }
-    if (this.isOccupied) {
-      locationNode.classList.add('player');
+    if (this.player !== null) {
+      if (this.player.number === 1) {
+        tdNode.classList.add('playerOne');
+        pNode.innerText = 'P' + this.player.number;
+        tdNode.appendChild(pNode);
+      } else {
+        tdNode.classList.add('playerTwo');
+        pNode.innerText = 'P' + this.player.number;
+        tdNode.appendChild(pNode);
+      }
     }
     if (this.weapon !== null) {
-      console.log(this.weapon.name);
-      locationNode.classList.add('weapon');
+      pNode.innerText = this.weapon.name[0] + '-' + this.weapon.name[7];
+      tdNode.appendChild(pNode);
+      tdNode.classList.add('weapon');
     }
-    return locationNode;
+    return tdNode;
   }
 }

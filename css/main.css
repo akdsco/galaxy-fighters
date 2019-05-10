@@ -4,33 +4,42 @@ header {
     padding-top: 20%;
 }
 
-h1 {
-    color: #ffffff;
-}
-
 #restart-button {
     display: none;
 }
 
 table {
     margin: auto;
+    background-color: white;
+    border: 1px solid grey;
 }
 
 td {
     height: 60px;
     width: 60px;
-    border: 1px solid grey;
+    /*border: 1px solid grey;*/
+    -webkit-border-radius: 20%;
+    -moz-border-radius: 20%;
+    border-radius: 20%;
     background-color: azure;
+}
+
+p {
+    margin-bottom: 0;
 }
 
 .blocked {
     background-color: grey;
 }
 
-.player {
-    background-color: forestgreen;
+.playerOne {
+    background-color: yellow;
+}
+
+.playerTwo {
+    background-color: green;
 }
 
 .weapon {
-    background-color: lightsalmon;
+    background-color: aquamarine;
 }
