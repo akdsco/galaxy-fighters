@@ -22,3 +22,15 @@ td {
     border: 1px solid grey;
     background-color: azure;
 }
+
+.blocked {
+    background-color: grey;
+}
+
+.player {
+    background-color: forestgreen;
+}
+
+.weapon {
+    background-color: lightsalmon;
+}
