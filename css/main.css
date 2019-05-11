@@ -29,7 +29,11 @@ p {
 }
 
 .blocked {
-    background-color: grey;
+    background-color: black;
+}
+
+.available {
+    background-color: lightgray;
 }
 
 .playerOne {

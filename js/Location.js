@@ -3,6 +3,7 @@ class Location {
     this.row = row;
     this.col = col;
     this.isBlocked = false;
+    this.isAvailable = false;
     this.weapon = null;
     this.player = null;
   }
@@ -31,6 +32,14 @@ class Location {
       tdNode.appendChild(pNode);
       tdNode.classList.add('weapon');
     }
+    if (this.isAvailable) {
+      tdNode.classList.add('available');
+    }
     return tdNode;
   }
+
+  movePlayer(currentLocation, newLocation) {
+
+  }
+
 }
