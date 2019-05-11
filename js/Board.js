@@ -58,11 +58,50 @@ class Board {
     let startPlayerTwo = this.randomLocation('player');
     startPlayerOne.player = this.playerOne;
     startPlayerTwo.player = this.playerTwo;
+    this.drawPlayersPath(startPlayerOne);
+    this.drawPlayersPath(startPlayerTwo);
+  }
+
+  drawPlayersPath(location) {
+    direction:
+    for (let i = 0; i < 4; i++) {
+          for (let j = 1; j < 4; j++) {
+            // each i is a new direction in which we check availability
+            if (i === 0) { // up
+              if (((location.row - j) >= (this.size - this.size)) && (typeof this.gameData[location.row - j][location.col] !== 'undefined')) {
+                if (this.gameData[location.row - j][location.col].isBlocked === false) {
+                  this.gameData[location.row - j][location.col].isAvailable = true;
+                  // console.log('row - j: ' + (location.row - j) + 'col: ' + location.col);
+                } else {
+                  break direction;
+                }
+              } else {
+                break direction;
+              }
+            } else if (i === 1) { // right
+              if (((location.col + j) <= this.size) && (typeof this.gameData[location.row][location.col + j] !== 'undefined')) {
+                if (this.gameData[location.row][location.col + j].isBlocked === false) {
+                  this.gameData[location.row][location.col + j].isAvailable = true;
+                  console.log('row: ' + (location.row) + 'col+j: ' + (location.col + j));
+                } else {
+                  break direction;
+                }
+              } else {
+                break direction;
+              }
+            } else if (i === 2) { // down
+
+            } else { // left
+
+            }
+          }
+    }
   }
 
   // draw board based on array and return html NODE to inject to index
   createGameNode() {
     let gameNode = document.createElement('table');
+    gameNode.setAttribute('id','gameTable');
 
     for (let i = 0; i < this.size; i++) {
       let tr = document.createElement('tr');
@@ -79,8 +118,8 @@ class Board {
   randomLocation(text) {
     if ((typeof text === 'string') && (text === 'player')) {
       if (this.flag) {
-        let min = 0;
-        let max = 3;
+        let min = this.size - this.size;
+        let max = this.size - (0.7 * this.size);
         this.flag = !this.flag;
         while (true) {
           let randomLocation = this.gameData[Math.floor(Math.random() * (max - min + 1)) + min][Math.floor(Math.random() * (max - min + 1)) + min];
@@ -89,8 +128,8 @@ class Board {
           }
         }
       } else {
-        let min = 6;
-        let max = 9;
+        let min = (0.6 * this.size);
+        let max = this.size - 1;
         this.flag = !this.flag;
         while (true) {
           let randomLocation = this.gameData[Math.floor(Math.random() * (max - min + 1)) + min][Math.floor(Math.random() * (max - min + 1)) + min];
