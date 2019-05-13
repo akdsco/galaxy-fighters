@@ -6,14 +6,14 @@ class Board {
                           {name: 'Weapon 2', damage: 30},
                           {name: 'Weapon 3', damage: 40},
                           {name: 'Weapon 4', damage: 50}];
-    this.playerOne = new Player(1);
-    this.playerTwo = new Player(2);
-    this.testingNum = 1;
-    this.flag = true;
+    this.players = [new Player(1), new Player(2)];
+    // this.playerOne = new Player(1);
+    // this.playerTwo = new Player(2);
+    this.spawnFlag = true;
     this.initializeGameData();
     this.addBlockedLocations(17);
     this.addWeapons(4);
-    this.addPlayers();
+    this.addPlayers(this.players);
     // as a final step
     this.createGameNode();
   }
@@ -53,14 +53,12 @@ class Board {
     }
   }
 
-  addPlayers() {
-    // Using 'player' as parameter to specify range within opposite corners (i.e. making sure players don't spawn next each other)
-    let startPlayerOne = this.randomLocation('player');
-    let startPlayerTwo = this.randomLocation('player');
-    startPlayerOne.player = this.playerOne;
-    startPlayerTwo.player = this.playerTwo;
-    this.drawPlayersPath(startPlayerOne);
-    this.drawPlayersPath(startPlayerTwo);
+  addPlayers(array) {
+    for (let i = 0; i < array.length; i++) {
+      let randomLocation = this.randomStartLocation();
+      randomLocation.player = array[i];
+      this.drawPlayersPath(randomLocation);
+    }
   }
 
   drawPlayersPath(location) {
@@ -69,7 +67,7 @@ class Board {
         switch (i) {
           case 0: // moving up
             if ((location.row - j) < 0) {
-              console.log('location: ' + (location.row - j) + ':' + location.col + ' does no exist. Skipping direction');
+              // console.log('location: ' + (location.row - j) + ':' + location.col + ' does no exist. Skipping direction');
               break start;
             } else {
               if(!(this.gameData[location.row - j][location.col].isBlocked)) {
@@ -81,7 +79,7 @@ class Board {
             break;
           case 1: // moving down
             if ((location.row + j) > (this.size - 1)) {
-              console.log('location: ' + (location.row + j) + ':' + location.col + ' does no exist. Skipping direction');
+              // console.log('location: ' + (location.row + j) + ':' + location.col + ' does no exist. Skipping direction');
               break start;
             } else {
               if(!(this.gameData[location.row + j][location.col].isBlocked)) {
@@ -93,7 +91,7 @@ class Board {
             break;
           case 2: // moving left
             if ((location.col - j) < 0) {
-              console.log('location: ' + location.row + ':' + (location.col - j) + ' does no exist. Skipping direction');
+              // console.log('location: ' + location.row + ':' + (location.col - j) + ' does no exist. Skipping direction');
               break start;
             } else {
               if(!(this.gameData[location.row][location.col - j].isBlocked)) {
@@ -105,7 +103,7 @@ class Board {
             break;
           case 3: // moving right
             if ((location.col + j) > (this.size - 1)) {
-              console.log('location: ' + location.row + ':' + (location.col + j) + ' does no exist. Skipping direction');
+              // console.log('location: ' + location.row + ':' + (location.col + j) + ' does no exist. Skipping direction');
               break start;
             } else {
               if(!(this.gameData[location.row][location.col + j].isBlocked)) {
@@ -117,122 +115,8 @@ class Board {
         }
       }
     }
-
-    let i, j;
-    i = 0;
   }
-  //   while (i < 4) {
-  //     j = 1;
-  //     start: while (j < 4) {
-  //       console.log('pos:' + i + ',' + j);
-  //       switch (i) {
-  //         case 0: // move up
-  //           if(location.row - j < 0) {
-  //             console.log('location: ' + (location.row - j) +':'+ location.col + ' does not exist. Skipping direction'); // debug
-  //             i++;
-  //             break start;
-  //           } else {
-  //             if(!this.gameData[location.row - j][location.col].isBlocked) {
-  //               this.gameData[location.row - j][location.col].isAvailable = true;
-  //               j++;
-  //               break;
-  //             }
-  //           }
-  //
-  //       }
-  //     }
-  //     i++
-  //   }
-  //
-  // }
 
-
-    // let j = 1;
-    // start: for (let i = 0; i < 4; i++) {
-    //     j = 1;
-    //      while (j < 4) {
-    //         console.log(this.testingNum + "- i: " + i);
-    //         console.log(this.testingNum + "- j: " + j);
-    //         switch (i) {
-    //           case 0: // move up
-    //             if (((location.row - j) >= (this.size - this.size)) && (typeof this.gameData[location.row - j][location.col] !== 'undefined')) {
-    //               if (this.gameData[location.row - j][location.col].isBlocked === false) {
-    //                 this.gameData[location.row - j][location.col].isAvailable = true;
-    //                 j++
-    //               } else {
-    //                 break start;
-    //               }
-    //             } else {
-    //               break start;
-    //             }
-              // case 1: // move right
-              //   if (((location.col + j) <= this.size) && (typeof this.gameData[location.row][location.col + j] !== 'undefined')) {
-              //     if (this.gameData[location.row][location.col + j].isBlocked === false) {
-              //       this.gameData[location.row][location.col + j].isAvailable = true;
-              //     } else {
-              //       break;
-              //     }
-              //   } else {
-              //     break;
-              //   }
-              // case 2: // move down
-                // if (((location.row + j) <= this.size) && (typeof this.gameData[location.row + j][location.col] !== 'undefined')) {
-                //   if (this.gameData[location.row + j][location.col].isBlocked === false) {
-                //     this.gameData[location.row + j][location.col].isAvailable = true;
-                //   } else {
-                //     break calculateNextDirection;
-                //   }
-                // } else {
-                //   break calculateNextDirection;
-                // }
-
-
-            // if (i === 0) { // going up
-            //   if (((location.row - j) >= (this.size - this.size)) && (typeof this.gameData[location.row - j][location.col] !== 'undefined')) {
-            //     if (this.gameData[location.row - j][location.col].isBlocked === false) {
-            //       this.gameData[location.row - j][location.col].isAvailable = true;
-            //     } else {
-            //       break calculateNextDirection;
-            //     }
-            //   } else {
-            //     break calculateNextDirection;
-            //   }
-            // } else if (i === 1) { // right
-            //   if (((location.col + j) <= this.size) && (typeof this.gameData[location.row][location.col + j] !== 'undefined')) {
-            //     if (this.gameData[location.row][location.col + j].isBlocked === false) {
-            //       this.gameData[location.row][location.col + j].isAvailable = true;
-            //     } else {
-            //       break calculateNextDirection;
-            //     }
-            //   } else {
-            //     break calculateNextDirection;
-            //   }
-            // } else if (i === 2) { // going down
-            //   if (((location.row + j) <= this.size) && (typeof this.gameData[location.row + j][location.col] !== 'undefined')) {
-            //     if (this.gameData[location.row + j][location.col].isBlocked === false) {
-            //       this.gameData[location.row + j][location.col].isAvailable = true;
-            //     } else {
-            //       break calculateNextDirection;
-            //     }
-            //   } else {
-            //     break calculateNextDirection;
-            //   }
-            // } else { // going left
-            //   console.log('been here ');
-            //   console.log('djjjj: ' + j);
-            //   if (((location.col - j) <= (this.size - this.size)) && (typeof this.gameData[location.row][location.col - j] !== 'undefined')) {
-            //     if (this.gameData[location.row][location.col - j].isBlocked === false) {
-            //       this.gameData[location.row][location.col - j].isAvailable = true;
-            //     } else {
-            //       break calculateNextDirection;
-            //     }
-            //   } else {
-            //     break calculateNextDirection;
-            //   }
-            // }
-    //       }
-    // }
-    // this.testingNum++;
 
   // draw board based on array and return html NODE to inject to index
   createGameNode() {
@@ -251,32 +135,32 @@ class Board {
 
   // Helper Methods
 
-  randomLocation(text) {
-    if ((typeof text === 'string') && (text === 'player')) {
-      if (this.flag) {
-        let min = this.size - this.size;
-        let max = this.size - (0.7 * this.size);
-        this.flag = !this.flag;
-        while (true) {
-          let randomLocation = this.gameData[Math.floor(Math.random() * (max - min + 1)) + min][Math.floor(Math.random() * (max - min + 1)) + min];
-          if (randomLocation.isBlocked === false && randomLocation.weapon === null) {
-            return randomLocation;
-          }
-        }
-      } else {
-        let min = (0.6 * this.size);
-        let max = this.size - 1;
-        this.flag = !this.flag;
-        while (true) {
-          let randomLocation = this.gameData[Math.floor(Math.random() * (max - min + 1)) + min][Math.floor(Math.random() * (max - min + 1)) + min];
-          if (randomLocation.isBlocked === false && randomLocation.weapon === null) {
-            return randomLocation;
-          }
+  randomStartLocation() {
+    if (this.spawnFlag) {
+      let min = this.size - this.size;
+      let max = this.size - (0.7 * this.size);
+      this.spawnFlag = !this.spawnFlag;
+      while (true) {
+        let randomLocation = this.gameData[Math.floor(Math.random() * (max - min + 1)) + min][Math.floor(Math.random() * (max - min + 1)) + min];
+        if (randomLocation.isBlocked === false && randomLocation.weapon === null) {
+          return randomLocation;
         }
       }
     } else {
-      return this.gameData[Math.floor((Math.random() * this.size))][Math.floor((Math.random() * this.size))];
+      let min = (0.6 * this.size);
+      let max = this.size - 1;
+      this.spawnFlag = !this.spawnFlag;
+      while (true) {
+        let randomLocation = this.gameData[Math.floor(Math.random() * (max - min + 1)) + min][Math.floor(Math.random() * (max - min + 1)) + min];
+        if (randomLocation.isBlocked === false && randomLocation.weapon === null) {
+          return randomLocation;
+        }
+      }
     }
+  }
+
+  randomLocation() {
+      return this.gameData[Math.floor((Math.random() * this.size))][Math.floor((Math.random() * this.size))];
   }
 
 }
