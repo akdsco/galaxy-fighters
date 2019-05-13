@@ -8,6 +8,7 @@ class Board {
                           {name: 'Weapon 4', damage: 50}];
     this.playerOne = new Player(1);
     this.playerTwo = new Player(2);
+    this.testingNum = 1;
     this.flag = true;
     this.initializeGameData();
     this.addBlockedLocations(17);
@@ -63,40 +64,175 @@ class Board {
   }
 
   drawPlayersPath(location) {
-    direction:
     for (let i = 0; i < 4; i++) {
-          for (let j = 1; j < 4; j++) {
-            // each i is a new direction in which we check availability
-            if (i === 0) { // up
-              if (((location.row - j) >= (this.size - this.size)) && (typeof this.gameData[location.row - j][location.col] !== 'undefined')) {
-                if (this.gameData[location.row - j][location.col].isBlocked === false) {
-                  this.gameData[location.row - j][location.col].isAvailable = true;
-                  // console.log('row - j: ' + (location.row - j) + 'col: ' + location.col);
-                } else {
-                  break direction;
-                }
+       start: for (let j = 1; j < 4; j++) {
+        switch (i) {
+          case 0: // moving up
+            if ((location.row - j) < 0) {
+              console.log('location: ' + (location.row - j) + ':' + location.col + ' does no exist. Skipping direction');
+              break start;
+            } else {
+              if(!(this.gameData[location.row - j][location.col].isBlocked)) {
+                this.gameData[location.row - j][location.col].isAvailable = true;
               } else {
-                break direction;
+                break start;
               }
-            } else if (i === 1) { // right
-              if (((location.col + j) <= this.size) && (typeof this.gameData[location.row][location.col + j] !== 'undefined')) {
-                if (this.gameData[location.row][location.col + j].isBlocked === false) {
-                  this.gameData[location.row][location.col + j].isAvailable = true;
-                  console.log('row: ' + (location.row) + 'col+j: ' + (location.col + j));
-                } else {
-                  break direction;
-                }
-              } else {
-                break direction;
-              }
-            } else if (i === 2) { // down
-
-            } else { // left
-
             }
-          }
+            break;
+          case 1: // moving down
+            if ((location.row + j) > (this.size - 1)) {
+              console.log('location: ' + (location.row + j) + ':' + location.col + ' does no exist. Skipping direction');
+              break start;
+            } else {
+              if(!(this.gameData[location.row + j][location.col].isBlocked)) {
+                this.gameData[location.row + j][location.col].isAvailable = true;
+              } else {
+                break start;
+              }
+            }
+            break;
+          case 2: // moving left
+            if ((location.col - j) < 0) {
+              console.log('location: ' + location.row + ':' + (location.col - j) + ' does no exist. Skipping direction');
+              break start;
+            } else {
+              if(!(this.gameData[location.row][location.col - j].isBlocked)) {
+                this.gameData[location.row][location.col - j].isAvailable = true;
+              } else {
+                break start;
+              }
+            }
+            break;
+          case 3: // moving right
+            if ((location.col + j) > (this.size - 1)) {
+              console.log('location: ' + location.row + ':' + (location.col + j) + ' does no exist. Skipping direction');
+              break start;
+            } else {
+              if(!(this.gameData[location.row][location.col + j].isBlocked)) {
+                this.gameData[location.row][location.col + j].isAvailable = true;
+              } else {
+                break start;
+              }
+            }
+        }
+      }
     }
+
+    let i, j;
+    i = 0;
   }
+  //   while (i < 4) {
+  //     j = 1;
+  //     start: while (j < 4) {
+  //       console.log('pos:' + i + ',' + j);
+  //       switch (i) {
+  //         case 0: // move up
+  //           if(location.row - j < 0) {
+  //             console.log('location: ' + (location.row - j) +':'+ location.col + ' does not exist. Skipping direction'); // debug
+  //             i++;
+  //             break start;
+  //           } else {
+  //             if(!this.gameData[location.row - j][location.col].isBlocked) {
+  //               this.gameData[location.row - j][location.col].isAvailable = true;
+  //               j++;
+  //               break;
+  //             }
+  //           }
+  //
+  //       }
+  //     }
+  //     i++
+  //   }
+  //
+  // }
+
+
+    // let j = 1;
+    // start: for (let i = 0; i < 4; i++) {
+    //     j = 1;
+    //      while (j < 4) {
+    //         console.log(this.testingNum + "- i: " + i);
+    //         console.log(this.testingNum + "- j: " + j);
+    //         switch (i) {
+    //           case 0: // move up
+    //             if (((location.row - j) >= (this.size - this.size)) && (typeof this.gameData[location.row - j][location.col] !== 'undefined')) {
+    //               if (this.gameData[location.row - j][location.col].isBlocked === false) {
+    //                 this.gameData[location.row - j][location.col].isAvailable = true;
+    //                 j++
+    //               } else {
+    //                 break start;
+    //               }
+    //             } else {
+    //               break start;
+    //             }
+              // case 1: // move right
+              //   if (((location.col + j) <= this.size) && (typeof this.gameData[location.row][location.col + j] !== 'undefined')) {
+              //     if (this.gameData[location.row][location.col + j].isBlocked === false) {
+              //       this.gameData[location.row][location.col + j].isAvailable = true;
+              //     } else {
+              //       break;
+              //     }
+              //   } else {
+              //     break;
+              //   }
+              // case 2: // move down
+                // if (((location.row + j) <= this.size) && (typeof this.gameData[location.row + j][location.col] !== 'undefined')) {
+                //   if (this.gameData[location.row + j][location.col].isBlocked === false) {
+                //     this.gameData[location.row + j][location.col].isAvailable = true;
+                //   } else {
+                //     break calculateNextDirection;
+                //   }
+                // } else {
+                //   break calculateNextDirection;
+                // }
+
+
+            // if (i === 0) { // going up
+            //   if (((location.row - j) >= (this.size - this.size)) && (typeof this.gameData[location.row - j][location.col] !== 'undefined')) {
+            //     if (this.gameData[location.row - j][location.col].isBlocked === false) {
+            //       this.gameData[location.row - j][location.col].isAvailable = true;
+            //     } else {
+            //       break calculateNextDirection;
+            //     }
+            //   } else {
+            //     break calculateNextDirection;
+            //   }
+            // } else if (i === 1) { // right
+            //   if (((location.col + j) <= this.size) && (typeof this.gameData[location.row][location.col + j] !== 'undefined')) {
+            //     if (this.gameData[location.row][location.col + j].isBlocked === false) {
+            //       this.gameData[location.row][location.col + j].isAvailable = true;
+            //     } else {
+            //       break calculateNextDirection;
+            //     }
+            //   } else {
+            //     break calculateNextDirection;
+            //   }
+            // } else if (i === 2) { // going down
+            //   if (((location.row + j) <= this.size) && (typeof this.gameData[location.row + j][location.col] !== 'undefined')) {
+            //     if (this.gameData[location.row + j][location.col].isBlocked === false) {
+            //       this.gameData[location.row + j][location.col].isAvailable = true;
+            //     } else {
+            //       break calculateNextDirection;
+            //     }
+            //   } else {
+            //     break calculateNextDirection;
+            //   }
+            // } else { // going left
+            //   console.log('been here ');
+            //   console.log('djjjj: ' + j);
+            //   if (((location.col - j) <= (this.size - this.size)) && (typeof this.gameData[location.row][location.col - j] !== 'undefined')) {
+            //     if (this.gameData[location.row][location.col - j].isBlocked === false) {
+            //       this.gameData[location.row][location.col - j].isAvailable = true;
+            //     } else {
+            //       break calculateNextDirection;
+            //     }
+            //   } else {
+            //     break calculateNextDirection;
+            //   }
+            // }
+    //       }
+    // }
+    // this.testingNum++;
 
   // draw board based on array and return html NODE to inject to index
   createGameNode() {
