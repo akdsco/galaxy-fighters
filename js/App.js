@@ -61,22 +61,29 @@ $(function () {
     // console.log('clickedRow: ' + clickedRow);
     // console.log('clickedCol: ' + clickedCol);
 
-    let selectedLocation = currentGame.gameData[clickedRow][clickedCol];
+    let endLocation = currentGame.gameData[clickedRow][clickedCol];
 
     // check if user clicked on a "good" cell
-    if (selectedLocation.isAvailable) {
+    if (endLocation.isAvailable) {
       console.log('can move there');
-      let oldPlayerLocation = currentGame.gameData[currentGame.players[0].locationX][currentGame.players[0].locationY];
+      let startLocation = currentGame.gameData[currentGame.players[0].locationX][currentGame.players[0].locationY];
 
-      // delete old available locations
-      currentGame.drawPlayersPath(oldPlayerLocation, false);
-      // draw new available locations
-      currentGame.drawPlayersPath(selectedLocation, true);
-      // move player from old location to new
-      selectedLocation.player = currentGame.players[0];
-      oldPlayerLocation.player = null;
+      // clean data in start location
+      startLocation.player = null;
+      currentGame.players[0].locationX = clickedRow;
+      currentGame.players[0].locationY = clickedCol;
+      currentGame.drawPlayersPath(startLocation, false);
+
+      // fill end location with new data
+      endLocation.player = currentGame.players[0];
+      currentGame.drawPlayersPath(endLocation, true);
+
       gameNode.removeChild(gameNode.childNodes[0]);
       gameNode.prepend(currentGame.createGameNode());
+
+      // empty variables for next move
+      endLocation = null;
+      startLocation = null;
     }
 
 
