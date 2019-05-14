@@ -52,12 +52,17 @@ class Board {
   }
 
   addPlayers(array) {
+    let flag = true;
+
     for (let i = 0; i < array.length; i++) {
       let randomLocation = this.randomStartLocation();
       randomLocation.player = array[i];
-      array[i].locationX = randomLocation.row;
-      array[i].locationY = randomLocation.col;
-      this.drawPlayersPath(randomLocation,true);
+      array[i]._locationX = randomLocation.row;
+      array[i]._locationY = randomLocation.col;
+      if (flag) {
+        this.drawPlayersPath(randomLocation,true);
+        flag = !flag;
+      }
     }
   }
 

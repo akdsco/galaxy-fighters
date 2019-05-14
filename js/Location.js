@@ -17,13 +17,13 @@ class Location {
       tdNode.classList.add('blocked');
     }
     if (this.player !== null) {
-      if (this.player.number === 1) {
+      if (this.player.getNumber === 1) {
         tdNode.classList.add('playerOne');
-        pNode.innerText = 'P' + this.player.number;
+        pNode.innerText = 'P' + this.player.getNumber;
         tdNode.appendChild(pNode);
       } else {
         tdNode.classList.add('playerTwo');
-        pNode.innerText = 'P' + this.player.number;
+        pNode.innerText = 'P' + this.player.getNumber;
         tdNode.appendChild(pNode);
       }
     }
@@ -38,8 +38,5 @@ class Location {
     return tdNode;
   }
 
-  movePlayer(currentLocation, newLocation) {
-
-  }
 
 }
