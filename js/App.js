@@ -16,49 +16,85 @@ $(function () {
     gameNode.prepend(currentGame.createGameNode());
   });
 
-  // Create event handle to listen for clicks on a table and when user does click, get back with information about
-  // which field user selected (clicked)
+  // define game loop that keep on looping until game is over and alternates turns between players
+  let quit = false; // not in use for developing / testing time
+  let i = 0;
 
+  while (i < 4) {
+    let activePlayer = 1;
+
+    switch (activePlayer) {
+      case 1:
+        // move player
+        // check if player collected any new weapons on a way
+        // swap weapons if yes
+        // check abs value between players, if it's 1 enter fight mode
+        // when fight is over, display winners name and quit = true;
+
+        activePlayer = 2;
+        break;
+      case 2:
+
+
+        activePlayer = 1;
+        break;
+    }
+
+    i++;
+    // quit = true;
+  }
+  // Create event handler to listen for clicks on table and when user does click, get back with information about
+  // which location user selected (clicked)
   $('header').click(function (e) {
     let idString;
-    // making sure we don't capture any other clicks other than on 'TD' elements
-    if (e.target.nodeName === 'TD') {
-      // making sure we capture row and col even if you click on child node of 'TD' element
-      if (e.target.nodeName === 'P') {
-        idString = e.target.parentNode.id;
-      } else {
-        idString = e.target.id;
-      }
-
-      let row = idString[4];
-      let col = idString[6];
-      // debug for now
-      console.log('row: ' + row);
-      console.log('col: ' + col);
-
-      let selectedLocation = currentGame.gameData[row][col];
-
-      // check if user clicked on a "good" cell
-
-      // if yes, change gameData
-
-      // redraw the board so that it reflects new state after users choice
-
+    // making sure we capture clickedRow and clickedCol even if you click on child node of 'TD' element
+    if (e.target.nodeName === 'P') {
+      idString = e.target.parentNode.id;
+    } else if (e.target.nodeName === 'TD') {
+      idString = e.target.id;
     }
+
+    let clickedRow = idString[4];
+    let clickedCol = idString[6];
+
+    // debug for now
+    // console.log('clickedRow: ' + clickedRow);
+    // console.log('clickedCol: ' + clickedCol);
+
+    let selectedLocation = currentGame.gameData[clickedRow][clickedCol];
+
+    // check if user clicked on a "good" cell
+    if (selectedLocation.isAvailable) {
+      console.log('can move there');
+      let oldPlayerLocation = currentGame.gameData[currentGame.players[0].locationX][currentGame.players[0].locationY];
+
+      // delete old available locations
+      currentGame.drawPlayersPath(oldPlayerLocation, false);
+      // draw new available locations
+      currentGame.drawPlayersPath(selectedLocation, true);
+      // move player from old location to new
+      selectedLocation.player = currentGame.players[0];
+      oldPlayerLocation.player = null;
+      gameNode.removeChild(gameNode.childNodes[0]);
+      gameNode.prepend(currentGame.createGameNode());
+    }
+
+
+    // if yes, change gameData
+
+    // redraw the board so that it reflects new state after users choice
+
+    // }
 
 
   });
 
 
-
-
-
-
-  if($('header').length) {
+  if ($('header').length) {
     console.log('passed header');
   }
 
-  if($('td').length) {
+  if ($('td').length) {
     console.log('passed TR');
   }
 

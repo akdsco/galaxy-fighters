@@ -7,8 +7,6 @@ class Board {
                           {name: 'Weapon 3', damage: 40},
                           {name: 'Weapon 4', damage: 50}];
     this.players = [new Player(1), new Player(2)];
-    // this.playerOne = new Player(1);
-    // this.playerTwo = new Player(2);
     this.spawnFlag = true;
     this.initializeGameData();
     this.addBlockedLocations(17);
@@ -57,11 +55,13 @@ class Board {
     for (let i = 0; i < array.length; i++) {
       let randomLocation = this.randomStartLocation();
       randomLocation.player = array[i];
-      this.drawPlayersPath(randomLocation);
+      array[i].locationX = randomLocation.row;
+      array[i].locationY = randomLocation.col;
+      this.drawPlayersPath(randomLocation,true);
     }
   }
 
-  drawPlayersPath(location) {
+  drawPlayersPath(location, value) {
     for (let i = 0; i < 4; i++) {
        start: for (let j = 1; j < 4; j++) {
         switch (i) {
@@ -71,7 +71,7 @@ class Board {
               break start;
             } else {
               if(!(this.gameData[location.row - j][location.col].isBlocked)) {
-                this.gameData[location.row - j][location.col].isAvailable = true;
+                this.gameData[location.row - j][location.col].isAvailable = value;
               } else {
                 break start;
               }
@@ -83,7 +83,7 @@ class Board {
               break start;
             } else {
               if(!(this.gameData[location.row + j][location.col].isBlocked)) {
-                this.gameData[location.row + j][location.col].isAvailable = true;
+                this.gameData[location.row + j][location.col].isAvailable = value;
               } else {
                 break start;
               }
@@ -95,7 +95,7 @@ class Board {
               break start;
             } else {
               if(!(this.gameData[location.row][location.col - j].isBlocked)) {
-                this.gameData[location.row][location.col - j].isAvailable = true;
+                this.gameData[location.row][location.col - j].isAvailable = value;
               } else {
                 break start;
               }
@@ -107,7 +107,7 @@ class Board {
               break start;
             } else {
               if(!(this.gameData[location.row][location.col + j].isBlocked)) {
-                this.gameData[location.row][location.col + j].isAvailable = true;
+                this.gameData[location.row][location.col + j].isAvailable = value;
               } else {
                 break start;
               }
@@ -116,7 +116,6 @@ class Board {
       }
     }
   }
-
 
   // draw board based on array and return html NODE to inject to index
   createGameNode() {
