@@ -1,6 +1,7 @@
 $(function () {
   const gameNode = document.getElementById('header');
   let currentGame = new Board(10);
+  console.log(currentGame);
 
   $('#play-button').on('click', function () {
     gameNode.prepend(currentGame.createGameNode());
@@ -25,6 +26,8 @@ $(function () {
         movePlayer(turn, e);
 
         // check if player collected any new weapons on his way
+        // swapWeapon();
+
         // swap weapons if yes
         // check abs value between players, if it's 1 enter fight mode
         // when fight is over, display winners name and quit = true;
@@ -34,7 +37,6 @@ $(function () {
         turn++;
         break;
       case 1:
-        console.log('active p value' + turn);
         movePlayer(turn, e);
 
 
@@ -67,13 +69,35 @@ $(function () {
 
     // check if user clicked on a "good" cell
     if (endLocation.isAvailable) {
-      console.log('can move there');
-      let startLocation = currentGame.gameData[currentGame.players[playerNumber].getLocationX][currentGame.players[playerNumber].getLocationY];
+      let startLocation = currentGame.gameData[currentGame.players[playerNumber]._locationY][currentGame.players[playerNumber]._locationX];
+
+      // pick up new weapon if there is any on players way
+      console.log('locationX: ' + currentGame.players[playerNumber]._locationX);
+      console.log('clickedCol: ' + clickedCol);
+      console.log('locationY: ' + currentGame.players[playerNumber]._locationY);
+      console.log('clickedRow: ' + clickedRow);
+      let movingUp = (clickedCol === currentGame.players[playerNumber]._locationX) && (clickedRow < currentGame.players[playerNumber]._locationY);
+
+      console.log('up' + movingUp);
+      let movingDown = (clickedCol === currentGame.players[playerNumber]._locationX) && (clickedRow > currentGame.players[playerNumber]._locationY);
+      console.log('down' + movingDown);
+      let movingRight = false;
+      let movingLeft = false;
+
+      if(movingUp) {
+        console.log('going up');
+      } else if(movingDown) {
+        console.log('going down');
+      } else if(movingLeft) {
+        console.log('going left');
+      } else if(movingRight) {
+        console.log('going right');
+      }
 
       // clean data in start location
       startLocation.player = null;
-      currentGame.players[playerNumber]._locationX = clickedRow;  // ask mentor why can't I use setLocationX or Y
-      currentGame.players[playerNumber]._locationY = clickedCol;
+      currentGame.players[playerNumber]._locationY = clickedRow;
+      currentGame.players[playerNumber]._locationX = clickedCol;
       currentGame.drawPlayersPath(startLocation, false);
 
       // fill end location with new data
@@ -101,9 +125,9 @@ $(function () {
   }
 
   function getCurrentPlayerLocation(playerNumber) {
-    let x = currentGame.players[playerNumber].getLocationX;
-    let y = currentGame.players[playerNumber].getLocationY;
-    return currentGame.gameData[x][y];
+    let y = currentGame.players[playerNumber]._locationY;
+    let x = currentGame.players[playerNumber]._locationX;
+    return currentGame.gameData[y][x];
   }
 
   console.log(getCurrentPlayerLocation(0));

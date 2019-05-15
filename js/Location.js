@@ -17,13 +17,13 @@ class Location {
       tdNode.classList.add('blocked');
     }
     if (this.player !== null) {
-      if (this.player.getNumber === 1) {
+      if (this.player._number === 1) {
         tdNode.classList.add('playerOne');
-        pNode.innerText = 'P' + this.player.getNumber;
+        pNode.innerText = 'P' + this.player._number;
         tdNode.appendChild(pNode);
       } else {
         tdNode.classList.add('playerTwo');
-        pNode.innerText = 'P' + this.player.getNumber;
+        pNode.innerText = 'P' + this.player._number;
         tdNode.appendChild(pNode);
       }
     }

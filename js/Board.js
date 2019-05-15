@@ -57,8 +57,8 @@ class Board {
     for (let i = 0; i < array.length; i++) {
       let randomLocation = this.randomStartLocation();
       randomLocation.player = array[i];
-      array[i]._locationX = randomLocation.row;
-      array[i]._locationY = randomLocation.col;
+      array[i]._locationY = randomLocation.row;
+      array[i]._locationX = randomLocation.col;
       if (flag) {
         this.drawPlayersPath(randomLocation,true);
         flag = !flag;
