@@ -72,20 +72,27 @@ $(function () {
       let startLocation = currentGame.gameData[currentGame.players[playerNumber]._locationY][currentGame.players[playerNumber]._locationX];
 
       // pick up new weapon if there is any on players way
-      console.log('locationX: ' + currentGame.players[playerNumber]._locationX);
+      let currentCol = currentGame.players[playerNumber]._locationX;
+      let currentRow = currentGame.players[playerNumber]._locationY;
+      console.log('currentCol: ' + currentCol);
       console.log('clickedCol: ' + clickedCol);
-      console.log('locationY: ' + currentGame.players[playerNumber]._locationY);
+      console.log('currentRow: ' + currentRow);
       console.log('clickedRow: ' + clickedRow);
-      let movingUp = (clickedCol === currentGame.players[playerNumber]._locationX) && (clickedRow < currentGame.players[playerNumber]._locationY);
 
+      let movingUp = (clickedCol === currentCol) && (clickedRow < currentRow);
       console.log('up' + movingUp);
-      let movingDown = (clickedCol === currentGame.players[playerNumber]._locationX) && (clickedRow > currentGame.players[playerNumber]._locationY);
+      let movingDown = (clickedCol === currentCol) && (clickedRow > currentRow);
       console.log('down' + movingDown);
       let movingRight = false;
       let movingLeft = false;
 
       if(movingUp) {
         console.log('going up');
+        for (let i = 0; i < (currentRow - clickedRow); i++) {
+          if(currentGame.gameData[currentRow][currentCol - i].weapon !== null) {
+            console.log('location: ' + currentRow + ',' + (currentCol - i) + ' contains weapon');
+          }
+        }
       } else if(movingDown) {
         console.log('going down');
       } else if(movingLeft) {
