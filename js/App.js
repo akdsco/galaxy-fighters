@@ -17,14 +17,13 @@ $(function () {
     currentGame = new Board(10);
     gameNode.prepend(currentGame.createGameNode());
     turn = 0;
-    console.log('restart, player: ' + (turn + 1));
   });
 
   let turn = 0;
 
   $('header').click(function (e) {
     if ((e.target.nodeName === 'P') || (e.target.nodeName === 'TD')) {
-      if (isClicable(e)) {
+      if (isAvailable(e)) {
         switch (turn) {
           case 0:
             // move player
@@ -39,14 +38,12 @@ $(function () {
 
 
             turn++;
-            console.log('next player: ' + (turn + 1));
             break;
           case 1:
             movePlayer(turn, e);
 
 
             turn--;
-            console.log('next player: ' + (turn + 1));
             break;
         }
       }
@@ -63,8 +60,8 @@ $(function () {
       idString = e.target.id;
     }
 
-    let clickedX = idString[6];
-    let clickedY = idString[4];
+    let clickedX = parseInt(idString[6]);
+    let clickedY = parseInt(idString[4]);
 
     // debug for now
     // console.log('clickedY: ' + clickedY);
@@ -74,28 +71,27 @@ $(function () {
 
     // check if user clicked on a "good" cell
     if (endLocation.isAvailable) {
-      let startLocation = currentGame.gameData[currentGame.players[playerNumber]._playerLocationY][currentGame.players[playerNumber]._playerLocationX];
-
-      // pick up new weapon if there is any on players way
       let currentX = currentGame.players[playerNumber]._playerLocationX;
       let currentY = currentGame.players[playerNumber]._playerLocationY;
+
+      let startLocation = currentGame.gameData[currentY][currentX];
+
+      // pick up new weapon if there is any on players way
       console.log('currentX: ' + currentX);
       console.log('clickedX: ' + clickedX);
       console.log('currentY: ' + currentY);
       console.log('clickedY: ' + clickedY);
 
-      let movingUp = (clickedX === currentX) && (clickedY < currentY);
-      console.log('up ' + movingUp);
+      let movingUp = ((clickedX === currentX) && (clickedY < currentY));
       let movingDown = (clickedX === currentX) && (clickedY > currentY);
-      console.log('down ' + movingDown);
-      let movingRight = false;
-      let movingLeft = false;
+      let movingRight = ((clickedY === currentY) && (clickedX > currentX));
+      let movingLeft = ((clickedY === currentY) && (clickedX < currentX));
 
       if(movingUp) {
         console.log('going up');
-        for (let i = 0; i < (currentY - clickedY); i++) {
-          if(currentGame.gameData[currentY][currentX - i].weapon !== null) {
-            console.log('location: ' + currentY + ',' + (currentX - i) + ' contains weapon');
+        for (let i = 1; i < (currentY - clickedY + 1); i++) {
+          if(currentGame.gameData[currentY][clickedX - i].weapon !== null) {
+            console.log('location: ' + currentY + ',' + (clickedX - i) + ' contains weapon');
           }
         }
       } else if(movingDown) {
@@ -145,7 +141,7 @@ $(function () {
   console.log(getCurrentPlayerLocation(0));
   console.log(getCurrentPlayerLocation(1));
 
-  function isClicable(e) {
+  function isAvailable(e) {
     let idString = '';
 
     if (e.target.nodeName === 'P') {
