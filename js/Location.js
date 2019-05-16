@@ -1,7 +1,7 @@
 class Location {
   constructor(row, col) {
-    this.row = row;
-    this.col = col;
+    this._locationY = row;
+    this._locationX = col;
     this.isBlocked = false;
     this.isAvailable = false;
     this.weapon = null;
@@ -11,7 +11,7 @@ class Location {
   addLocationNode() {
     let tdNode = document.createElement('td');
     let pNode = document.createElement('p');
-    tdNode.setAttribute('id','loc_' + this.row + '_' + this.col);
+    tdNode.setAttribute('id','loc_' + this._locationY + '_' + this._locationX);
 
     if (this.isBlocked) {
       tdNode.classList.add('blocked');

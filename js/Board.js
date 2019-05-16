@@ -45,7 +45,7 @@ class Board {
       if (!randomLocation.isBlocked && randomLocation.weapon === null) {
         randomLocation.weapon = this.weaponStorage[i];
         // print distribution of weapons to console for testing
-        console.log(randomLocation.row + ',' + randomLocation.col + ' = ' + randomLocation.weapon.name + " - " + randomLocation.weapon.damage);
+        console.log(randomLocation._locationY + ',' + randomLocation._locationX + ' = ' + randomLocation.weapon.name + " - " + randomLocation.weapon.damage);
         i++;
       }
     }
@@ -56,9 +56,9 @@ class Board {
 
     for (let i = 0; i < array.length; i++) {
       let randomLocation = this.randomStartLocation();
+      array[i]._playerLocationY = randomLocation._locationY;
+      array[i]._playerLocationX = randomLocation._locationX;
       randomLocation.player = array[i];
-      array[i]._locationY = randomLocation.row;
-      array[i]._locationX = randomLocation.col;
       if (flag) {
         this.drawPlayersPath(randomLocation,true);
         flag = !flag;
@@ -66,53 +66,53 @@ class Board {
     }
   }
 
-  drawPlayersPath(location, value) {
+  drawPlayersPath(squareObject, value) {
     for (let i = 0; i < 4; i++) {
        start: for (let j = 1; j < 4; j++) {
         switch (i) {
           case 0: // moving up
-            if ((location.row - j) < 0) {
-              // console.log('location: ' + (location.row - j) + ':' + location.col + ' does no exist. Skipping direction');
+            if ((squareObject._locationY - j) < 0) {
+              // console.log('squareObject: ' + (squareObject._locationY - j) + ':' + squareObject._locationX + ' does no exist. Skipping direction');
               break start;
             } else {
-              if(!(this.gameData[location.row - j][location.col].isBlocked)) {
-                this.gameData[location.row - j][location.col].isAvailable = value;
+              if(!(this.gameData[squareObject._locationY - j][squareObject._locationX].isBlocked)) {
+                this.gameData[squareObject._locationY - j][squareObject._locationX].isAvailable = value;
               } else {
                 break start;
               }
             }
             break;
           case 1: // moving down
-            if ((location.row + j) > (this.size - 1)) {
-              // console.log('location: ' + (location.row + j) + ':' + location.col + ' does no exist. Skipping direction');
+            if ((squareObject._locationY + j) > (this.size - 1)) {
+              // console.log('squareObject: ' + (squareObject._locationY + j) + ':' + squareObject._locationX + ' does no exist. Skipping direction');
               break start;
             } else {
-              if(!(this.gameData[location.row + j][location.col].isBlocked)) {
-                this.gameData[location.row + j][location.col].isAvailable = value;
+              if(!(this.gameData[squareObject._locationY + j][squareObject._locationX].isBlocked)) {
+                this.gameData[squareObject._locationY + j][squareObject._locationX].isAvailable = value;
               } else {
                 break start;
               }
             }
             break;
           case 2: // moving left
-            if ((location.col - j) < 0) {
-              // console.log('location: ' + location.row + ':' + (location.col - j) + ' does no exist. Skipping direction');
+            if ((squareObject._locationX - j) < 0) {
+              // console.log('squareObject: ' + squareObject._locationY + ':' + (squareObject._locationX - j) + ' does no exist. Skipping direction');
               break start;
             } else {
-              if(!(this.gameData[location.row][location.col - j].isBlocked)) {
-                this.gameData[location.row][location.col - j].isAvailable = value;
+              if(!(this.gameData[squareObject._locationY][squareObject._locationX - j].isBlocked)) {
+                this.gameData[squareObject._locationY][squareObject._locationX - j].isAvailable = value;
               } else {
                 break start;
               }
             }
             break;
           case 3: // moving right
-            if ((location.col + j) > (this.size - 1)) {
-              // console.log('location: ' + location.row + ':' + (location.col + j) + ' does no exist. Skipping direction');
+            if ((squareObject._locationX + j) > (this.size - 1)) {
+              // console.log('squareObject: ' + squareObject._locationY + ':' + (squareObject._locationX + j) + ' does no exist. Skipping direction');
               break start;
             } else {
-              if(!(this.gameData[location.row][location.col + j].isBlocked)) {
-                this.gameData[location.row][location.col + j].isAvailable = value;
+              if(!(this.gameData[squareObject._locationY][squareObject._locationX + j].isBlocked)) {
+                this.gameData[squareObject._locationY][squareObject._locationX + j].isAvailable = value;
               } else {
                 break start;
               }

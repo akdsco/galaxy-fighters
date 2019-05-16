@@ -9,88 +9,93 @@ $(function () {
     $('#header').css("padding-top", ".3%");
     $('#title-h1').hide();
     $('#play-button').hide();
+    turn = 0;
   });
 
   $('#restart-button').on('click', function () {
     gameNode.removeChild(gameNode.childNodes[0]);
     currentGame = new Board(10);
     gameNode.prepend(currentGame.createGameNode());
+    turn = 0;
+    console.log('restart, player: ' + (turn + 1));
   });
 
   let turn = 0;
 
   $('header').click(function (e) {
-    switch (turn) {
-      case 0:
-        // move player
-        movePlayer(turn, e);
+    if ((e.target.nodeName === 'P') || (e.target.nodeName === 'TD')) {
+      if (isClicable(e)) {
+        switch (turn) {
+          case 0:
+            // move player
+            movePlayer(turn, e);
 
-        // check if player collected any new weapons on his way
-        // swapWeapon();
+            // check if player collected any new weapons on his way
+            // swapWeapon();
 
-        // swap weapons if yes
-        // check abs value between players, if it's 1 enter fight mode
-        // when fight is over, display winners name and quit = true;
-
-
-
-        turn++;
-        break;
-      case 1:
-        movePlayer(turn, e);
+            // swap weapons if yes
+            // check abs value between players, if it's 1 enter fight mode
+            // when fight is over, display winners name and quit = true;
 
 
+            turn++;
+            console.log('next player: ' + (turn + 1));
+            break;
+          case 1:
+            movePlayer(turn, e);
 
 
-
-        turn--;
-        break;
+            turn--;
+            console.log('next player: ' + (turn + 1));
+            break;
+        }
+      }
     }
   });
 
   function movePlayer(playerNumber, e) {
     let idString;
 
-    // making sure we capture clickedRow and clickedCol even if you click on child node of 'TD' element
+    // making sure we capture clickedY and clickedX even if you click on child node of 'TD' element
     if (e.target.nodeName === 'P') {
       idString = e.target.parentNode.id;
     } else if (e.target.nodeName === 'TD') {
       idString = e.target.id;
     }
 
-    let clickedRow = idString[4];
-    let clickedCol = idString[6];
+    let clickedX = idString[6];
+    let clickedY = idString[4];
 
     // debug for now
-    // console.log('clickedRow: ' + clickedRow);
-    // console.log('clickedCol: ' + clickedCol);
+    // console.log('clickedY: ' + clickedY);
+    // console.log('clickedX: ' + clickedX);
 
-    let endLocation = currentGame.gameData[clickedRow][clickedCol];
+    let endLocation = currentGame.gameData[clickedY][clickedX];
 
     // check if user clicked on a "good" cell
     if (endLocation.isAvailable) {
-      let startLocation = currentGame.gameData[currentGame.players[playerNumber]._locationY][currentGame.players[playerNumber]._locationX];
+      let startLocation = currentGame.gameData[currentGame.players[playerNumber]._playerLocationY][currentGame.players[playerNumber]._playerLocationX];
 
       // pick up new weapon if there is any on players way
-      let currentCol = currentGame.players[playerNumber]._locationX;
-      let currentRow = currentGame.players[playerNumber]._locationY;
-      console.log('currentCol: ' + currentCol);
-      console.log('clickedCol: ' + clickedCol);
-      console.log('currentRow: ' + currentRow);
-      console.log('clickedRow: ' + clickedRow);
+      let currentX = currentGame.players[playerNumber]._playerLocationX;
+      let currentY = currentGame.players[playerNumber]._playerLocationY;
+      console.log('currentX: ' + currentX);
+      console.log('clickedX: ' + clickedX);
+      console.log('currentY: ' + currentY);
+      console.log('clickedY: ' + clickedY);
 
-      let movingUp = (clickedCol === currentCol) && (clickedRow < currentRow);
-      console.log('up' + movingUp);
-      let movingDown = (clickedCol === currentCol) && (clickedRow > currentRow);
-      console.log('down' + movingDown);
+      let movingUp = (clickedX === currentX) && (clickedY < currentY);
+      console.log('up ' + movingUp);
+      let movingDown = (clickedX === currentX) && (clickedY > currentY);
+      console.log('down ' + movingDown);
       let movingRight = false;
       let movingLeft = false;
 
       if(movingUp) {
         console.log('going up');
-        for (let i = 0; i < (currentRow - clickedRow); i++) {
-          if(currentGame.gameData[currentRow][currentCol - i].weapon !== null) {
-            console.log('location: ' + currentRow + ',' + (currentCol - i) + ' contains weapon');
+        for (let i = 0; i < (currentY - clickedY); i++) {
+          if(currentGame.gameData[currentY][currentX - i].weapon !== null) {
+            console.log('location: ' + currentY + ',' + (currentX - i) + ' contains weapon');
           }
         }
       } else if(movingDown) {
@@ -103,8 +108,8 @@ $(function () {
 
       // clean data in start location
       startLocation.player = null;
-      currentGame.players[playerNumber]._locationY = clickedRow;
-      currentGame.players[playerNumber]._locationX = clickedCol;
+      currentGame.players[playerNumber]._playerLocationY = clickedY;
+      currentGame.players[playerNumber]._playerLocationX = clickedX;
       currentGame.drawPlayersPath(startLocation, false);
 
       // fill end location with new data
@@ -132,13 +137,31 @@ $(function () {
   }
 
   function getCurrentPlayerLocation(playerNumber) {
-    let y = currentGame.players[playerNumber]._locationY;
-    let x = currentGame.players[playerNumber]._locationX;
+    let y = currentGame.players[playerNumber]._playerLocationY;
+    let x = currentGame.players[playerNumber]._playerLocationX;
     return currentGame.gameData[y][x];
   }
 
   console.log(getCurrentPlayerLocation(0));
   console.log(getCurrentPlayerLocation(1));
+
+  function isClicable(e) {
+    let idString = '';
+
+    if (e.target.nodeName === 'P') {
+      idString = e.target.parentNode.id;
+    } else if (e.target.nodeName === 'TD') {
+      idString = e.target.id;
+    }
+
+    let clickedX = idString[6];
+    let clickedY = idString[4];
+
+    let clickedLocation = currentGame.gameData[clickedY][clickedX];
+
+    return clickedLocation.isAvailable;
+
+  }
 
 });
 
