@@ -22,6 +22,7 @@ td {
     -moz-border-radius: 20%;
     border-radius: 20%;
     background-color: azure;
+    font-size: 13px;
 }
 
 p {

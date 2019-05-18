@@ -12,6 +12,7 @@ class Location {
     let tdNode = document.createElement('td');
     let pNode = document.createElement('p');
     tdNode.setAttribute('id','loc_' + this._locationY + '_' + this._locationX);
+    tdNode.innerText = 'y'+ this._locationY + ' ' + 'x'+this._locationX;
 
     if (this.isBlocked) {
       tdNode.classList.add('blocked');

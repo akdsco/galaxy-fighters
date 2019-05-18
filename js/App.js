@@ -28,6 +28,7 @@ $(function () {
           case 0:
             // move player
             movePlayer(turn, e);
+            console.log(currentGame.gameData);
 
             // check if player collected any new weapons on his way
             // swapWeapon();
@@ -41,7 +42,7 @@ $(function () {
             break;
           case 1:
             movePlayer(turn, e);
-
+            console.log(currentGame.gameData);
 
             turn--;
             break;
@@ -51,47 +52,57 @@ $(function () {
   });
 
   function movePlayer(playerNumber, e) {
-    let idString;
+    let startLocationID;
+    let endLocationID;
 
-    // making sure we capture clickedY and clickedX even if you click on child node of 'TD' element
+    // making sure we capture endY and endX even if you click on child node of 'TD' element
     if (e.target.nodeName === 'P') {
-      idString = e.target.parentNode.id;
+      endLocationID = e.target.parentNode.id;
     } else if (e.target.nodeName === 'TD') {
-      idString = e.target.id;
+      endLocationID = e.target.id;
     }
 
-    let clickedX = parseInt(idString[6]);
-    let clickedY = parseInt(idString[4]);
+    let endX = parseInt(endLocationID[6]);
+    let endY = parseInt(endLocationID[4]);
+    endLocationID = '#' + endLocationID;
 
     // debug for now
-    // console.log('clickedY: ' + clickedY);
-    // console.log('clickedX: ' + clickedX);
+    // console.log('endY: ' + endY);
+    // console.log('endX: ' + endX);
 
-    let endLocation = currentGame.gameData[clickedY][clickedX];
+    let endLocation = currentGame.gameData[endY][endX];
 
     // check if user clicked on a "good" cell
-    if (endLocation.isAvailable) {
-      let currentX = currentGame.players[playerNumber]._playerLocationX;
-      let currentY = currentGame.players[playerNumber]._playerLocationY;
+    let startX = currentGame.players[playerNumber]._playerLocationX;
+    let startY = currentGame.players[playerNumber]._playerLocationY;
+    startLocationID = '#loc_' + startY + '_' + startX;
 
-      let startLocation = currentGame.gameData[currentY][currentX];
+    let startLocation = currentGame.gameData[startY][startX];
+
+    if (endLocation.isAvailable) {
 
       // pick up new weapon if there is any on players way
-      console.log('currentX: ' + currentX);
-      console.log('clickedX: ' + clickedX);
-      console.log('currentY: ' + currentY);
-      console.log('clickedY: ' + clickedY);
+      console.log('startX: ' + startX);
+      console.log('startY: ' + startY);
+      console.log('endX: ' + endX);
+      console.log('endY: ' + endY);
 
-      let movingUp = ((clickedX === currentX) && (clickedY < currentY));
-      let movingDown = (clickedX === currentX) && (clickedY > currentY);
-      let movingRight = ((clickedY === currentY) && (clickedX > currentX));
-      let movingLeft = ((clickedY === currentY) && (clickedX < currentX));
+      let movingUp = ((endX === startX) && (endY < startY));
+      let movingDown = (endX === startX) && (endY > startY);
+      let movingRight = ((endY === startY) && (endX > startX));
+      let movingLeft = ((endY === startY) && (endX < startX));
 
       if(movingUp) {
         console.log('going up');
-        for (let i = 1; i < (currentY - clickedY + 1); i++) {
-          if(currentGame.gameData[currentY][clickedX - i].weapon !== null) {
-            console.log('location: ' + currentY + ',' + (clickedX - i) + ' contains weapon');
+        for (let i = 1; i < (startY - endY + 1); i++) {
+          if(currentGame.gameData[startY - i][endX].weapon !== null) {
+            console.log('location: y' + (startY - i) + ', x' + endX + ' contains weapon');
+            let tempWeaponPlayer = currentGame.players[playerNumber]._weapon;
+            let locationWeapon = currentGame.gameData[startY - i][endX].weapon;
+            console.log(tempWeaponPlayer);
+            console.log(locationWeapon);
+            currentGame.players[playerNumber]._weapon = currentGame.gameData[startY - i][endX].weapon;
+            currentGame.gameData[startY - i][endX].weapon = tempWeaponPlayer;
           }
         }
       } else if(movingDown) {
@@ -104,30 +115,38 @@ $(function () {
 
       // clean data in start location
       startLocation.player = null;
-      currentGame.players[playerNumber]._playerLocationY = clickedY;
-      currentGame.players[playerNumber]._playerLocationX = clickedX;
       currentGame.drawPlayersPath(startLocation, false);
 
-      // fill end location with new data
+      // change players location fields
+      currentGame.players[playerNumber]._playerLocationY = endY;
+      currentGame.players[playerNumber]._playerLocationX = endX;
+
+      // move player object to new location
       endLocation.player = currentGame.players[playerNumber];
 
-      // draw other players movement grid
+      // enable movement for next player
+        if (playerNumber === 0) {
+          let otherPlayerLocation = getCurrentPlayerLocation(1);
+          currentGame.drawPlayersPath(otherPlayerLocation, true);
+        } else {
+          let otherPlayerLocation = getCurrentPlayerLocation(0);
+          currentGame.drawPlayersPath(otherPlayerLocation,true);
+        }
+
       if (playerNumber === 0) {
-        let otherPlayerLocation = getCurrentPlayerLocation(1);
-        currentGame.drawPlayersPath(otherPlayerLocation, true);
+        $(startLocationID).toggleClass('playerOne');
+        $(endLocationID).toggleClass('playerOne');
+        $(endLocationID).append($(startLocationID + '>p'));
       } else {
-        let otherPlayerLocation = getCurrentPlayerLocation(0);
-        currentGame.drawPlayersPath(otherPlayerLocation,true);
+        $(startLocationID).toggleClass('playerTwo');
+        $(endLocationID).toggleClass('playerTwo');
+        $(endLocationID).append($(startLocationID + '>p'));
       }
 
-      // currentGame.drawPlayersPath(endLocation, true);
 
-      gameNode.removeChild(gameNode.childNodes[0]);
-      gameNode.prepend(currentGame.createGameNode());
-
-      // empty variables for next move
-      endLocation = null;
-      startLocation = null;
+      // re-draw whole node
+      // gameNode.removeChild(gameNode.childNodes[0]);
+      // gameNode.prepend(currentGame.createGameNode());
     }
 
   }
@@ -137,9 +156,6 @@ $(function () {
     let x = currentGame.players[playerNumber]._playerLocationX;
     return currentGame.gameData[y][x];
   }
-
-  console.log(getCurrentPlayerLocation(0));
-  console.log(getCurrentPlayerLocation(1));
 
   function isAvailable(e) {
     let idString = '';

@@ -45,7 +45,7 @@ class Board {
       if (!randomLocation.isBlocked && randomLocation.weapon === null) {
         randomLocation.weapon = this.weaponStorage[i];
         // print distribution of weapons to console for testing
-        console.log(randomLocation._locationY + ',' + randomLocation._locationX + ' = ' + randomLocation.weapon.name + " - " + randomLocation.weapon.damage);
+        console.log('y'+randomLocation._locationY + ',' + 'x'+randomLocation._locationX + ' = ' + randomLocation.weapon.name + " - " + randomLocation.weapon.damage);
         i++;
       }
     }
@@ -76,7 +76,11 @@ class Board {
               break start;
             } else {
               if(!(this.gameData[squareObject._locationY - j][squareObject._locationX].isBlocked)) {
+                // change data
                 this.gameData[squareObject._locationY - j][squareObject._locationX].isAvailable = value;
+                // change display
+                let idString = '#loc_' + (squareObject._locationY - j) + '_' + squareObject._locationX;
+                $(idString).toggleClass('available');
               } else {
                 break start;
               }
@@ -88,7 +92,11 @@ class Board {
               break start;
             } else {
               if(!(this.gameData[squareObject._locationY + j][squareObject._locationX].isBlocked)) {
+                // change data
                 this.gameData[squareObject._locationY + j][squareObject._locationX].isAvailable = value;
+                // change display
+                let idString = '#loc_' + (squareObject._locationY + j) + '_' + squareObject._locationX;
+                $(idString).toggleClass('available');
               } else {
                 break start;
               }
@@ -100,7 +108,11 @@ class Board {
               break start;
             } else {
               if(!(this.gameData[squareObject._locationY][squareObject._locationX - j].isBlocked)) {
+                // change data
                 this.gameData[squareObject._locationY][squareObject._locationX - j].isAvailable = value;
+                // change display
+                let idString = '#loc_' + (squareObject._locationY) + '_' + (squareObject._locationX  - j);
+                $(idString).toggleClass('available');
               } else {
                 break start;
               }
@@ -112,7 +124,11 @@ class Board {
               break start;
             } else {
               if(!(this.gameData[squareObject._locationY][squareObject._locationX + j].isBlocked)) {
+                // change data
                 this.gameData[squareObject._locationY][squareObject._locationX + j].isAvailable = value;
+                // change display
+                let idString = '#loc_' + (squareObject._locationY) + '_' + (squareObject._locationX + j);
+                $(idString).toggleClass('available');
               } else {
                 break start;
               }
