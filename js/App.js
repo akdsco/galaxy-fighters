@@ -97,12 +97,13 @@ $(function () {
         for (let i = 1; i < (startY - endY + 1); i++) {
           if(currentGame.gameData[startY - i][endX].weapon !== null) {
             console.log('location: y' + (startY - i) + ', x' + endX + ' contains weapon');
-            let tempWeaponPlayer = currentGame.players[playerNumber]._weapon;
-            let locationWeapon = currentGame.gameData[startY - i][endX].weapon;
-            console.log(tempWeaponPlayer);
-            console.log(locationWeapon);
+            // swap weapons
+            let tempWeapon = currentGame.players[playerNumber]._weapon;
             currentGame.players[playerNumber]._weapon = currentGame.gameData[startY - i][endX].weapon;
-            currentGame.gameData[startY - i][endX].weapon = tempWeaponPlayer;
+            currentGame.gameData[startY - i][endX].weapon = tempWeapon;
+            // re-draw nodes
+            let weaponLocation = '#loc_'+ (startY - i) + '_' + endX;
+            $(weaponLocation).innerText = 'Done';
           }
         }
       } else if(movingDown) {
@@ -125,13 +126,13 @@ $(function () {
       endLocation.player = currentGame.players[playerNumber];
 
       // enable movement for next player
-        if (playerNumber === 0) {
-          let otherPlayerLocation = getCurrentPlayerLocation(1);
-          currentGame.drawPlayersPath(otherPlayerLocation, true);
-        } else {
-          let otherPlayerLocation = getCurrentPlayerLocation(0);
-          currentGame.drawPlayersPath(otherPlayerLocation,true);
-        }
+      if (playerNumber === 0) {
+        let otherPlayerLocation = getCurrentPlayerLocation(1);
+        currentGame.drawPlayersPath(otherPlayerLocation, true);
+      } else {
+        let otherPlayerLocation = getCurrentPlayerLocation(0);
+        currentGame.drawPlayersPath(otherPlayerLocation,true);
+      }
 
       if (playerNumber === 0) {
         $(startLocationID).toggleClass('playerOne');

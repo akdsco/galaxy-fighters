@@ -45,7 +45,7 @@ class Board {
       if (!randomLocation.isBlocked && randomLocation.weapon === null) {
         randomLocation.weapon = this.weaponStorage[i];
         // print distribution of weapons to console for testing
-        console.log('y'+randomLocation._locationY + ',' + 'x'+randomLocation._locationX + ' = ' + randomLocation.weapon.name + " - " + randomLocation.weapon.damage);
+        // console.log('y'+randomLocation._locationY + ',' + 'x'+randomLocation._locationX + ' = ' + randomLocation.weapon.name + " - " + randomLocation.weapon.damage);
         i++;
       }
     }
