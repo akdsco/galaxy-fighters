@@ -82,10 +82,10 @@ $(function () {
     if (endLocation.isAvailable) {
 
       // pick up new weapon if there is any on players way
-      console.log('startX: ' + startX);
-      console.log('startY: ' + startY);
-      console.log('endX: ' + endX);
-      console.log('endY: ' + endY);
+      // console.log('startX: ' + startX);
+      // console.log('startY: ' + startY);
+      // console.log('endX: ' + endX);
+      // console.log('endY: ' + endY);
 
       let movingUp = ((endX === startX) && (endY < startY));
       let movingDown = (endX === startX) && (endY > startY);
@@ -97,6 +97,7 @@ $(function () {
         for (let i = 1; i < (startY - endY + 1); i++) {
           if(currentGame.gameData[startY - i][endX].weapon !== null) {
             console.log('location: y' + (startY - i) + ', x' + endX + ' contains weapon');
+
             // swap weapons
             let tempWeapon = currentGame.players[playerNumber]._weapon;
             currentGame.players[playerNumber]._weapon = currentGame.gameData[startY - i][endX].weapon;
@@ -104,17 +105,66 @@ $(function () {
 
             // re-draw nodes
             let weaponLocation = '#loc_'+ (startY - i) + '_' + endX;
-            let tempNode = document.createElement('p');
-            tempNode.innerText = currentGame.gameData[startY - i][endX].weapon.name[0] + '-' + currentGame.gameData[startY - i][endX].weapon.name[7];
-            $(weaponLocation + '>p').replaceWith(tempNode);
+            let pNode = document.createElement('p');
+            pNode.innerText = currentGame.gameData[startY - i][endX].weapon.name[0] + '-' + currentGame.gameData[startY - i][endX].weapon.name[7];
+            $(weaponLocation + '>p').replaceWith(pNode);
           }
         }
       } else if(movingDown) {
         console.log('going down');
+        for (let i = 1; i < (endY - startY + 1); i++) {
+          if(currentGame.gameData[startY + i][endX].weapon !== null) {
+            console.log('location: y' + (startY + i) + ', x' + endX + ' contains weapon');
+
+            //swap weapons
+            let tempWeapon = currentGame.players[playerNumber]._weapon;
+            currentGame.players[playerNumber]._weapon = currentGame.gameData[startY + i][endX].weapon;
+            currentGame.gameData[startY + i][endX].weapon= tempWeapon;
+
+            //re-draw nodes
+            let weaponLocation = '#loc_' + (startY + i) + '_' + endX;
+            let pNode = document.createElement('p');
+            pNode.innerText = currentGame.gameData[startY + i][endX].weapon.name[0] + '-' + currentGame.gameData[startY + i][endX].weapon.name[7];
+            $(weaponLocation + '>p').replaceWith(pNode);
+          }
+        }
       } else if(movingLeft) {
         console.log('going left');
+        for (let i = 1; i < (startX - endX + 1); i++) {
+          if(currentGame.gameData[endY][startX - i].weapon !== null) {
+            console.log('location: y' + (endY) + ', x' + (startX - i) + ' contains weapon');
+
+            //swap weapons
+            let tempWeapon = currentGame.players[playerNumber]._weapon;
+            currentGame.players[playerNumber]._weapon = currentGame.gameData[endY][startX - i].weapon;
+            currentGame.gameData[endY][startX - i].weapon= tempWeapon;
+
+            //re-draw nodes
+            let weaponLocation = '#loc_' + endY + '_' + (startX - i);
+            let pNode = document.createElement('p');
+            pNode.innerText = currentGame.gameData[endY][startX - i].weapon.name[0] + '-' + currentGame.gameData[endY][startX - i].weapon.name[7];
+            $(weaponLocation + '>p').replaceWith(pNode);
+          }
+        }
       } else if(movingRight) {
         console.log('going right');
+        for (let i = 1; i < (endX - startX + 1); i++) {
+          if(currentGame.gameData[endY][startX + i].weapon !== null) {
+            console.log('location: y' + (endY) + ', x' + (startX + i) + ' contains weapon');
+
+            //swap weapons
+            let tempWeapon = currentGame.players[playerNumber]._weapon;
+            currentGame.players[playerNumber]._weapon = currentGame.gameData[endY][startX + i].weapon;
+            currentGame.gameData[endY][startX + i].weapon= tempWeapon;
+
+            //re-draw nodes
+            let weaponLocation = '#loc_' + endY + '_' + (startX + i);
+            let pNode = document.createElement('p');
+            pNode.innerText = currentGame.gameData[endY][startX + i].weapon.name[0] + '-' + currentGame.gameData[endY][startX + i].weapon.name[7];
+            $(weaponLocation + '>p').replaceWith(pNode);
+          }
+        }
+
       }
 
       // clean data in start location
