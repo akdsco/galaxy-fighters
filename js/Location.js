@@ -21,15 +21,17 @@ class Location {
     }
     if (this.player !== null) {
       if (this.player._number === 1) {
-        tdNode.classList.add('playerOne');
-        pNode.innerText = 'P' + this.player._number;
-        pNode.classList.add('playerNodeOne');
-        tdNode.appendChild(pNode);
+        let imgNode = document.createElement('img');
+        imgNode.setAttribute('src','img/yoda_sm.jpg');
+        imgNode.setAttribute('width','50');
+        imgNode.setAttribute('height','50');
+        tdNode.appendChild(imgNode);
       } else {
-        tdNode.classList.add('playerTwo');
-        pNode.innerText = 'P' + this.player._number;
-        pNode.classList.add('playerNodeTwo');
-        tdNode.appendChild(pNode);
+        let imgNode = document.createElement('img');
+        imgNode.setAttribute('src','img/vader_sm.jpg');
+        imgNode.setAttribute('width','50');
+        imgNode.setAttribute('height','50');
+        tdNode.appendChild(imgNode);
       }
     }
     if (this.weapon !== null) {

@@ -34,11 +34,11 @@ p {
 }
 
 .available {
-    background-color: lightgray;
+    border: 1px solid grey;
 }
 
 .playerOne {
-    background-color: yellow;
+    /*background-color: yellow;*/
 }
 
 .playerTwo {

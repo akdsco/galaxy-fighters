@@ -30,10 +30,8 @@ $(function () {
             movePlayer(turn, e);
             console.log(currentGame.gameData);
 
-            // check if player collected any new weapons on his way
-            // swapWeapon();
+            //TODO review written code in all .js files and post a git tag
 
-            // swap weapons if yes
             // check abs value between players, if it's 1 enter fight mode
             // when fight is over, display winners name and quit = true;
 
@@ -72,7 +70,7 @@ $(function () {
 
     let endLocation = currentGame.gameData[endY][endX];
 
-    // check if user clicked on a "good" cell
+    // if user clicked on a "good" cell
     let startX = currentGame.players[playerNumber]._playerLocationX;
     let startY = currentGame.players[playerNumber]._playerLocationY;
     startLocationID = '#loc_' + startY + '_' + startX;
@@ -188,25 +186,32 @@ $(function () {
       }
 
       if (playerNumber === 0) {
-        $(startLocationID).toggleClass('playerOne');
-        $(endLocationID).toggleClass('playerOne');
-        $(startLocationID).remove($('p').remove('.playerNodeOne'));
-        let pNode = document.createElement('p');
-        pNode.innerText = currentGame.players[playerNumber]._name[0] + '' + currentGame.players[playerNumber]._number;
-        pNode.classList.add('playerNodeOne');
-        $(endLocationID).append(pNode);
+        let img = document.createElement('img');
+        $(endLocationID).append(img);
+        $(endLocationID + '>img').replaceWith($(startLocationID + '>img'));
+        // endLocationID = '';
+        // startLocationID = '';
+
+        // $(startLocationID).toggleClass('playerOne');
+        // $(endLocationID).toggleClass('playerOne');
+        // $(startLocationID).remove($('p').remove('.playerNodeOne'));
+        // let pNode = document.createElement('p');
+        // pNode.innerText = currentGame.players[playerNumber]._name[0] + '' + currentGame.players[playerNumber]._number;
+        // pNode.classList.add('playerNodeOne');
+        // $(endLocationID).append(pNode);
       } else {
-        $(startLocationID).toggleClass('playerTwo');
-        $(endLocationID).toggleClass('playerTwo');
-        $(startLocationID).remove($('p').remove('.playerNodeTwo'));
-        let pNode = document.createElement('p');
-        pNode.innerText = currentGame.players[playerNumber]._name[0] + '' + currentGame.players[playerNumber]._number;
-        pNode.classList.add('playerNodeTwo');
-        $(endLocationID).append(pNode);
+        let img = document.createElement('img');
+        $(endLocationID).append(img);
+        $(endLocationID + '>img').replaceWith($(startLocationID + '>img'));
+        // $(startLocationID).toggleClass('playerTwo');
+        // $(endLocationID).toggleClass('playerTwo');
+        // $(startLocationID).remove($('p').remove('.playerNodeTwo'));
+        // let pNode = document.createElement('p');
+        // pNode.innerText = currentGame.players[playerNumber]._name[0] + '' + currentGame.players[playerNumber]._number;
+        // pNode.classList.add('playerNodeTwo');
+        // $(endLocationID).append(pNode);
       }
-
     }
-
   }
 
   function getCurrentPlayerLocation(playerNumber) {
