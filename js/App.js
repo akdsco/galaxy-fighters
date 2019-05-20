@@ -101,9 +101,12 @@ $(function () {
             let tempWeapon = currentGame.players[playerNumber]._weapon;
             currentGame.players[playerNumber]._weapon = currentGame.gameData[startY - i][endX].weapon;
             currentGame.gameData[startY - i][endX].weapon = tempWeapon;
+
             // re-draw nodes
             let weaponLocation = '#loc_'+ (startY - i) + '_' + endX;
-            $(weaponLocation).innerText = 'Done';
+            let tempNode = document.createElement('p');
+            tempNode.innerText = currentGame.gameData[startY - i][endX].weapon.name[0] + '-' + currentGame.gameData[startY - i][endX].weapon.name[7];
+            $(weaponLocation + '>p').replaceWith(tempNode);
           }
         }
       } else if(movingDown) {
@@ -137,17 +140,21 @@ $(function () {
       if (playerNumber === 0) {
         $(startLocationID).toggleClass('playerOne');
         $(endLocationID).toggleClass('playerOne');
-        $(endLocationID).append($(startLocationID + '>p'));
+        $(startLocationID).remove($('p').remove('.playerNodeOne'));
+        let pNode = document.createElement('p');
+        pNode.innerText = currentGame.players[playerNumber]._name[0] + '' + currentGame.players[playerNumber]._number;
+        pNode.classList.add('playerNodeOne');
+        $(endLocationID).append(pNode);
       } else {
         $(startLocationID).toggleClass('playerTwo');
         $(endLocationID).toggleClass('playerTwo');
-        $(endLocationID).append($(startLocationID + '>p'));
+        $(startLocationID).remove($('p').remove('.playerNodeTwo'));
+        let pNode = document.createElement('p');
+        pNode.innerText = currentGame.players[playerNumber]._name[0] + '' + currentGame.players[playerNumber]._number;
+        pNode.classList.add('playerNodeTwo');
+        $(endLocationID).append(pNode);
       }
 
-
-      // re-draw whole node
-      // gameNode.removeChild(gameNode.childNodes[0]);
-      // gameNode.prepend(currentGame.createGameNode());
     }
 
   }

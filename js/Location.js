@@ -12,7 +12,9 @@ class Location {
     let tdNode = document.createElement('td');
     let pNode = document.createElement('p');
     tdNode.setAttribute('id','loc_' + this._locationY + '_' + this._locationX);
-    tdNode.innerText = 'y'+ this._locationY + ' ' + 'x'+this._locationX;
+
+    // location numbers debug
+    // tdNode.innerText = 'y'+ this._locationY + ' ' + 'x'+this._locationX;
 
     if (this.isBlocked) {
       tdNode.classList.add('blocked');
@@ -21,10 +23,12 @@ class Location {
       if (this.player._number === 1) {
         tdNode.classList.add('playerOne');
         pNode.innerText = 'P' + this.player._number;
+        pNode.classList.add('playerNodeOne');
         tdNode.appendChild(pNode);
       } else {
         tdNode.classList.add('playerTwo');
         pNode.innerText = 'P' + this.player._number;
+        pNode.classList.add('playerNodeTwo');
         tdNode.appendChild(pNode);
       }
     }
