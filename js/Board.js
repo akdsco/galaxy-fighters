@@ -164,6 +164,145 @@ class Board {
     return gameNode;
   }
 
+  movePlayer(playerNumber, e) {
+    let startLocationID;
+    let endLocationID;
+
+    // making sure we capture endY and endX even if you click on child node of 'TD' element
+    if ((e.target.nodeName === 'P') || (e.target.nodeName === 'IMG')) {
+      endLocationID = e.target.parentNode.id;
+    } else if (e.target.nodeName === 'TD') {
+      endLocationID = e.target.id;
+    }
+
+    // creating endLocation (arrray) and endLocationID (jquery front target)
+    let endX = parseInt(endLocationID[6]);
+    let endY = parseInt(endLocationID[4]);
+    endLocationID = '#' + endLocationID;
+
+    let endLocation = this.gameData[endY][endX];
+
+    // creating startLocation (array) and startLocationID (jQuery front target)
+    let startX = this.players[playerNumber]._playerLocationX;
+    let startY = this.players[playerNumber]._playerLocationY;
+    startLocationID = '#loc_' + startY + '_' + startX;
+
+    let startLocation = this.gameData[startY][startX];
+
+    // if user clicked on a "good" square..
+    if (endLocation.isAvailable) {
+
+      // pick up new weapon if there is any on players way
+
+      // checking players direction
+      let movingUp = ((endX === startX) && (endY < startY));
+      let movingDown = (endX === startX) && (endY > startY);
+      let movingRight = ((endY === startY) && (endX > startX));
+      let movingLeft = ((endY === startY) && (endX < startX));
+
+      if(movingUp) {
+        console.log('going up');
+        for (let i = 1; i < (startY - endY + 1); i++) {
+          if(this.gameData[startY - i][endX].weapon !== null) {
+            console.log('location: y' + (startY - i) + ', x' + endX + ' contains weapon');
+
+            // swap weapons
+            let tempWeapon = this.players[playerNumber]._weapon;
+            this.players[playerNumber]._weapon = this.gameData[startY - i][endX].weapon;
+            this.gameData[startY - i][endX].weapon = tempWeapon;
+
+            // re-draw nodes
+            let weaponLocationID = '#loc_'+ (startY - i) + '_' + endX;
+            let pNode = document.createElement('p');
+            pNode.innerText = this.gameData[startY - i][endX].weapon.name[0] + '-' + this.gameData[startY - i][endX].weapon.name[7];
+            $(weaponLocationID + '>p').replaceWith(pNode);
+          }
+        }
+      } else if(movingDown) {
+        console.log('going down');
+        for (let i = 1; i < (endY - startY + 1); i++) {
+          if(this.gameData[startY + i][endX].weapon !== null) {
+            console.log('location: y' + (startY + i) + ', x' + endX + ' contains weapon');
+
+            //swap weapons
+            let tempWeapon = this.players[playerNumber]._weapon;
+            this.players[playerNumber]._weapon = this.gameData[startY + i][endX].weapon;
+            this.gameData[startY + i][endX].weapon= tempWeapon;
+
+            //re-draw nodes
+            let weaponLocationID = '#loc_' + (startY + i) + '_' + endX;
+            let pNode = document.createElement('p');
+            pNode.innerText = this.gameData[startY + i][endX].weapon.name[0] + '-' + this.gameData[startY + i][endX].weapon.name[7];
+            $(weaponLocationID + '>p').replaceWith(pNode);
+          }
+        }
+      } else if(movingLeft) {
+        console.log('going left');
+        for (let i = 1; i < (startX - endX + 1); i++) {
+          if(this.gameData[endY][startX - i].weapon !== null) {
+            console.log('location: y' + (endY) + ', x' + (startX - i) + ' contains weapon');
+
+            //swap weapons
+            let tempWeapon = this.players[playerNumber]._weapon;
+            this.players[playerNumber]._weapon = this.gameData[endY][startX - i].weapon;
+            this.gameData[endY][startX - i].weapon= tempWeapon;
+
+            //re-draw nodes
+            let weaponLocationID = '#loc_' + endY + '_' + (startX - i);
+            let pNode = document.createElement('p');
+            pNode.innerText = this.gameData[endY][startX - i].weapon.name[0] + '-' + this.gameData[endY][startX - i].weapon.name[7];
+            $(weaponLocationID + '>p').replaceWith(pNode);
+          }
+        }
+      } else if(movingRight) {
+        console.log('going right');
+        for (let i = 1; i < (endX - startX + 1); i++) {
+          if(this.gameData[endY][startX + i].weapon !== null) {
+            console.log('location: y' + (endY) + ', x' + (startX + i) + ' contains weapon');
+
+            //swap weapons
+            let tempWeapon = this.players[playerNumber]._weapon;
+            this.players[playerNumber]._weapon = this.gameData[endY][startX + i].weapon;
+            this.gameData[endY][startX + i].weapon= tempWeapon;
+
+            //re-draw nodes
+            let weaponLocationID = '#loc_' + endY + '_' + (startX + i);
+            let pNode = document.createElement('p');
+            pNode.innerText = this.gameData[endY][startX + i].weapon.name[0] + '-' + this.gameData[endY][startX + i].weapon.name[7];
+            $(weaponLocationID + '>p').replaceWith(pNode);
+          }
+        }
+
+      }
+
+      // clean data in start location
+      startLocation.player = null;
+      this.drawPlayersPath(startLocation, false, playerNumber);
+
+      // change players location fields
+      this.players[playerNumber]._playerLocationY = endY;
+      this.players[playerNumber]._playerLocationX = endX;
+
+      // move player object to new location
+      endLocation.player = this.players[playerNumber];
+
+      // enable movement for next player
+      if (playerNumber === 0) {
+        let nextPlayerLocation = this.getCurrentPlayerLocation(1);
+        this.drawPlayersPath(nextPlayerLocation, true, playerNumber);
+      } else {
+        let nextPlayerLocation = this.getCurrentPlayerLocation(0);
+        this.drawPlayersPath(nextPlayerLocation,true, playerNumber);
+      }
+
+      // blink current player from start to end location
+      $(startLocationID + '>img').fadeOut(250, () => {
+        $(endLocationID).prepend($(startLocationID + '>img'));
+        $(endLocationID + '>img').fadeIn(250);
+      });
+    }
+  }
+
   // Helper Methods
 
   randomStartLocation() {
@@ -212,6 +351,30 @@ class Board {
         $(idString + '>img').remove();
       }
     }
+  }
+
+  getCurrentPlayerLocation(playerNumber) {
+    let y = this.players[playerNumber]._playerLocationY;
+    let x = this.players[playerNumber]._playerLocationX;
+    return this.gameData[y][x];
+  }
+
+  isAvailable(e) {
+    let idString = '';
+
+    if ((e.target.nodeName === 'P') || (e.target.nodeName === 'IMG')) {
+      idString = e.target.parentNode.id;
+    } else if (e.target.nodeName === 'TD') {
+      idString = e.target.id;
+    }
+
+    let clickedX = idString[6];
+    let clickedY = idString[4];
+
+    let clickedLocation = currentGame.gameData[clickedY][clickedX];
+
+    return clickedLocation.isAvailable;
+
   }
 
 }
