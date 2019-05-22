@@ -9,8 +9,12 @@ class Location {
   }
 
   addLocationNode() {
-    let tdNode = document.createElement('td');
-    let pNode = document.createElement('p');
+    const tdNode = document.createElement('td');
+    const pNode = document.createElement('p');
+    const imgNode = document.createElement('img');
+    imgNode.setAttribute('width','50');
+    imgNode.setAttribute('height','50');
+
     tdNode.setAttribute('id','loc_' + this._locationY + '_' + this._locationX);
 
     // location numbers debug
@@ -21,17 +25,13 @@ class Location {
     }
     if (this.player !== null) {
       if (this.player._number === 1) {
-        let imgNode = document.createElement('img');
         imgNode.setAttribute('src','img/yoda_sm.jpg');
-        imgNode.setAttribute('width','50');
-        imgNode.setAttribute('height','50');
-        tdNode.appendChild(imgNode);
+        imgNode.setAttribute('id','playerOne');
+        tdNode.prepend(imgNode);
       } else {
-        let imgNode = document.createElement('img');
         imgNode.setAttribute('src','img/vader_sm.jpg');
-        imgNode.setAttribute('width','50');
-        imgNode.setAttribute('height','50');
-        tdNode.appendChild(imgNode);
+        imgNode.setAttribute('id','playerTwo');
+        tdNode.prepend(imgNode);
       }
     }
     if (this.weapon !== null) {
@@ -41,6 +41,9 @@ class Location {
     }
     if (this.isAvailable) {
       tdNode.classList.add('available');
+      imgNode.classList.add('half-opacity');
+      imgNode.setAttribute('src','img/yoda_sm.jpg');
+      tdNode.prepend(imgNode);
     }
     return tdNode;
   }

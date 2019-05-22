@@ -4,8 +4,15 @@ header {
     padding-top: 20%;
 }
 
+#game {
+    min-width: 100%;
+    position: absolute;
+    top: 10px;
+}
+
 #restart-button {
     display: none;
+    margin: auto;
 }
 
 table {
@@ -21,7 +28,6 @@ td {
     -webkit-border-radius: 20%;
     -moz-border-radius: 20%;
     border-radius: 20%;
-    background-color: azure;
     font-size: 13px;
 }
 
@@ -47,4 +53,9 @@ p {
 
 .weapon {
     background-color: aquamarine;
+}
+
+.half-opacity {
+    opacity: .2;
+    display: none;
 }

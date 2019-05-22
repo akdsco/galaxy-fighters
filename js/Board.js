@@ -66,9 +66,16 @@ class Board {
     }
   }
 
-  drawPlayersPath(squareObject, value) {
+  drawPlayersPath(squareObject, value, playerNumber) {
     for (let i = 0; i < 4; i++) {
        start: for (let j = 1; j < 4; j++) {
+
+        // create imgNode to inject
+        const imgNode = document.createElement('img');
+        imgNode.setAttribute('width','50');
+        imgNode.setAttribute('height','50');
+        imgNode.classList.add('half-opacity');
+
         switch (i) {
           case 0: // moving up
             if ((squareObject._locationY - j) < 0) {
@@ -81,6 +88,7 @@ class Board {
                 // change display
                 let idString = '#loc_' + (squareObject._locationY - j) + '_' + squareObject._locationX;
                 $(idString).toggleClass('available');
+                this.modifySquareImg(idString, playerNumber, value, imgNode);
               } else {
                 break start;
               }
@@ -97,6 +105,7 @@ class Board {
                 // change display
                 let idString = '#loc_' + (squareObject._locationY + j) + '_' + squareObject._locationX;
                 $(idString).toggleClass('available');
+                this.modifySquareImg(idString, playerNumber, value, imgNode);
               } else {
                 break start;
               }
@@ -113,6 +122,7 @@ class Board {
                 // change display
                 let idString = '#loc_' + (squareObject._locationY) + '_' + (squareObject._locationX  - j);
                 $(idString).toggleClass('available');
+                this.modifySquareImg(idString, playerNumber, value, imgNode);
               } else {
                 break start;
               }
@@ -129,6 +139,7 @@ class Board {
                 // change display
                 let idString = '#loc_' + (squareObject._locationY) + '_' + (squareObject._locationX + j);
                 $(idString).toggleClass('available');
+                this.modifySquareImg(idString, playerNumber, value, imgNode);
               } else {
                 break start;
               }
@@ -181,6 +192,26 @@ class Board {
 
   randomLocation() {
       return this.gameData[Math.floor((Math.random() * this.size))][Math.floor((Math.random() * this.size))];
+  }
+
+  modifySquareImg(idString, playerNumber, value, imgNode) {
+    if (playerNumber === 1) {
+      // modifies player one - (checks current player and modifies second for next round)
+      if (value) {
+        imgNode.setAttribute('src','img/yoda_sm.jpg');
+        $(idString).prepend(imgNode);
+      } else {
+        $(idString + '>img').remove();
+      }
+    } else {
+      // modifies player two
+      if (value) {
+        imgNode.setAttribute('src','img/vader_sm.jpg');
+        $(idString).prepend(imgNode);
+      } else {
+        $(idString + '>img').remove();
+      }
+    }
   }
 
 }

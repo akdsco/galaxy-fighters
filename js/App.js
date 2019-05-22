@@ -1,12 +1,14 @@
 $(function () {
-  const gameNode = document.getElementById('header');
+  const gameNode = document.getElementById('game');
+  const game = '#game';
   let currentGame = new Board(10);
-  console.log(currentGame);
+  // debug
+  // console.log(currentGame);
 
   $('#play-button').on('click', function () {
     gameNode.prepend(currentGame.createGameNode());
-    $('#restart-button').show();
-    $('#header').css("padding-top", ".3%");
+    $('#restart-button').show('inline-block');
+    // $('#header').css("padding-top", ".3%");
     $('#title-h1').hide();
     $('#play-button').hide();
     turn = 0;
@@ -21,8 +23,8 @@ $(function () {
 
   let turn = 0;
 
-  $('header').click(function (e) {
-    if ((e.target.nodeName === 'P') || (e.target.nodeName === 'TD')) {
+  $(game).on('click','TD', function (e) {
+    // if ((e.target.nodeName === 'IMG') || (e.target.nodeName === 'TD') || (e.target.nodeName === 'P')) {
       if (isAvailable(e)) {
         switch (turn) {
           case 0:
@@ -33,6 +35,7 @@ $(function () {
             //TODO review written code in all .js files and post a git tag
 
             // check abs value between players, if it's 1 enter fight mode
+            // or when players selects other players location
             // when fight is over, display winners name and quit = true;
 
 
@@ -45,16 +48,26 @@ $(function () {
             turn--;
             break;
         }
-      }
+      // }
     }
   });
+
+  $(game).on('mouseenter','td',(function (e) {
+    if (e.target.classList.contains('available')) {
+      $(e.target.firstChild).show();
+    }
+  }));
+
+  $(game).on('mouseleave','.half-opacity',(function (e) {
+    $(e.target).hide()
+  }));
 
   function movePlayer(playerNumber, e) {
     let startLocationID;
     let endLocationID;
 
     // making sure we capture endY and endX even if you click on child node of 'TD' element
-    if (e.target.nodeName === 'P') {
+    if ((e.target.nodeName === 'P') || (e.target.nodeName === 'IMG')) {
       endLocationID = e.target.parentNode.id;
     } else if (e.target.nodeName === 'TD') {
       endLocationID = e.target.id;
@@ -63,6 +76,7 @@ $(function () {
     let endX = parseInt(endLocationID[6]);
     let endY = parseInt(endLocationID[4]);
     endLocationID = '#' + endLocationID;
+    console.log(endLocationID);
 
     // debug for now
     // console.log('endY: ' + endY);
@@ -167,7 +181,7 @@ $(function () {
 
       // clean data in start location
       startLocation.player = null;
-      currentGame.drawPlayersPath(startLocation, false);
+      currentGame.drawPlayersPath(startLocation, false, playerNumber);
 
       // change players location fields
       currentGame.players[playerNumber]._playerLocationY = endY;
@@ -178,39 +192,18 @@ $(function () {
 
       // enable movement for next player
       if (playerNumber === 0) {
-        let otherPlayerLocation = getCurrentPlayerLocation(1);
-        currentGame.drawPlayersPath(otherPlayerLocation, true);
+        let nextPlayerLocation = getCurrentPlayerLocation(1);
+        currentGame.drawPlayersPath(nextPlayerLocation, true, playerNumber);
       } else {
-        let otherPlayerLocation = getCurrentPlayerLocation(0);
-        currentGame.drawPlayersPath(otherPlayerLocation,true);
+        let nextPlayerLocation = getCurrentPlayerLocation(0);
+        currentGame.drawPlayersPath(nextPlayerLocation,true, playerNumber);
       }
 
-      if (playerNumber === 0) {
-        let img = document.createElement('img');
-        $(endLocationID).append(img);
-        $(endLocationID + '>img').replaceWith($(startLocationID + '>img'));
-        // endLocationID = '';
-        // startLocationID = '';
-
-        // $(startLocationID).toggleClass('playerOne');
-        // $(endLocationID).toggleClass('playerOne');
-        // $(startLocationID).remove($('p').remove('.playerNodeOne'));
-        // let pNode = document.createElement('p');
-        // pNode.innerText = currentGame.players[playerNumber]._name[0] + '' + currentGame.players[playerNumber]._number;
-        // pNode.classList.add('playerNodeOne');
-        // $(endLocationID).append(pNode);
-      } else {
-        let img = document.createElement('img');
-        $(endLocationID).append(img);
-        $(endLocationID + '>img').replaceWith($(startLocationID + '>img'));
-        // $(startLocationID).toggleClass('playerTwo');
-        // $(endLocationID).toggleClass('playerTwo');
-        // $(startLocationID).remove($('p').remove('.playerNodeTwo'));
-        // let pNode = document.createElement('p');
-        // pNode.innerText = currentGame.players[playerNumber]._name[0] + '' + currentGame.players[playerNumber]._number;
-        // pNode.classList.add('playerNodeTwo');
-        // $(endLocationID).append(pNode);
-      }
+      // blink current player from start to end location
+      $(startLocationID + '>img').fadeOut(250, () => {
+        $(endLocationID).prepend($(startLocationID + '>img'));
+        $(endLocationID + '>img').fadeIn(250);
+      });
     }
   }
 
@@ -223,7 +216,7 @@ $(function () {
   function isAvailable(e) {
     let idString = '';
 
-    if (e.target.nodeName === 'P') {
+    if ((e.target.nodeName === 'P') || (e.target.nodeName === 'IMG')) {
       idString = e.target.parentNode.id;
     } else if (e.target.nodeName === 'TD') {
       idString = e.target.id;
