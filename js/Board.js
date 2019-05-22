@@ -2,10 +2,10 @@ class Board {
   constructor(size) {
     this.size = size;
     this.gameData = [];
-    this.weaponStorage = [{name: 'Weapon 1', damage: 20},
-                          {name: 'Weapon 2', damage: 30},
-                          {name: 'Weapon 3', damage: 40},
-                          {name: 'Weapon 4', damage: 50}];
+    this.weaponStorage = [{name: 'Weapon 1', damage: 20, src: 'img/weapon/sword.png'},
+                          {name: 'Weapon 2', damage: 30, src: 'img/weapon/shotgun.png'},
+                          {name: 'Weapon 3', damage: 40, src: 'img/weapon/granade.png'},
+                          {name: 'Weapon 4', damage: 50, src: 'img/weapon/rifle.png'}];
     this.players = [new Player(1), new Player(2)];
     this.spawnFlag = true;
     this.initializeGameData();
@@ -45,7 +45,7 @@ class Board {
       if (!randomLocation.isBlocked && randomLocation.weapon === null) {
         randomLocation.weapon = this.weaponStorage[i];
         // print distribution of weapons to console for testing
-        // console.log('y'+randomLocation._locationY + ',' + 'x'+randomLocation._locationX + ' = ' + randomLocation.weapon.name + " - " + randomLocation.weapon.damage);
+        console.log('y'+randomLocation._locationY + ',' + 'x'+randomLocation._locationX + ' = ' + randomLocation.weapon.name + " - " + randomLocation.weapon.damage);
         i++;
       }
     }
@@ -75,6 +75,7 @@ class Board {
         imgNode.setAttribute('width','50');
         imgNode.setAttribute('height','50');
         imgNode.classList.add('half-opacity');
+        imgNode.setAttribute('id','ghostPlayer');
 
         switch (i) {
           case 0: // moving up
@@ -340,7 +341,7 @@ class Board {
         imgNode.setAttribute('src','img/yoda_sm.jpg');
         $(idString).prepend(imgNode);
       } else {
-        $(idString + '>img').remove();
+        $(idString + '#ghostPlayer').remove();
       }
     } else {
       // modifies player two
@@ -348,7 +349,7 @@ class Board {
         imgNode.setAttribute('src','img/vader_sm.jpg');
         $(idString).prepend(imgNode);
       } else {
-        $(idString + '>img').remove();
+        $(idString + '#ghostPlayer').remove();
       }
     }
   }

@@ -10,7 +10,6 @@ class Location {
 
   addLocationNode() {
     const tdNode = document.createElement('td');
-    const pNode = document.createElement('p');
     const imgNode = document.createElement('img');
     imgNode.setAttribute('width','50');
     imgNode.setAttribute('height','50');
@@ -35,13 +34,14 @@ class Location {
       }
     }
     if (this.weapon !== null) {
-      pNode.innerText = this.weapon.name[0] + '-' + this.weapon.name[7];
-      tdNode.appendChild(pNode);
-      tdNode.classList.add('weapon');
+      imgNode.setAttribute('src', this.weapon.src);
+      tdNode.appendChild(imgNode);
+      // tdNode.classList.add('weapon');
     }
     if (this.isAvailable) {
       tdNode.classList.add('available');
       imgNode.classList.add('half-opacity');
+      imgNode.setAttribute('id','ghostPlayer');
       imgNode.setAttribute('src','img/yoda_sm.jpg');
       tdNode.prepend(imgNode);
     }
