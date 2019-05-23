@@ -51,10 +51,6 @@ p {
     background-color: green;
 }
 
-.weapon {
-    background-color: aquamarine;
-}
-
 .half-opacity {
     opacity: .2;
     display: none;

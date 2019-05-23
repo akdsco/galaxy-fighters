@@ -25,16 +25,17 @@ class Location {
     if (this.player !== null) {
       if (this.player._number === 1) {
         imgNode.setAttribute('src','img/yoda_sm.jpg');
-        imgNode.setAttribute('id','playerOne');
+        imgNode.classList.add('player');
         tdNode.prepend(imgNode);
       } else {
         imgNode.setAttribute('src','img/vader_sm.jpg');
-        imgNode.setAttribute('id','playerTwo');
+        imgNode.classList.add('player');
         tdNode.prepend(imgNode);
       }
     }
     if (this.weapon !== null) {
       imgNode.setAttribute('src', this.weapon.src);
+      imgNode.classList.add('weapon');
       tdNode.appendChild(imgNode);
       // tdNode.classList.add('weapon');
     }

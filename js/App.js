@@ -28,7 +28,7 @@ $(function () {
       case 0:
         // move player
         currentGame.movePlayer(turn, e);
-        // console.log(currentGame.gameData);
+        console.log(currentGame.gameData);
 
         //TODO change 'p' elements to 'img' nodes that point to weapon images
           // - add '.class' selector in order to not remove weapons through available fields display
@@ -49,7 +49,7 @@ $(function () {
         break;
       case 1:
         currentGame.movePlayer(turn, e);
-        // console.log(currentGame.gameData);
+        console.log(currentGame.gameData);
 
         turn--;
         break;

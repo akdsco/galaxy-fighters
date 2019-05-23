@@ -208,15 +208,23 @@ class Board {
             console.log('location: y' + (startY - i) + ', x' + endX + ' contains weapon');
 
             // swap weapons
-            let tempWeapon = this.players[playerNumber]._weapon;
-            this.players[playerNumber]._weapon = this.gameData[startY - i][endX].weapon;
-            this.gameData[startY - i][endX].weapon = tempWeapon;
+            let tempWeapon = this.players[playerNumber]._weapon; // temporarily storing players weapon
+            this.players[playerNumber]._weapon = this.gameData[startY - i][endX].weapon; // moving field weapon to player
+            this.gameData[startY - i][endX].weapon = tempWeapon; // asigning temporary weapon to field
+
+            // empty weaponImgNode to swap weapons
+            let weaponImgNode = document.createElement('img');
+            weaponImgNode.setAttribute('width','50');
+            weaponImgNode.setAttribute('height','50');
+            weaponImgNode.classList.add('weapon');
 
             // re-draw nodes
             let weaponLocationID = '#loc_'+ (startY - i) + '_' + endX;
-            let pNode = document.createElement('p');
-            pNode.innerText = this.gameData[startY - i][endX].weapon.name[0] + '-' + this.gameData[startY - i][endX].weapon.name[7];
-            $(weaponLocationID + '>p').replaceWith(pNode);
+            console.log('player weapon src: ' + tempWeapon.src);
+            weaponImgNode.setAttribute('src', tempWeapon.src);
+            console.log(weaponLocationID + ' .weapon');
+            $(weaponLocationID + ' .weapon').replaceWith(weaponImgNode);
+            // tempWeapon = null;
           }
         }
       } else if(movingDown) {
@@ -297,9 +305,9 @@ class Board {
       }
 
       // blink current player from start to end location
-      $(startLocationID + '>img').fadeOut(250, () => {
-        $(endLocationID).prepend($(startLocationID + '>img'));
-        $(endLocationID + '>img').fadeIn(250);
+      $(startLocationID + ' .player').fadeOut(250, () => {
+        $(endLocationID).prepend($(startLocationID + ' .player'));
+        $(endLocationID + ' .player').fadeIn(250);
       });
     }
   }
@@ -341,7 +349,7 @@ class Board {
         imgNode.setAttribute('src','img/yoda_sm.jpg');
         $(idString).prepend(imgNode);
       } else {
-        $(idString + '#ghostPlayer').remove();
+        $('#ghostPlayer').remove();
       }
     } else {
       // modifies player two
@@ -349,7 +357,7 @@ class Board {
         imgNode.setAttribute('src','img/vader_sm.jpg');
         $(idString).prepend(imgNode);
       } else {
-        $(idString + '#ghostPlayer').remove();
+        $('#ghostPlayer').remove();
       }
     }
   }
