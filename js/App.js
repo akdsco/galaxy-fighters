@@ -30,10 +30,6 @@ $(function () {
         currentGame.movePlayer(turn, e);
         console.log(currentGame.gameData);
 
-        //TODO change 'p' elements to 'img' nodes that point to weapon images
-          // - add '.class' selector in order to not remove weapons through available fields display
-          // -
-
         //TODO implement code to handle mouseenter and mouseleave on other player (for example show crosses swords?)
 
         //TODO improve visual side of the game (center restart-button etc.)
@@ -56,14 +52,34 @@ $(function () {
     }
   });
 
-  $(game).on('mouseenter','td',(function (e) {
+  $(game).on('mouseenter','td',((e) => {
     if (e.target.classList.contains('available')) {
-      $(e.target.firstChild).show();
+      if (e.target.childElementCount === 1) {
+        console.log(e.target.childElementCount);
+        if (e.target.childElementCount > 1) {
+          // hide weapon
+          // show player
+          console.log('more than one children now');
+        }
+        console.log('only one children');
+        // show player
+      }
+    }
+  }));
+
+  $(game).on('mouseenter','img',((e) => {
+    if (e.target.parentElement.classList.contains('available')) {
+      console.log(e.target.parentElement.childElementCount);
+      if (e.target.parentElement.childElementCount > 1) {
+        console.log('more than one children now in img');
+      } else {
+        console.log('only one children');
+      }
     }
   }));
 
   $(game).on('mouseleave','.half-opacity',(function (e) {
-    $(e.target).hide()
+    $(e.target).hide();
   }));
 
 });

@@ -193,7 +193,13 @@ class Board {
     // if user clicked on a "good" square..
     if (endLocation.isAvailable) {
 
-      // pick up new weapon if there is any on players way
+      // swap weapon if there is any on players way
+
+      // empty weaponImgNode to swap weapons
+      let weaponImgNode = document.createElement('img');
+      weaponImgNode.setAttribute('width','60');
+      weaponImgNode.setAttribute('height','60');
+      weaponImgNode.classList.add('weapon');
 
       // checking players direction
       let movingUp = ((endX === startX) && (endY < startY));
@@ -212,19 +218,10 @@ class Board {
             this.players[playerNumber]._weapon = this.gameData[startY - i][endX].weapon; // moving field weapon to player
             this.gameData[startY - i][endX].weapon = tempWeapon; // asigning temporary weapon to field
 
-            // empty weaponImgNode to swap weapons
-            let weaponImgNode = document.createElement('img');
-            weaponImgNode.setAttribute('width','50');
-            weaponImgNode.setAttribute('height','50');
-            weaponImgNode.classList.add('weapon');
-
             // re-draw nodes
             let weaponLocationID = '#loc_'+ (startY - i) + '_' + endX;
-            console.log('player weapon src: ' + tempWeapon.src);
             weaponImgNode.setAttribute('src', tempWeapon.src);
-            console.log(weaponLocationID + ' .weapon');
             $(weaponLocationID + ' .weapon').replaceWith(weaponImgNode);
-            // tempWeapon = null;
           }
         }
       } else if(movingDown) {
@@ -240,9 +237,8 @@ class Board {
 
             //re-draw nodes
             let weaponLocationID = '#loc_' + (startY + i) + '_' + endX;
-            let pNode = document.createElement('p');
-            pNode.innerText = this.gameData[startY + i][endX].weapon.name[0] + '-' + this.gameData[startY + i][endX].weapon.name[7];
-            $(weaponLocationID + '>p').replaceWith(pNode);
+            weaponImgNode.setAttribute('src', tempWeapon.src);
+            $(weaponLocationID + ' .weapon').replaceWith(weaponImgNode);
           }
         }
       } else if(movingLeft) {
@@ -258,9 +254,8 @@ class Board {
 
             //re-draw nodes
             let weaponLocationID = '#loc_' + endY + '_' + (startX - i);
-            let pNode = document.createElement('p');
-            pNode.innerText = this.gameData[endY][startX - i].weapon.name[0] + '-' + this.gameData[endY][startX - i].weapon.name[7];
-            $(weaponLocationID + '>p').replaceWith(pNode);
+            weaponImgNode.setAttribute('src', tempWeapon.src);
+            $(weaponLocationID + ' .weapon').replaceWith(weaponImgNode);
           }
         }
       } else if(movingRight) {
@@ -276,9 +271,8 @@ class Board {
 
             //re-draw nodes
             let weaponLocationID = '#loc_' + endY + '_' + (startX + i);
-            let pNode = document.createElement('p');
-            pNode.innerText = this.gameData[endY][startX + i].weapon.name[0] + '-' + this.gameData[endY][startX + i].weapon.name[7];
-            $(weaponLocationID + '>p').replaceWith(pNode);
+            weaponImgNode.setAttribute('src', tempWeapon.src);
+            $(weaponLocationID + ' .weapon').replaceWith(weaponImgNode);
           }
         }
 

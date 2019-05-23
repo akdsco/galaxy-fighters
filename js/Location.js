@@ -11,8 +11,8 @@ class Location {
   addLocationNode() {
     const tdNode = document.createElement('td');
     const imgNode = document.createElement('img');
-    imgNode.setAttribute('width','50');
-    imgNode.setAttribute('height','50');
+    imgNode.setAttribute('width','60');
+    imgNode.setAttribute('height','60');
 
     tdNode.setAttribute('id','loc_' + this._locationY + '_' + this._locationX);
 
