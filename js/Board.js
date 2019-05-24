@@ -72,8 +72,8 @@ class Board {
 
         // create imgNode to inject
         const imgNode = document.createElement('img');
-        imgNode.setAttribute('width','50');
-        imgNode.setAttribute('height','50');
+        imgNode.setAttribute('width','40');
+        imgNode.setAttribute('height','40');
         imgNode.classList.add('half-opacity');
         imgNode.setAttribute('id','ghostPlayer');
 
@@ -197,8 +197,8 @@ class Board {
 
       // empty weaponImgNode to swap weapons
       let weaponImgNode = document.createElement('img');
-      weaponImgNode.setAttribute('width','60');
-      weaponImgNode.setAttribute('height','60');
+      weaponImgNode.setAttribute('width','40');
+      weaponImgNode.setAttribute('height','40');
       weaponImgNode.classList.add('weapon');
 
       // checking players direction

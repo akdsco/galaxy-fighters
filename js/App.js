@@ -53,33 +53,28 @@ $(function () {
   });
 
   $(game).on('mouseenter','td',((e) => {
-    if (e.target.classList.contains('available')) {
-      if (e.target.childElementCount === 1) {
-        console.log(e.target.childElementCount);
-        if (e.target.childElementCount > 1) {
-          // hide weapon
-          // show player
-          console.log('more than one children now');
-        }
-        console.log('only one children');
-        // show player
+    if(e.target.classList.contains('available')) {
+      if(e.target.childElementCount === 1) {
+        $(e.target.firstChild).show();
+      }
+      if(e.target.childElementCount === 2) {
+        $(e.target.children[0]).show();
+        $(e.target.children[1]).hide();
       }
     }
   }));
 
-  $(game).on('mouseenter','img',((e) => {
-    if (e.target.parentElement.classList.contains('available')) {
-      console.log(e.target.parentElement.childElementCount);
-      if (e.target.parentElement.childElementCount > 1) {
-        console.log('more than one children now in img');
-      } else {
-        console.log('only one children');
+  $(game).on('mouseleave','.half-opacity', ((e) => {
+    console.log('tried');
+    if(e.target.parentElement.classList.contains('available')) {
+      if(e.target.parentElement.childElementCount === 1) {
+        $(e.target.parentElement.firstChild).hide();
+      }
+      if(e.target.parentElement.childElementCount === 2) {
+        $(e.target.parentElement.children[0]).hide();
+        $(e.target.parentElement.children[1]).show();
       }
     }
-  }));
-
-  $(game).on('mouseleave','.half-opacity',(function (e) {
-    $(e.target).hide();
   }));
 
 });
