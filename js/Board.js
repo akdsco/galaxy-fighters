@@ -8,6 +8,7 @@ class Board {
                           {name: 'Weapon 4', damage: 50, src: 'img/weapon/rifle.png'}];
     this.players = [new Player(1), new Player(2)];
     this.spawnFlag = true;
+    this.stepedOnWeapon = ['',''];
     this.initializeGameData();
     this.addBlockedLocations(17);
     this.addWeapons(4);
@@ -209,6 +210,14 @@ class Board {
 
       if(movingUp) {
         console.log('going up');
+        // if player is to reveal weapon which he stands on, show it
+        if (this.stepedOnWeapon[playerNumber] !== '') {
+          setTimeout( () => {
+            $(this.stepedOnWeapon[playerNumber] + ' .weapon').show(300);
+          }, 500);
+          this.stepedOnWeapon[playerNumber] = '';
+        }
+
         for (let i = 1; i < (startY - endY + 1); i++) {
           if(this.gameData[startY - i][endX].weapon !== null) {
             console.log('location: y' + (startY - i) + ', x' + endX + ' contains weapon');
@@ -222,10 +231,26 @@ class Board {
             let weaponLocationID = '#loc_'+ (startY - i) + '_' + endX;
             weaponImgNode.setAttribute('src', tempWeapon.src);
             $(weaponLocationID + ' .weapon').replaceWith(weaponImgNode);
+
+            // if player lands on a weapon field, hide weapon
+            if (weaponLocationID === endLocationID) {
+              $(weaponLocationID + ' .weapon').hide();
+              this.stepedOnWeapon[playerNumber] = weaponLocationID;
+            } else {
+              this.stepedOnWeapon[playerNumber] = '';
+            }
           }
         }
       } else if(movingDown) {
         console.log('going down');
+        // if player is to reveal weapon which he stands on, show it
+        if (this.stepedOnWeapon[playerNumber] !== '') {
+          setTimeout( () => {
+            $(this.stepedOnWeapon[playerNumber] + ' .weapon').show(300);
+          }, 500);
+          this.stepedOnWeapon[playerNumber] = '';
+        }
+
         for (let i = 1; i < (endY - startY + 1); i++) {
           if(this.gameData[startY + i][endX].weapon !== null) {
             console.log('location: y' + (startY + i) + ', x' + endX + ' contains weapon');
@@ -239,10 +264,26 @@ class Board {
             let weaponLocationID = '#loc_' + (startY + i) + '_' + endX;
             weaponImgNode.setAttribute('src', tempWeapon.src);
             $(weaponLocationID + ' .weapon').replaceWith(weaponImgNode);
+
+            // if player lands on a weapon field, hide weapon
+            if (weaponLocationID === endLocationID) {
+              $(weaponLocationID + ' .weapon').hide();
+              this.stepedOnWeapon[playerNumber] = weaponLocationID;
+            } else {
+              this.stepedOnWeapon[playerNumber] = '';
+            }
           }
         }
       } else if(movingLeft) {
         console.log('going left');
+        // if player is to reveal weapon which he stands on, show it
+        if (this.stepedOnWeapon[playerNumber] !== '') {
+          setTimeout( () => {
+            $(this.stepedOnWeapon[playerNumber] + ' .weapon').show(300);
+          }, 500);
+          this.stepedOnWeapon[playerNumber] = '';
+        }
+
         for (let i = 1; i < (startX - endX + 1); i++) {
           if(this.gameData[endY][startX - i].weapon !== null) {
             console.log('location: y' + (endY) + ', x' + (startX - i) + ' contains weapon');
@@ -256,10 +297,26 @@ class Board {
             let weaponLocationID = '#loc_' + endY + '_' + (startX - i);
             weaponImgNode.setAttribute('src', tempWeapon.src);
             $(weaponLocationID + ' .weapon').replaceWith(weaponImgNode);
+
+            // if player lands on a weapon field, hide weapon
+            if (weaponLocationID === endLocationID) {
+              $(weaponLocationID + ' .weapon').hide();
+              this.stepedOnWeapon[playerNumber] = weaponLocationID;
+            } else {
+              this.stepedOnWeapon[playerNumber] = '';
+            }
           }
         }
       } else if(movingRight) {
         console.log('going right');
+        // if player is to reveal weapon which he stands on, show it
+        if (this.stepedOnWeapon[playerNumber] !== '') {
+          setTimeout( () => {
+            $(this.stepedOnWeapon[playerNumber] + ' .weapon').show(300);
+          }, 500);
+          this.stepedOnWeapon[playerNumber] = '';
+        }
+
         for (let i = 1; i < (endX - startX + 1); i++) {
           if(this.gameData[endY][startX + i].weapon !== null) {
             console.log('location: y' + (endY) + ', x' + (startX + i) + ' contains weapon');
@@ -273,6 +330,14 @@ class Board {
             let weaponLocationID = '#loc_' + endY + '_' + (startX + i);
             weaponImgNode.setAttribute('src', tempWeapon.src);
             $(weaponLocationID + ' .weapon').replaceWith(weaponImgNode);
+
+            // if player lands on a weapon field, hide weapon
+            if (weaponLocationID === endLocationID) {
+              $(weaponLocationID + ' .weapon').hide();
+              this.stepedOnWeapon[playerNumber] = weaponLocationID;
+            } else {
+              this.stepedOnWeapon[playerNumber] = '';
+            }
           }
         }
 
@@ -303,6 +368,7 @@ class Board {
         $(endLocationID).prepend($(startLocationID + ' .player'));
         $(endLocationID + ' .player').fadeIn(250);
       });
+
     }
   }
 

@@ -31,7 +31,7 @@ $(function () {
 
         //TODO implement code to handle mouseenter and mouseleave on other player (for example show crosses swords?)
 
-        //TODO check what is happening when creating weapons and they land randomly in 'available' field (why not show?)
+        //TODO When both players stand on weapons and one of them moves away, both weapons get revealed. Why? investigate.
 
         //TODO review written code in all .js files and post a git tag
 
