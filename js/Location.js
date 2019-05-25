@@ -6,6 +6,7 @@ class Location {
     this.isAvailable = false;
     this.weapon = null;
     this.player = null;
+    this.counter = 0;
   }
 
   addLocationNode() {
@@ -33,18 +34,32 @@ class Location {
         tdNode.prepend(imgNode);
       }
     }
-    if (this.weapon !== null) {
-      imgNode.setAttribute('src', this.weapon.src);
-      imgNode.classList.add('weapon');
-      tdNode.appendChild(imgNode);
-      // tdNode.classList.add('weapon');
-    }
+
     if (this.isAvailable) {
       tdNode.classList.add('available');
+      if(this.weapon !== null) {
+        this.counter++;
+        let weaponImgNode = document.createElement('img');
+        weaponImgNode.setAttribute('width','40');
+        weaponImgNode.setAttribute('height','40');
+        weaponImgNode.setAttribute('src', this.weapon.src);
+        weaponImgNode.classList.add('weapon');
+        tdNode.prepend(weaponImgNode);
+      }
       imgNode.classList.add('half-opacity');
       imgNode.setAttribute('id','ghostPlayer');
       imgNode.setAttribute('src','img/yoda_sm.jpg');
       tdNode.prepend(imgNode);
+    }
+
+    if (this.weapon !== null) {
+      if(this.counter === 0) {
+        imgNode.setAttribute('src', this.weapon.src);
+        imgNode.classList.add('weapon');
+        tdNode.appendChild(imgNode);
+      } else {
+        this.counter--;
+      }
     }
     return tdNode;
   }

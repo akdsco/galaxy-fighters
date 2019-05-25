@@ -24,6 +24,7 @@ table {
 td {
     height: 60px;
     width: 60px;
+    position: relative;
     /*border: 1px solid grey;*/
     -webkit-border-radius: 20%;
     -moz-border-radius: 20%;
@@ -40,7 +41,15 @@ p {
 }
 
 .available {
-    /*border: 1px solid grey;*/
+    border: 1px solid grey;
+}
+
+.player {
+    z-index: 2;
+}
+
+.weapon {
+    z-index: 1;
 }
 
 .playerOne {
@@ -54,4 +63,5 @@ p {
 .half-opacity {
     opacity: .2;
     display: none;
+    z-index: 2;
 }
