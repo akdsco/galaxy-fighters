@@ -7,9 +7,8 @@ $(function () {
 
   $('#play-button').on('click', () => {
     gameNode.prepend(currentGame.createGameNode());
-    $('#restart-button').show('inline-block');
-    $('#title-h1').hide();
-    $('#play-button').hide();
+    $('#header').remove();
+    $('main').show();
     turn = 0;
   });
 
@@ -23,50 +22,88 @@ $(function () {
   let turn = 0;
 
   $(game).on('click','TD', (e) => {
-    switch (turn) {
-      case 0:
-        // move player
-        currentGame.movePlayer(turn, e);
-        console.log(currentGame.gameData);
+    if(e.target.parentElement.classList.contains('available')) {
+      switch (turn) {
+        case 0:
+          // move player
+          currentGame.movePlayer(turn, e);
+          // console.log(currentGame.gameData);
+          // console.log(e);
+          // console.log(currentGame.stoppedOnWeapon);
 
-        //TODO implement code to handle mouseenter and mouseleave on other player (for example show crosses swords?)
+          //TODO improve mouseenter and mouseleave on other player
 
-        //TODO When both players stand on weapons and one of them moves away, both weapons get revealed. Why? investigate.
-
-        //TODO review written code in all .js files and post a git tag
-
-        //TODO improve event handling (so that there's no ghost's left behind.. haha)
-
-        // check abs value between players, if it's 1 enter fight mode
-        // or when players selects other players location
-        // when fight is over, display winners name and quit = true;
+          // Event works as 'mouseleave' on '.fight' but the movement has to be super fast. I could
+          // implement .hide() and then it works better but it implies that I have to find a way to .remove()
+          // third child element somehow, why does it work only when moving fast over element?
 
 
-        turn++;
-        break;
-      case 1:
-        currentGame.movePlayer(turn, e);
-        console.log(currentGame.gameData);
+          //TODO When both players stand on weapons and one of them moves away, both weapons get revealed. Why? investigate.
+          // It looks like the setTimeout function makes it available for this to happen, why?
 
-        turn--;
-        break;
+          //TODO passing over two weapons at once.. fix this
+          // along with standing on one weapon and moving to next weapon..
+
+          //TODO review written code in all .js files and post a git tag
+
+
+          // check abs value between players, if it's 1 enter fight mode
+          // or when players selects other players location
+          // when fight is over, display winners name and quit = true;
+
+
+          turn++;
+          break;
+        case 1:
+          currentGame.movePlayer(turn, e);
+          // console.log(currentGame.gameData);
+          // console.log(e);
+          // console.log(currentGame.stoppedOnWeapon);
+
+          turn--;
+          break;
+      }
     }
   });
 
   // handling mouse over available fields as well as over weapons
-
   $(game).on('mouseenter','td',((e) => {
     if(e.target.classList.contains('available')) {
+      // player (half-opacity) img only
       if(e.target.childElementCount === 1) {
-        // player (half-opacity) img only
         $(e.target.firstChild).show();
       }
+      // when square contains two nodes
       if(e.target.childElementCount === 2) {
-        // player (half-opacity) img
-        $(e.target.children[0]).show();
-        // weapon img
-        $(e.target.children[1]).hide();
+        // and one of them is other player, add swords node and show swords
+        if(e.target.firstChild.classList.contains('player')) {
+          let swordsNode = document.createElement('img');
+          swordsNode.setAttribute('src','img/weapon/swords.png');
+          swordsNode.setAttribute('width','40');
+          swordsNode.setAttribute('height','40');
+          swordsNode.classList.add('fight');
+          $(e.target).append(swordsNode);
+          $(e.target.children[0]).hide();
+          $(e.target.children[1]).hide();
+          $(e.target.children[2]).show();
+
+        } else {
+          // otherwise show player (half-opacity) img
+          $(e.target.children[0]).show();
+          // and hide weapon img
+          $(e.target.children[1]).hide();
+        }
       }
+      // if square already contains 3 nodes, show swords
+      if(e.target.childElementCount === 3) {
+        $(e.target.children[0]).hide();
+        $(e.target.children[1]).hide();
+        $(e.target.children[2]).show();
+      }
+
+      // if both players stand on weapon locations that are within reach ?
+      // how to behave then when pointing at other player ?
+
     }
   }));
 
@@ -82,35 +119,18 @@ $(function () {
     }
   }));
 
-  // what to do when players point to each other (fight?)
-
-  $(game).on('mouseenter','td', ((e) => {
-    if(e.target.classList.contains('available')) {
-      if (e.target.firstChild.classList.contains('player')) {
-        console.log('mouse enter player');
-        console.log(e.target);
-        $(e.target.firstChild).hide();
-        let swordsNode = document.createElement('img');
-        swordsNode.classList.add('fight');
-        swordsNode.setAttribute('src','img/weapon/swords.png');
-        swordsNode.setAttribute('width','40');
-        swordsNode.setAttribute('height','40');
-        console.log(e.target);
-        $(e.target.prepend(swordsNode));
-        console.log('exit');
+  $(game).on('mouseleave','.fight', ((e) => {
+    if(e.target.parentElement.classList.contains('available')) {
+      if(e.target.parentElement.childElementCount === 3) {
+        console.log('getting here');
+        console.log(e.target.parentElement.children[0]);
+        console.log(e.target.parentElement.children[2]);
+        // not fully working (only when fast moving mouse over player img)
+        $(e.target.parentElement.children[0]).show();
+        $(e.target.parentElement.children[2]).remove();
       }
     }
-    }));
-
-  $(game).on('mouseleave','.fight', ((e) => {
-    console.log('mouse leave');
-    console.log(e.target);
-    if(e.target.parentElement.classList.contains('available')) {
-      let tempNode = e.target.parentElement;
-      $(tempNode.firstChild).remove();
-      $(tempNode.firstChild).show();
-    }
-  }));
+  }))
 
 });
 

@@ -1,22 +1,20 @@
+body {
+    background: url('../img/trooper.jpg') right;
+    background-size: cover;
+}
+
 header {
-    background: url('../img/trooper.jpg') center no-repeat;
     min-height: 100vh;
     padding-top: 20%;
 }
 
-#game {
-    min-width: 100%;
-    position: absolute;
-    top: 10px;
-}
-
-#restart-button {
+main {
     display: none;
-    margin: auto;
+    min-height: 100vh;
+    padding-top: .3%;
 }
 
 table {
-    margin: auto;
     background-color: white;
     border: 1px solid grey;
 }
@@ -24,44 +22,24 @@ table {
 td {
     height: 60px;
     width: 60px;
-    position: relative;
-    /*border: 1px solid grey;*/
-    -webkit-border-radius: 20%;
-    -moz-border-radius: 20%;
-    border-radius: 20%;
     font-size: 13px;
-}
-
-p {
-    margin-bottom: 0;
 }
 
 .blocked {
     background-color: black;
+    border-radius: 15%;
 }
 
 .available {
     border: 1px solid grey;
 }
 
-.player {
-    z-index: 2;
-}
-
-.weapon {
-    z-index: 1;
-}
-
-.playerOne {
-    /*background-color: yellow;*/
-}
-
-.playerTwo {
-    background-color: green;
-}
-
 .half-opacity {
     opacity: .2;
     display: none;
     z-index: 2;
+}
+
+#credit {
+    display: none;
 }
