@@ -23,15 +23,45 @@
 
 <main class="container">
   <div class="row">
-    <div class="col-md-7 text-center" id="game"><!--  Inject Game Here -->
+
+    <div class="col-md-6 text-center" id="game"><!--  Inject Game Here -->
 
       <button class="btn btn-secondary btn-lg mt-2" id="restart-button">Restart</button>
     </div>
-    <div class="col-md-3">
+
+    <div class="col-md-3 statsBox" id="playerOneBox">
       <!-- player one stats -->
-      <p>player one stats will be here</p>
+      <div class="row align-items-center">
+        <div class="col-4">
+          <img class="img-fluid" alt="yoda" src="img/yoda_sm.jpg"/>
+          <div class="col-12 mt-4">
+            <img class="img-fluid" alt="light-saber" src="img/weapon/light-saber.png"/>
+          </div>
+        </div>
+        <div class="col-8 mt-2">
+          <p class="playerName" id="playerOneName">Yoda</p>
+          <p id="playerOneHealth">Health: 100</p>
+          <p id="playerOneWeapon">Weapon: Saber</p>
+          <p id="playerOneDamage">Damage: 10</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 statsBox" id="playerTwoBox">
       <!-- player two stats -->
-      <p>player two stats will be here</p>
+      <div class="row align-items-center">
+        <div class="col-4">
+          <img class="img-fluid" alt="vader" src="img/vader_sm.jpg"/>
+          <div class="col-12 mt-4">
+            <img class="img-fluid" alt="light-saber" src="img/weapon/light-saber.png"/>
+          </div>
+        </div>
+        <div class="col-8 mt-2">
+          <p class="playerName" id="playerTwoName">Vader</p>
+          <p id="playerTwoHealth">Health: 100</p>
+          <p id="playerTwoWeapon">Weapon: Saber</p>
+          <p id="playerTwoDamage">Damage: 10</p>
+        </div>
+      </div>
     </div>
   </div>
 </main>

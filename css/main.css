@@ -11,17 +11,18 @@ header {
 main {
     display: none;
     min-height: 100vh;
-    padding-top: .3%;
+    padding-top: 3%;
 }
 
 table {
     background-color: white;
     border: 1px solid grey;
+    margin: auto;
 }
 
 td {
-    height: 60px;
-    width: 60px;
+    height: 50px;
+    width: 50px;
     font-size: 13px;
 }
 
@@ -42,4 +43,18 @@ td {
 
 #credit {
     display: none;
+}
+
+/* Stats Box Styling */
+
+.statsBox {
+    background-color: white;
+    border: 2px solid burlywood;
+    max-height: 30vh;
+}
+
+.playerName {
+    font-weight: 600;
+    font-size: 1.1em;
+    color: black;
 }

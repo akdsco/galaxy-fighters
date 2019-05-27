@@ -6,7 +6,7 @@ class Board {
                           {name: 'Weapon 2', damage: 30, src: 'img/weapon/shotgun.png'},
                           {name: 'Weapon 3', damage: 40, src: 'img/weapon/granade.png'},
                           {name: 'Weapon 4', damage: 50, src: 'img/weapon/rifle.png'}];
-    this.players = [new Player(1), new Player(2)];
+    this.players = [new Player(1,'Yoda'), new Player(2,'Vader')];
     this.spawnFlag = true;
     this.stoppedOnWeapon = ['',''];
     this.initializeGameData();
