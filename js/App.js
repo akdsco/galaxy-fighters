@@ -130,7 +130,7 @@ $(function () {
         $(e.target.parentElement.children[2]).remove();
       }
     }
-  }))
+  }));
 
 });
 

@@ -33,7 +33,7 @@ class Board {
       let randomLocation = this.randomLocation();
       if (!randomLocation.isBlocked) {
         randomLocation.isBlocked = true;
-        i++
+        i++;
       }
       randomLocation = null;
     }
