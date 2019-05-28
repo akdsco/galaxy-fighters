@@ -40,8 +40,8 @@ class Location {
       if(this.weapon !== null) {
         this.counter++;
         let weaponImgNode = document.createElement('img');
-        weaponImgNode.setAttribute('width','40');
-        weaponImgNode.setAttribute('height','40');
+        weaponImgNode.setAttribute('width','25');
+        weaponImgNode.setAttribute('height','25');
         weaponImgNode.setAttribute('src', this.weapon.src);
         weaponImgNode.classList.add('weapon');
         tdNode.prepend(weaponImgNode);
@@ -54,6 +54,8 @@ class Location {
 
     if (this.weapon !== null) {
       if(this.counter === 0) {
+        imgNode.setAttribute('width','25');
+        imgNode.setAttribute('height','25');
         imgNode.setAttribute('src', this.weapon.src);
         imgNode.classList.add('weapon');
         tdNode.appendChild(imgNode);

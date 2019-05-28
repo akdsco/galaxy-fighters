@@ -198,8 +198,8 @@ class Board {
 
       // empty weaponImgNode to swap weapons
       let weaponImgNode = document.createElement('img');
-      weaponImgNode.setAttribute('width','40');
-      weaponImgNode.setAttribute('height','40');
+      weaponImgNode.setAttribute('width','25');
+      weaponImgNode.setAttribute('height','25');
       weaponImgNode.classList.add('weapon');
 
       // checking players direction
