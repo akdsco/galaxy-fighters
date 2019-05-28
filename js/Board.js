@@ -177,14 +177,14 @@ class Board {
       endLocationID = e.target.id;
     }
 
-    // creating endLocation (arrray) and endLocationID (jquery front target)
+    // creating endLocation and endLocationID (jQuery selector)
     let endX = parseInt(endLocationID[6]);
     let endY = parseInt(endLocationID[4]);
     endLocationID = '#' + endLocationID;
 
     let endLocation = this.gameData[endY][endX];
 
-    // creating startLocation (array) and startLocationID (jQuery front target)
+    // creating startLocation and startLocationID (jQuery selector)
     let startX = this.players[playerNumber]._playerLocationX;
     let startY = this.players[playerNumber]._playerLocationY;
     startLocationID = '#loc_' + startY + '_' + startX;
@@ -202,12 +202,24 @@ class Board {
       weaponImgNode.setAttribute('height','25');
       weaponImgNode.classList.add('weapon');
 
-      // checking players direction
       let movingUp = ((endX === startX) && (endY < startY));
       let movingDown = (endX === startX) && (endY > startY);
       let movingRight = ((endY === startY) && (endX > startX));
       let movingLeft = ((endY === startY) && (endX < startX));
 
+      let loopSize = 1;
+      if (movingUp) {
+        loopSize += (startY - endY);
+      } else if(movingDown) {
+        loopSize += (endY - startY);
+      } else if(movingRight) {
+        loopSize += (endX - startX);
+      } else if(movingLeft) {
+        loopSize += (startX - endX);
+      }
+
+
+      // checking players direction
       if(movingUp) {
         console.log('going up');
         // if player is to reveal weapon which he stands on, show it
@@ -219,7 +231,7 @@ class Board {
           this.stoppedOnWeapon[playerNumber] = '';
         }
 
-        for (let i = 1; i < (startY - endY + 1); i++) {
+        for (let i = 1; i < loopSize; i++) {
           if(this.gameData[startY - i][endX].weapon !== null) {
             console.log('location: y' + (startY - i) + ', x' + endX + ' contains weapon');
 
@@ -237,8 +249,6 @@ class Board {
             if (weaponLocationID === endLocationID) {
               $(weaponLocationID + ' .weapon').hide();
               this.stoppedOnWeapon[playerNumber] = weaponLocationID;
-            } else {
-              // this.stoppedOnWeapon[playerNumber] = '';
             }
           }
         }
@@ -253,7 +263,7 @@ class Board {
           this.stoppedOnWeapon[playerNumber] = '';
         }
 
-        for (let i = 1; i < (endY - startY + 1); i++) {
+        for (let i = 1; i < loopSize; i++) {
           if(this.gameData[startY + i][endX].weapon !== null) {
             console.log('location: y' + (startY + i) + ', x' + endX + ' contains weapon');
 
@@ -271,8 +281,6 @@ class Board {
             if (weaponLocationID === endLocationID) {
               $(weaponLocationID + ' .weapon').hide();
               this.stoppedOnWeapon[playerNumber] = weaponLocationID;
-            } else {
-              // this.stoppedOnWeapon[playerNumber] = '';
             }
           }
         }
@@ -287,7 +295,7 @@ class Board {
           this.stoppedOnWeapon[playerNumber] = '';
         }
 
-        for (let i = 1; i < (startX - endX + 1); i++) {
+        for (let i = 1; i < loopSize; i++) {
           if(this.gameData[endY][startX - i].weapon !== null) {
             console.log('location: y' + (endY) + ', x' + (startX - i) + ' contains weapon');
 
@@ -305,8 +313,6 @@ class Board {
             if (weaponLocationID === endLocationID) {
               $(weaponLocationID + ' .weapon').hide();
               this.stoppedOnWeapon[playerNumber] = weaponLocationID;
-            } else {
-              // this.stoppedOnWeapon[playerNumber] = '';
             }
           }
         }
@@ -321,7 +327,7 @@ class Board {
           this.stoppedOnWeapon[playerNumber] = '';
         }
 
-        for (let i = 1; i < (endX - startX + 1); i++) {
+        for (let i = 1; i < loopSize; i++) {
           if(this.gameData[endY][startX + i].weapon !== null) {
             console.log('location: y' + (endY) + ', x' + (startX + i) + ' contains weapon');
 
@@ -339,8 +345,6 @@ class Board {
             if (weaponLocationID === endLocationID) {
               $(weaponLocationID + ' .weapon').hide();
               this.stoppedOnWeapon[playerNumber] = weaponLocationID;
-            } else {
-              // this.stoppedOnWeapon[playerNumber] = '';
             }
           }
         }
@@ -374,6 +378,10 @@ class Board {
       });
 
     }
+  }
+
+  helperMoveplayer(x,y) {
+
   }
 
   // Helper Methods
@@ -410,7 +418,7 @@ class Board {
     if (playerNumber === 1) {
       // modifies player one - (checks current player and modifies second for next round)
       if (value) {
-        imgNode.setAttribute('src','img/yoda-sm.jpg');
+        imgNode.setAttribute('src','img/alt-yoda-sm.jpg');
         $(idString).prepend(imgNode);
       } else {
         $('#ghostPlayer').remove();
@@ -418,7 +426,7 @@ class Board {
     } else {
       // modifies player two
       if (value) {
-        imgNode.setAttribute('src','img/vader-sm.jpg');
+        imgNode.setAttribute('src','img/alt-vader-sm.jpg');
         $(idString).prepend(imgNode);
       } else {
         $('#ghostPlayer').remove();

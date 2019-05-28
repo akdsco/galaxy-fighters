@@ -25,11 +25,11 @@ class Location {
     }
     if (this.player !== null) {
       if (this.player._number === 1) {
-        imgNode.setAttribute('src','img/yoda-sm.jpg');
+        imgNode.setAttribute('src','img/alt-yoda-sm.jpg');
         imgNode.classList.add('player');
         tdNode.prepend(imgNode);
       } else {
-        imgNode.setAttribute('src','img/vader-sm.jpg');
+        imgNode.setAttribute('src','img/alt-vader-sm.jpg');
         imgNode.classList.add('player');
         tdNode.prepend(imgNode);
       }
@@ -48,7 +48,7 @@ class Location {
       }
       imgNode.classList.add('half-opacity');
       imgNode.setAttribute('id','ghostPlayer');
-      imgNode.setAttribute('src','img/yoda-sm.jpg');
+      imgNode.setAttribute('src','img/alt-yoda-sm.jpg');
       tdNode.prepend(imgNode);
     }
 
@@ -64,6 +64,10 @@ class Location {
       }
     }
     return tdNode;
+  }
+
+  changePlayersLocation (locationY, locationX) {
+
   }
 
 }

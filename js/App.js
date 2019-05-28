@@ -38,13 +38,8 @@ $(function () {
           // third child element somehow, why does it work only when moving fast over element?
 
 
-          //TODO When both players stand on weapons and one of them moves away, both weapons get revealed. Why? investigate.
-          // It looks like the setTimeout function makes it available for this to happen, why?
-
           //TODO passing over two weapons at once.. fix this
           // along with standing on one weapon and moving to next weapon..
-
-          //TODO review written code in all .js files and post a git tag
 
 
           // check abs value between players, if it's 1 enter fight mode
