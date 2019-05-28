@@ -212,12 +212,9 @@ class Board {
         console.log('going up');
         // if player is to reveal weapon which he stands on, show it
         if (this.stoppedOnWeapon[playerNumber] !== '') {
-          console.log('Player ' + playerNumber + ' stepped out of ' + this.stoppedOnWeapon[playerNumber]);
-          // $(this.stoppedOnWeapon[playerNumber] + ' .weapon').show();
-
+          let locationID = this.stoppedOnWeapon[playerNumber];
           setTimeout( () => {
-            // console.log(this.stoppedOnWeapon[playerNumber]);
-            $(this.stoppedOnWeapon[playerNumber] + ' .weapon').show(300);
+            $(locationID + ' .weapon').show(300);
           }, 500);
           this.stoppedOnWeapon[playerNumber] = '';
         }
@@ -249,9 +246,9 @@ class Board {
         console.log('going down');
         // if player is to reveal weapon which he stands on, show it
         if (this.stoppedOnWeapon[playerNumber] !== '') {
+          let locationID = this.stoppedOnWeapon[playerNumber];
           setTimeout( () => {
-            console.log(this.stoppedOnWeapon[playerNumber]);
-            $(this.stoppedOnWeapon[playerNumber] + ' .weapon').show(300);
+            $(locationID + ' .weapon').show(300);
           }, 500);
           this.stoppedOnWeapon[playerNumber] = '';
         }
@@ -283,9 +280,9 @@ class Board {
         console.log('going left');
         // if player is to reveal weapon which he stands on, show it
         if (this.stoppedOnWeapon[playerNumber] !== '') {
+          let locationID = this.stoppedOnWeapon[playerNumber];
           setTimeout( () => {
-            console.log(this.stoppedOnWeapon[playerNumber]);
-            $(this.stoppedOnWeapon[playerNumber] + ' .weapon').show(300);
+            $(locationID + ' .weapon').show(300);
           }, 500);
           this.stoppedOnWeapon[playerNumber] = '';
         }
@@ -317,9 +314,9 @@ class Board {
         console.log('going right');
         // if player is to reveal weapon which he stands on, show it
         if (this.stoppedOnWeapon[playerNumber] !== '') {
+          let locationID = this.stoppedOnWeapon[playerNumber];
           setTimeout( () => {
-            console.log(this.stoppedOnWeapon[playerNumber]);
-            $(this.stoppedOnWeapon[playerNumber] + ' .weapon').show(300);
+            $(locationID + ' .weapon').show(300);
           }, 500);
           this.stoppedOnWeapon[playerNumber] = '';
         }
@@ -413,7 +410,7 @@ class Board {
     if (playerNumber === 1) {
       // modifies player one - (checks current player and modifies second for next round)
       if (value) {
-        imgNode.setAttribute('src','img/yoda_sm.jpg');
+        imgNode.setAttribute('src','img/yoda-sm.jpg');
         $(idString).prepend(imgNode);
       } else {
         $('#ghostPlayer').remove();
@@ -421,7 +418,7 @@ class Board {
     } else {
       // modifies player two
       if (value) {
-        imgNode.setAttribute('src','img/vader_sm.jpg');
+        imgNode.setAttribute('src','img/vader-sm.jpg');
         $(idString).prepend(imgNode);
       } else {
         $('#ghostPlayer').remove();

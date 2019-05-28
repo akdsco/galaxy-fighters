@@ -25,11 +25,11 @@ $(function () {
     if(e.target.parentElement.classList.contains('available')) {
       switch (turn) {
         case 0:
+          console.log(currentGame.stoppedOnWeapon);
           // move player
           currentGame.movePlayer(turn, e);
           // console.log(currentGame.gameData);
-          // console.log(e);
-          // console.log(currentGame.stoppedOnWeapon);
+          console.log(e);
 
           //TODO improve mouseenter and mouseleave on other player
 
@@ -55,10 +55,10 @@ $(function () {
           turn++;
           break;
         case 1:
+          console.log(currentGame.stoppedOnWeapon);
           currentGame.movePlayer(turn, e);
           // console.log(currentGame.gameData);
-          // console.log(e);
-          // console.log(currentGame.stoppedOnWeapon);
+          console.log(e);
 
           turn--;
           break;
@@ -122,7 +122,7 @@ $(function () {
   $(game).on('mouseleave','.fight', ((e) => {
     if(e.target.parentElement.classList.contains('available')) {
       if(e.target.parentElement.childElementCount === 3) {
-        console.log('getting here');
+        // console.log('getting here');
         console.log(e.target.parentElement.children[0]);
         console.log(e.target.parentElement.children[2]);
         // not fully working (only when fast moving mouse over player img)
