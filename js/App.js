@@ -86,7 +86,7 @@ $(function () {
           // otherwise show player (half-opacity) img
           $(e.target.children[0]).show();
           // and hide weapon img
-          $(e.target.children[1]).hide();
+          // $(e.target.children[1]).hide();
         }
       }
       // if square already contains 3 nodes, show swords

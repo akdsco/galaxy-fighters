@@ -71,13 +71,9 @@ class Board {
     for (let i = 0; i < 4; i++) {
        start: for (let j = 1; j < 4; j++) {
 
-        // create imgNode to inject
+        // create imgNode with halp-opacity player img
         const imgNode = document.createElement('img');
-        // imgNode.setAttribute('width','40');
-        // imgNode.setAttribute('height','40');
         imgNode.classList.add('half-opacity');
-        // imgNode.setAttribute('id','ghostPlayer');
-        // imgNode.classList.add('ghostPlayer');
 
         switch (i) {
           case 0: // moving up
@@ -181,16 +177,16 @@ class Board {
     // creating endLocation and endLocationID (jQuery selector)
     let endX = parseInt(endLocationID[6]);
     let endY = parseInt(endLocationID[4]);
-    endLocationID = '#' + endLocationID;
-
     let endLocation = this.gameData[endY][endX];
+
+    endLocationID = '#' + endLocationID;
 
     // creating startLocation and startLocationID (jQuery selector)
     let startX = this.players[playerNumber]._playerLocationX;
     let startY = this.players[playerNumber]._playerLocationY;
-    startLocationID = '#loc_' + startY + '_' + startX;
-
     let startLocation = this.gameData[startY][startX];
+
+    startLocationID = '#loc_' + startY + '_' + startX;
 
     // if user clicked on a "good" square..
     if (endLocation.isAvailable) {
@@ -199,8 +195,6 @@ class Board {
 
       // empty weaponImgNode to swap weapons
       let weaponImgNode = document.createElement('img');
-      // weaponImgNode.setAttribute('width','25');
-      // weaponImgNode.setAttribute('height','25');
       weaponImgNode.classList.add('weapon');
 
       let movingUp = ((endX === startX) && (endY < startY));
@@ -363,6 +357,12 @@ class Board {
       // move player object to new location
       endLocation.player = this.players[playerNumber];
 
+      // disapaer player in start location and appear in end location
+      $(startLocationID + ' .player').fadeOut(250, () => {
+        $(endLocationID).prepend($(startLocationID + ' .player'));
+        $(endLocationID + ' .player').fadeIn(250);
+      });
+
       // enable movement for next player
       if (playerNumber === 0) {
         let nextPlayerLocation = this.getCurrentPlayerLocation(1);
@@ -372,16 +372,10 @@ class Board {
         this.drawPlayersPath(nextPlayerLocation,true, playerNumber);
       }
 
-      // blink current player from start to end location
-      $(startLocationID + ' .player').fadeOut(250, () => {
-        $(endLocationID).prepend($(startLocationID + ' .player'));
-        $(endLocationID + ' .player').fadeIn(250);
-      });
-
     }
   }
 
-  helperMoveplayer(x,y) {
+  movePlayerOneField(howManyTimes, direction) {
 
 
     // creates loop to move player x-many times

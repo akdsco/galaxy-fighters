@@ -24,9 +24,18 @@ td {
     height: 48px;
     width: 48px;
     font-size: 13px;
+    /*position: relative;*/
+    /*top: 0;*/
+    /*left: 0;*/
+}
+
+.player-container {
     position: relative;
-    top: 0;
-    left: 0;
+    margin: auto;
+    top: 4px;
+    left: 2px;
+    width: 45px;
+    height: 45px;
 }
 
 .player {
@@ -40,8 +49,8 @@ td {
     position: absolute;
     transform: rotate(20deg);
     z-index: 2;
-    top: 13px;
-    left: 10px;
+    top: 10px;
+    left: 8px;
     width: 28px;
     height: 28px;
 }
