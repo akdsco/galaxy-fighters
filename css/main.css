@@ -24,6 +24,26 @@ td {
     height: 48px;
     width: 48px;
     font-size: 13px;
+    position: relative;
+    top: 0;
+    left: 0;
+}
+
+.player {
+    position: relative;
+    z-index: 1;
+    width: 40px;
+    height: 40px;
+}
+
+.weapon {
+    position: absolute;
+    transform: rotate(20deg);
+    z-index: 2;
+    top: 13px;
+    left: 10px;
+    width: 28px;
+    height: 28px;
 }
 
 .blocked {
@@ -36,9 +56,11 @@ td {
 }
 
 .half-opacity {
-    opacity: .2;
+    opacity: .5;
+    width: 40px;
+    height: 40px;
     display: none;
-    z-index: 2;
+    z-index: 1;
 }
 
 #credit {

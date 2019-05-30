@@ -2,10 +2,10 @@ class Board {
   constructor(size) {
     this.size = size;
     this.gameData = [];
-    this.weaponStorage = [{name: 'Weapon 1', damage: 20, src: 'img/weapon/sword.png'},
-                          {name: 'Weapon 2', damage: 30, src: 'img/weapon/shotgun.png'},
-                          {name: 'Weapon 3', damage: 40, src: 'img/weapon/granade.png'},
-                          {name: 'Weapon 4', damage: 50, src: 'img/weapon/rifle.png'}];
+    this.weaponStorage = [{name: 'Red Saber', damage: 20, src: 'img/weapon/red-saber.png'},
+                          {name: 'Sword', damage: 30, src: 'img/weapon/sword.png'},
+                          {name: 'Shotgun', damage: 40, src: 'img/weapon/shotgun.png'},
+                          {name: 'Rifle', damage: 50, src: 'img/weapon/rifle.png'}];
     this.players = [new Player(1,'Yoda'), new Player(2,'Vader')];
     this.spawnFlag = true;
     this.stoppedOnWeapon = ['',''];
@@ -73,10 +73,11 @@ class Board {
 
         // create imgNode to inject
         const imgNode = document.createElement('img');
-        imgNode.setAttribute('width','40');
-        imgNode.setAttribute('height','40');
+        // imgNode.setAttribute('width','40');
+        // imgNode.setAttribute('height','40');
         imgNode.classList.add('half-opacity');
-        imgNode.setAttribute('id','ghostPlayer');
+        // imgNode.setAttribute('id','ghostPlayer');
+        // imgNode.classList.add('ghostPlayer');
 
         switch (i) {
           case 0: // moving up
@@ -198,8 +199,8 @@ class Board {
 
       // empty weaponImgNode to swap weapons
       let weaponImgNode = document.createElement('img');
-      weaponImgNode.setAttribute('width','25');
-      weaponImgNode.setAttribute('height','25');
+      // weaponImgNode.setAttribute('width','25');
+      // weaponImgNode.setAttribute('height','25');
       weaponImgNode.classList.add('weapon');
 
       let movingUp = ((endX === startX) && (endY < startY));
@@ -382,6 +383,20 @@ class Board {
 
   helperMoveplayer(x,y) {
 
+
+    // creates loop to move player x-many times
+    // iterates over loop checking..
+    // if next location has weapon
+    // - assign new weapon to player
+    // - assing players weapon to location
+    // - draw player with new weapon (add relevant pictures together)
+    // - update player stats
+    // - if last itearation - hide swapped weapon
+    // - blink out old player + weapon
+    // - blink in player icon + new weapon
+
+    // if player keep on switching weapons through squares animations
+    // happen as he 'goes'
   }
 
   // Helper Methods
@@ -418,18 +433,18 @@ class Board {
     if (playerNumber === 1) {
       // modifies player one - (checks current player and modifies second for next round)
       if (value) {
-        imgNode.setAttribute('src','img/alt-yoda-sm.jpg');
+        imgNode.setAttribute('src','img/yoda-sm.jpg');
         $(idString).prepend(imgNode);
       } else {
-        $('#ghostPlayer').remove();
+        $('.half-opacity').remove();
       }
     } else {
       // modifies player two
       if (value) {
-        imgNode.setAttribute('src','img/alt-vader-sm.jpg');
+        imgNode.setAttribute('src','img/vader-sm.jpg');
         $(idString).prepend(imgNode);
       } else {
-        $('#ghostPlayer').remove();
+        $('.half-opacity').remove();
       }
     }
   }
