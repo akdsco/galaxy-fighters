@@ -6,61 +6,63 @@ class Location {
     this.isAvailable = false;
     this.weapon = null;
     this.player = null;
-    this.counter = 0;
+    this.isWeaponDisplayed = false;
   }
 
   addLocationNode() {
     const tdNode = document.createElement('td');
-    const imgNode = document.createElement('img');
-    // imgNode.setAttribute('width','40');
-    // imgNode.setAttribute('height','40');
+    const playerImgNode = document.createElement('img');
+    playerImgNode.classList.add('player');
+    let weaponImgNode = document.createElement('img');
+    weaponImgNode.classList.add('weapon');
 
     tdNode.setAttribute('id','loc_' + this._locationY + '_' + this._locationX);
 
     // location numbers debug
     // tdNode.innerText = 'y'+ this._locationY + ' ' + 'x'+this._locationX;
 
+
+    // draw blocked locations
     if (this.isBlocked) {
       tdNode.classList.add('blocked');
     }
+
+    // draw players + their weapons
     if (this.player !== null) {
       if (this.player._number === 1) {
-        imgNode.setAttribute('src','img/yoda-sm.jpg');
-        imgNode.classList.add('player');
-        tdNode.prepend(imgNode);
+        playerImgNode.setAttribute('src','img/yoda-sm.jpg');
+        tdNode.prepend(playerImgNode);
+        weaponImgNode.setAttribute('src', this.player._weapon.src);
+        tdNode.append(weaponImgNode);
       } else {
-        imgNode.setAttribute('src','img/vader-sm.jpg');
-        imgNode.classList.add('player');
-        tdNode.prepend(imgNode);
+        playerImgNode.setAttribute('src','img/vader-sm.jpg');
+        tdNode.prepend(playerImgNode);
+        weaponImgNode.setAttribute('src', this.player._weapon.src);
+        tdNode.append(weaponImgNode);
       }
     }
 
+    // add half-opacity images for first player moves
     if (this.isAvailable) {
       tdNode.classList.add('available');
+      // make sure to add weapon image if it was generated inside first players available fields
       if(this.weapon !== null) {
-        this.counter++;
-        let weaponImgNode = document.createElement('img');
-        // weaponImgNode.setAttribute('width','25');
-        // weaponImgNode.setAttribute('height','25');
+        this.isWeaponDisplayed = true;
         weaponImgNode.setAttribute('src', this.weapon.src);
-        weaponImgNode.classList.add('weapon');
         tdNode.prepend(weaponImgNode);
       }
-      imgNode.classList.add('half-opacity');
-      // imgNode.setAttribute('id','ghostPlayer');
-      imgNode.setAttribute('src','img/yoda-sm.jpg');
-      tdNode.prepend(imgNode);
+      playerImgNode.classList.remove('player');
+      playerImgNode.classList.add('half-opacity');
+      playerImgNode.setAttribute('src','img/yoda-sm.jpg');
+      tdNode.prepend(playerImgNode);
     }
 
+    // add weapons to locations
     if (this.weapon !== null) {
-      if(this.counter === 0) {
-        // imgNode.setAttribute('width','25');
-        // imgNode.setAttribute('height','25');
-        imgNode.setAttribute('src', this.weapon.src);
-        imgNode.classList.add('weapon');
-        tdNode.appendChild(imgNode);
-      } else {
-        this.counter--;
+      // makes sure you only add one weapon img to one square (no double images inside available fields)
+      if(!this.isWeaponDisplayed) {
+        weaponImgNode.setAttribute('src', this.weapon.src);
+        tdNode.appendChild(weaponImgNode);
       }
     }
     return tdNode;

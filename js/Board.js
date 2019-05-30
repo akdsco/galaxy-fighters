@@ -429,6 +429,10 @@ class Board {
       return this.gameData[Math.floor((Math.random() * this.size))][Math.floor((Math.random() * this.size))];
   }
 
+  /* TODO mofity square erases all instances of 'half-opacity' the first time it goes over. It's not needed to do it
+   * so many times.. how about you change this?
+  */
+
   modifySquareImg(idString, playerNumber, value, imgNode) {
     if (playerNumber === 1) {
       // modifies player one - (checks current player and modifies second for next round)
