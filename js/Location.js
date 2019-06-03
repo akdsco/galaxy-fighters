@@ -12,12 +12,11 @@ class Location {
   addLocationNode() {
     // create nodes
     const tdNode = document.createElement('td');
-    const playerContainer = document.createElement('div');
+    const container = document.createElement('div');
     const playerImgNode = document.createElement('img');
     const weaponImgNode = document.createElement('img');
 
     //add relevant classes to nodes
-    playerContainer.classList.add('player-container');
     playerImgNode.classList.add('player');
     weaponImgNode.classList.add('weapon');
 
@@ -37,20 +36,21 @@ class Location {
     // weapon location
 
     if (this.player !== null) {
+      container.classList.add('player-container');
       if (this.player._number === 1) {
         playerImgNode.setAttribute('src','img/yoda-sm.jpg');
-        playerContainer.append(playerImgNode);
+        container.append(playerImgNode);
         weaponImgNode.setAttribute('src', this.player._weapon.src);
         weaponImgNode.setAttribute('title',this.player._weapon.name + ' does ' + this.player._weapon.damage + ' damage.');
-        playerContainer.append(weaponImgNode);
-        tdNode.append(playerContainer);
+        container.append(weaponImgNode);
+        tdNode.append(container);
       } else {
         playerImgNode.setAttribute('src','img/vader-sm.jpg');
-        playerContainer.append(playerImgNode);
+        container.append(playerImgNode);
         weaponImgNode.setAttribute('src', this.player._weapon.src);
         weaponImgNode.setAttribute('title',this.player._weapon.name + ' does ' + this.player._weapon.damage + ' damage.');
-        playerContainer.append(weaponImgNode);
-        tdNode.append(playerContainer);
+        container.append(weaponImgNode);
+        tdNode.append(container);
       }
     }
 
@@ -59,24 +59,28 @@ class Location {
       tdNode.classList.add('available');
       // make sure to add weapon image if it was generated inside first players available fields
       if(this.weapon !== null) {
+        container.classList.add('weapon-container');
         this.isWeaponDisplayed = true;
         weaponImgNode.setAttribute('src', this.weapon.src);
         weaponImgNode.setAttribute('title',this.weapon.name + ' does ' + this.weapon.damage + ' damage.');
-        tdNode.prepend(weaponImgNode);
+        container.append(weaponImgNode);
+        tdNode.append(container);
       }
       playerImgNode.classList.remove('player');
       playerImgNode.classList.add('half-opacity');
       playerImgNode.setAttribute('src','img/yoda-sm.jpg');
-      tdNode.prepend(playerImgNode);
+      tdNode.append(playerImgNode);
     }
 
     // add weapons to locations
     if (this.weapon !== null) {
+      container.classList.add('weapon-container');
       // makes sure you only add one weapon img to one square (no double images inside available fields)
       if(!this.isWeaponDisplayed) {
         weaponImgNode.setAttribute('src', this.weapon.src);
         weaponImgNode.setAttribute('title',this.weapon.name + ' does ' + this.weapon.damage + ' damage.');
-        tdNode.appendChild(weaponImgNode);
+        container.append(weaponImgNode);
+        tdNode.append(container);
       }
     }
     return tdNode;

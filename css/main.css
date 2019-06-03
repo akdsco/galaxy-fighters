@@ -38,6 +38,14 @@ td {
     height: 45px;
 }
 
+.weapon-container {
+    position: relative;
+    top: 4px;
+    left: 2px;
+    width: 45px;
+    height: 45px;
+}
+
 .player {
     position: relative;
     z-index: 1;
