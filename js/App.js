@@ -23,13 +23,20 @@ $(function () {
 
   $(game).on('click','TD', (e) => {
     if(e.target.parentElement.classList.contains('available')) {
+      let endLocationID;
+      if ((e.target.nodeName === 'P') || (e.target.nodeName === 'IMG')) {
+        endLocationID = e.target.parentNode.id;
+      } else if (e.target.nodeName === 'TD') {
+        endLocationID = e.target.id;
+      }
+
       switch (turn) {
         case 0:
           console.log(currentGame.stoppedOnWeapon);
           // move player
-          currentGame.movePlayer(turn, e);
+          currentGame.movePlayer(turn, endLocationID);
           // console.log(currentGame.gameData);
-          console.log(e);
+          // console.log(e);
 
           //TODO improve mouseenter and mouseleave on other player
 
@@ -51,9 +58,9 @@ $(function () {
           break;
         case 1:
           console.log(currentGame.stoppedOnWeapon);
-          currentGame.movePlayer(turn, e);
+          currentGame.movePlayer(turn, endLocationID);
           // console.log(currentGame.gameData);
-          console.log(e);
+          // console.log(e);
 
           turn--;
           break;
@@ -61,9 +68,45 @@ $(function () {
     }
   });
 
+  // $(game).on('mouseenter','.available', ((e) => {
+  //   // if(e.target.classList.contains('available')) {
+  //     if (e.target.childElementCount === 1) {
+  //       $(e.target.firstChild).show();
+  //     } else if (e.target.childElementCount === 2) {
+  //       $(e.target.children[0]).show();
+  //       $(e.target.children[1]).hide();
+  //     }
+  //   // }
+  //
+  // }));
+
+  // $(game).on('mouseleave','.half-opacity', ((e) => {
+  //   if(e.target.parentElement.childElementCount === 1) {
+  //     $(e.target.parentElement.firstChild).hide();
+  //   }
+  // }));
+
+  $(game).on('mouseleave','.half-opacity', ((e) => {
+    if(e.target.parentElement.classList.contains('available')) {
+      if(e.target.parentElement.childElementCount === 1) {
+        $(e.target.parentElement.firstChild).hide();
+      }
+      if(e.target.parentElement.childElementCount === 2) {
+        $(e.target.parentElement.children[0]).hide();
+        $(e.target.parentElement.children[1]).show();
+      }
+    }
+  }));
+
+  // $(game).on('mouseenter','.weapon-container', ((e) => {
+  //   $(e.target.children[0]).hide();
+  //   $(e.target.children[1]).show();
+  // }));
+
   // handling mouse over available fields as well as over weapons
   $(game).on('mouseenter','td',((e) => {
     if(e.target.classList.contains('available')) {
+
       // player (half-opacity) img only
       if(e.target.childElementCount === 1) {
         $(e.target.firstChild).show();
@@ -84,9 +127,9 @@ $(function () {
 
         } else {
           // otherwise show player (half-opacity) img
-          $(e.target.children[0]).show();
+          $(e.target.children[1]).show();
           // and hide weapon img
-          // $(e.target.children[1]).hide();
+          $(e.target.children[0]).hide();
         }
       }
       // if square already contains 3 nodes, show swords
@@ -102,30 +145,20 @@ $(function () {
     }
   }));
 
-  $(game).on('mouseleave','.half-opacity', ((e) => {
-    if(e.target.parentElement.classList.contains('available')) {
-      if(e.target.parentElement.childElementCount === 1) {
-        $(e.target.parentElement.firstChild).hide();
-      }
-      if(e.target.parentElement.childElementCount === 2) {
-        $(e.target.parentElement.children[0]).hide();
-        $(e.target.parentElement.children[1]).show();
-      }
-    }
-  }));
 
-  $(game).on('mouseleave','.fight', ((e) => {
-    if(e.target.parentElement.classList.contains('available')) {
-      if(e.target.parentElement.childElementCount === 3) {
-        // console.log('getting here');
-        console.log(e.target.parentElement.children[0]);
-        console.log(e.target.parentElement.children[2]);
-        // not fully working (only when fast moving mouse over player img)
-        $(e.target.parentElement.children[0]).show();
-        $(e.target.parentElement.children[2]).remove();
-      }
-    }
-  }));
+  //
+  // $(game).on('mouseleave','.fight', ((e) => {
+  //   if(e.target.parentElement.classList.contains('available')) {
+  //     if(e.target.parentElement.childElementCount === 3) {
+  //       // console.log('getting here');
+  //       console.log(e.target.parentElement.children[0]);
+  //       console.log(e.target.parentElement.children[2]);
+  //       // not fully working (only when fast moving mouse over player img)
+  //       $(e.target.parentElement.children[0]).show();
+  //       $(e.target.parentElement.children[2]).remove();
+  //     }
+  //   }
+  // }));
 
 });
 
