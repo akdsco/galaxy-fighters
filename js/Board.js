@@ -171,45 +171,30 @@ class Board {
     let startX = this.players[playerNumber]._playerLocationX;
     let startY = this.players[playerNumber]._playerLocationY;
 
-    const movingUp = ((endX === startX) && (endY < startY));
-    const movingDown = (endX === startX) && (endY > startY);
-    const movingRight = ((endY === startY) && (endX > startX));
-    const movingLeft = ((endY === startY) && (endX < startX));
-
+    let direction = '';
     let movePlayer = 1;
+
+    if((endX === startX) && (endY < startY)) {
+      direction = 'up';
+      movePlayer += (startY - endY);
+    }else if((endX === startX) && (endY > startY)) {
+      direction = 'down';
+      movePlayer += (endY - startY);
+    }else if((endY === startY) && (endX < startX)) {
+      direction = 'left';
+      movePlayer += (startX - endX);
+    }else if((endY === startY) && (endX > startX)) {
+      direction = 'right';
+      movePlayer += (endX - startX);
+    }
 
     // disable current players available fields
     let startLocation = this.gameData[startY][startX];
     this.drawPlayersPath(startLocation, false, playerNumber);
 
-
-
-    if(movingUp) {
-      movePlayer += (startY - endY);
-      for (let i = 1; i < movePlayer; i++) {
-        this.migratePlayer(playerNumber, 0, i);
-        // console.log(i + ' going to sleep');
-        await this.sleep(500);
-        // console.log(i + ' wake up');
-      }
-    }else if(movingDown) {
-      movePlayer += (endY - startY);
-      for (let i = 1; i < movePlayer; i++) {
-        this.migratePlayer(playerNumber, 1, i);
-        await this.sleep(500);
-      }
-    }else if(movingRight) {
-      movePlayer += (endX - startX);
-      for (let i = 1; i < movePlayer; i++) {
-        this.migratePlayer(playerNumber, 2, i);
-        await this.sleep(500);
-      }
-    }else if(movingLeft) {
-      movePlayer += (startX - endX);
-      for (let i = 1; i < movePlayer; i++) {
-        this.migratePlayer(playerNumber, 3, i);
-        await this.sleep(500);
-      }
+    for (let i = 1; i < movePlayer; i++) {
+      this.migratePlayer(playerNumber, direction, i);
+      await this.sleep(400);
     }
 
     // enable movement for next player
@@ -220,210 +205,12 @@ class Board {
       let nextPlayerLocation = this.getCurrentPlayerLocation(0);
       this.drawPlayersPath(nextPlayerLocation, true, playerNumber);
     }
-
-    /*
-    // figure out what to do with below...
-
-    let endLocation = this.gameData[endY][endX];
-
-    endLocationID = '#' + endLocationID;
-
-
-    let startLocationID = '#loc_' + startY + '_' + startX;
-
-    // ..................................................................
-
-
-
-    // empty weaponImgNode to swap weapons
-    let weaponImgNode = document.createElement('img');
-    weaponImgNode.classList.add('weapon');
-
-    // move player depending on direction
-    if (movingUp) {
-      console.log('going up');
-      for (let i = 1; i < movePlayer; i++) {
-        // if player is to reveal weapon which he stands on, show it
-        if (this.stoppedOnWeapon[playerNumber] !== '') {
-          let locationID = this.stoppedOnWeapon[playerNumber];
-          setTimeout(() => {
-            $(locationID + ' .weapon-container img').show(300);
-          }, 500);
-          this.stoppedOnWeapon[playerNumber] = '';
-        }
-
-        // setting up next location
-        let nextLocation = this.gameData[startY - i][endX];
-        let nextLocationID = '#loc_' + (startY - i) + '_' + endX;
-        console.log('nextLocationID: ' + nextLocationID);
-
-        // if next location has weapon, swap them
-        if (nextLocation.weapon !== null) {
-          console.log('location: y' + (startY - i) + ', x' + endX + ' contains weapon');
-          console.log('swapping...');
-
-          // swap weapons
-          let tempWeapon = this.players[playerNumber]._weapon; // temporarily storing players weapon
-          this.players[playerNumber]._weapon = nextLocation.weapon; // moving field weapon to player
-          nextLocation.weapon = tempWeapon; // asigning temporary weapon to field
-
-          // re-draw nodes
-          // let weaponLocationID = '#loc_'+ (startY - i) + '_' + endX;
-          weaponImgNode.setAttribute('src', tempWeapon.src);
-          $(nextLocationID + ' .weapon-container img').replaceWith(weaponImgNode);
-
-          // if player lands on a weapon field, swap weapons img to new and hide old weapon
-          if (nextLocationID === endLocationID) {
-            // $(nextLocationID + ' .weapon-container img').hide();
-            this.stoppedOnWeapon[playerNumber] = nextLocationID;
-          }
-        }
-        // // change players endY location as he moves up
-        // this.players[playerNumber]._playerLocationY = (endY - i);
-        //
-        // // move player object to next location
-        // nextLocation.player = this.players[playerNumber];
-        //
-        // // disapaer player in start location and appear in next location
-        // $(startLocationID + ' .player-container').fadeOut(250, () => {
-        //   $(nextLocationID).prepend($(startLocationID + ' .player-container'));
-        //   $(nextLocationID + ' .player-container').fadeIn(250);
-        // });
-        //
-        // // next location becomes new start location
-        // startLocationID = '#loc_' + (startY - i) + '_' + startX;
-        // startLocation = this.gameData[startY - i][startX];
-      }
-    } else if (movingDown) {
-      // console.log('going down');
-      // if player is to reveal weapon which he stands on, show it
-      if (this.stoppedOnWeapon[playerNumber] !== '') {
-        let locationID = this.stoppedOnWeapon[playerNumber];
-        setTimeout(() => {
-          $(locationID + ' .weapon').show(300);
-        }, 500);
-        this.stoppedOnWeapon[playerNumber] = '';
-      }
-
-      for (let i = 1; i < movePlayer; i++) {
-        if (this.gameData[startY + i][endX].weapon !== null) {
-          console.log('location: y' + (startY + i) + ', x' + endX + ' contains weapon');
-
-          //swap weapons
-          let tempWeapon = this.players[playerNumber]._weapon;
-          this.players[playerNumber]._weapon = this.gameData[startY + i][endX].weapon;
-          this.gameData[startY + i][endX].weapon = tempWeapon;
-
-          //re-draw nodes
-          let weaponLocationID = '#loc_' + (startY + i) + '_' + endX;
-          weaponImgNode.setAttribute('src', tempWeapon.src);
-          $(weaponLocationID + ' .weapon').replaceWith(weaponImgNode);
-
-          // if player lands on a weapon field, hide weapon
-          if (weaponLocationID === endLocationID) {
-            $(weaponLocationID + ' .weapon').hide();
-            this.stoppedOnWeapon[playerNumber] = weaponLocationID;
-          }
-        }
-      }
-    } else if (movingLeft) {
-      // console.log('going left');
-      // if player is to reveal weapon which he stands on, show it
-      if (this.stoppedOnWeapon[playerNumber] !== '') {
-        let locationID = this.stoppedOnWeapon[playerNumber];
-        setTimeout(() => {
-          $(locationID + ' .weapon').show(300);
-        }, 500);
-        this.stoppedOnWeapon[playerNumber] = '';
-      }
-
-      for (let i = 1; i < movePlayer; i++) {
-        if (this.gameData[endY][startX - i].weapon !== null) {
-          console.log('location: y' + (endY) + ', x' + (startX - i) + ' contains weapon');
-
-          //swap weapons
-          let tempWeapon = this.players[playerNumber]._weapon;
-          this.players[playerNumber]._weapon = this.gameData[endY][startX - i].weapon;
-          this.gameData[endY][startX - i].weapon = tempWeapon;
-
-          //re-draw nodes
-          let weaponLocationID = '#loc_' + endY + '_' + (startX - i);
-          weaponImgNode.setAttribute('src', tempWeapon.src);
-          $(weaponLocationID + ' .weapon').replaceWith(weaponImgNode);
-
-          // if player lands on a weapon field, hide weapon
-          if (weaponLocationID === endLocationID) {
-            $(weaponLocationID + ' .weapon').hide();
-            this.stoppedOnWeapon[playerNumber] = weaponLocationID;
-          }
-        }
-      }
-    } else if (movingRight) {
-      // console.log('going right');
-      // if player is to reveal weapon which he stands on, show it
-      if (this.stoppedOnWeapon[playerNumber] !== '') {
-        let locationID = this.stoppedOnWeapon[playerNumber];
-        setTimeout(() => {
-          $(locationID + ' .weapon').show(300);
-        }, 500);
-        this.stoppedOnWeapon[playerNumber] = '';
-      }
-
-      for (let i = 1; i < movePlayer; i++) {
-        if (this.gameData[endY][startX + i].weapon !== null) {
-          console.log('location: y' + (endY) + ', x' + (startX + i) + ' contains weapon');
-
-          //swap weapons
-          let tempWeapon = this.players[playerNumber]._weapon;
-          this.players[playerNumber]._weapon = this.gameData[endY][startX + i].weapon;
-          this.gameData[endY][startX + i].weapon = tempWeapon;
-
-          //re-draw nodes
-          let weaponLocationID = '#loc_' + endY + '_' + (startX + i);
-          weaponImgNode.setAttribute('src', tempWeapon.src);
-          $(weaponLocationID + ' .weapon').replaceWith(weaponImgNode);
-
-          // if player lands on a weapon field, hide weapon
-          if (weaponLocationID === endLocationID) {
-            $(weaponLocationID + ' .weapon').hide();
-            this.stoppedOnWeapon[playerNumber] = weaponLocationID;
-          }
-        }
-      }
-
-    }
-
-
-    // now decide about how to move player erase and move each square ?
-
-
-    // change players location fields
-    this.players[playerNumber]._playerLocationY = endY;
-    this.players[playerNumber]._playerLocationX = endX;
-
-    // move player object to new location
-    endLocation.player = this.players[playerNumber];
-
-    // disapaer player in start location and appear in end location
-    $(startLocationID + ' .player-container').fadeOut(250, () => {
-      $(endLocationID).prepend($(startLocationID + ' .player-container'));
-      $(endLocationID + ' .player-container').fadeIn(250);
-    });
-
-    // enable movement for next player
-    if (playerNumber === 0) {
-      let nextPlayerLocation = this.getCurrentPlayerLocation(1);
-      this.drawPlayersPath(nextPlayerLocation, true, playerNumber);
-    } else {
-      let nextPlayerLocation = this.getCurrentPlayerLocation(0);
-      this.drawPlayersPath(nextPlayerLocation, true, playerNumber);
-    }
-    */
 
   }
 
   migratePlayer(playerNumber, direction, i) {
-    if(direction === 0) {
+    if(direction === 'up') {
+      // move up
       let startLocation = this.getCurrentPlayerLocation(playerNumber);
       let startLocationID = '#loc_' + this.players[playerNumber]._playerLocationY + '_' + this.players[playerNumber]._playerLocationX;
       let endLocation = this.gameData[this.players[playerNumber]._playerLocationY - 1][this.players[playerNumber]._playerLocationX];
@@ -464,6 +251,7 @@ class Board {
 
         // re-draw nodes
         weaponImgNode.setAttribute('src', tempWeapon.src);
+        weaponImgNode.setAttribute('title',tempWeapon.name + ' does ' + tempWeapon.damage + ' damage.');
         $(endLocationID + ' .weapon-container img').replaceWith(weaponImgNode);
       }
 
@@ -475,6 +263,7 @@ class Board {
         // change players weapon in hand
         let weaponImgNodeClone = weaponImgNode.cloneNode(false);
         weaponImgNodeClone.setAttribute('src', this.players[playerNumber]._weapon.src);
+        weaponImgNodeClone.setAttribute('title', this.players[playerNumber]._weapon.name + ' does ' + this.players[playerNumber]._weapon.damage + ' damage.');
 
         // continue moving player
         $(endLocationID + ' .player-container .weapon').replaceWith(weaponImgNodeClone);
@@ -485,62 +274,202 @@ class Board {
       // adjust Y location
       this.players[playerNumber]._playerLocationY--;
 
+    }else if(direction === 'down'){
+      // move down
+      let startLocation = this.getCurrentPlayerLocation(playerNumber);
+      let startLocationID = '#loc_' + this.players[playerNumber]._playerLocationY + '_' + this.players[playerNumber]._playerLocationX;
+      let endLocation = this.gameData[this.players[playerNumber]._playerLocationY + 1][this.players[playerNumber]._playerLocationX];
+      let endLocationID = '#loc_' + (this.players[playerNumber]._playerLocationY + 1) + '_' + this.players[playerNumber]._playerLocationX;
 
-        // if player lands on a weapon field, swap weapons img to new and hide old weapon
-        // if (nextLocationID === endLocationID) {
-        //   // $(nextLocationID + ' .weapon-container img').hide();
-        //   this.stoppedOnWeapon[playerNumber] = nextLocationID;
-        // }
+      //debug for now
+      // console.log(startLocationID,endLocationID);
+
+      // if player is to reveal weapon which he stands on, show it
+      if (this.stoppedOnWeapon[playerNumber] !== '') {
+        let locationID = this.stoppedOnWeapon[playerNumber];
+        setTimeout(() => {
+          $(locationID + ' .weapon-container').show(200);
+        }, 300);
+        this.stoppedOnWeapon[playerNumber] = '';
+      }
+
+      // empty weapon node
+      let weaponImgNode = document.createElement('img');
+      weaponImgNode.classList.add('weapon');
 
 
+      // if next location has weapon, swap them
+      if (endLocation.weapon !== null) {
 
-      // // change players endY location as he moves up
-      // this.players[playerNumber]._playerLocationY = (endY - i);
-      //
-      // // move player object to next location
-      // nextLocation.player = this.players[playerNumber];
-      //
-      // // disapaer player in start location and appear in next location
-      // $(startLocationID + ' .player-container').fadeOut(250, () => {
-      //   $(nextLocationID).prepend($(startLocationID + ' .player-container'));
-      //   $(nextLocationID + ' .player-container').fadeIn(250);
-      // });
-      //
-      // // next location becomes new start location
-      // startLocationID = '#loc_' + (startY - i) + '_' + startX;
-      // startLocation = this.gameData[startY - i][startX];
+        // hide weapon when stepping on it
+        $(endLocationID + ' .weapon-container').hide();
+        this.stoppedOnWeapon[playerNumber] = endLocationID;
 
-    }else if(direction === 1){
+        // debug
+        // console.log(endLocationID + ' has weapon');
+        // console.log('swapping...');
 
-    }else if(direction === 2){
+        // swap weapons
+        let tempWeapon = this.players[playerNumber]._weapon; // temporarily storing players weapon
+        this.players[playerNumber]._weapon = endLocation.weapon; // moving field weapon to player
+        endLocation.weapon = tempWeapon; // asigning temporary weapon to field
 
-    }else if(direction === 3){
+        // re-draw nodes
+        weaponImgNode.setAttribute('src', tempWeapon.src);
+        weaponImgNode.setAttribute('title',tempWeapon.name + ' does ' + tempWeapon.damage + ' damage.');
+        $(endLocationID + ' .weapon-container img').replaceWith(weaponImgNode);
+      }
 
+      // move player container
+      console.log('i ' + i + ' - tried.. ');
+      $(startLocationID + ' .player-container').fadeOut(200, () => {
+        $(endLocationID).prepend($(startLocationID + ' .player-container'));
+
+        // change players weapon in hand
+        let weaponImgNodeClone = weaponImgNode.cloneNode(false);
+        weaponImgNodeClone.setAttribute('src', this.players[playerNumber]._weapon.src);
+        weaponImgNodeClone.setAttribute('title', this.players[playerNumber]._weapon.name + ' does ' + this.players[playerNumber]._weapon.damage + ' damage.');
+
+
+        // continue moving player
+        $(endLocationID + ' .player-container .weapon').replaceWith(weaponImgNodeClone);
+        $(endLocationID + ' .player-container').fadeIn(200);
+        console.log('i ' + i + ' - done');
+      });
+
+      // adjust Y location
+      this.players[playerNumber]._playerLocationY++;
+
+    }else if(direction === 'right'){
+      // move right
+      let startLocation = this.getCurrentPlayerLocation(playerNumber);
+      let startLocationID = '#loc_' + this.players[playerNumber]._playerLocationY + '_' + this.players[playerNumber]._playerLocationX;
+      let endLocation = this.gameData[this.players[playerNumber]._playerLocationY][this.players[playerNumber]._playerLocationX + 1];
+      let endLocationID = '#loc_' + this.players[playerNumber]._playerLocationY + '_' + (this.players[playerNumber]._playerLocationX + 1);
+
+      //debug for now
+      // console.log(startLocationID,endLocationID);
+
+      // if player is to reveal weapon which he stands on, show it
+      if (this.stoppedOnWeapon[playerNumber] !== '') {
+        let locationID = this.stoppedOnWeapon[playerNumber];
+        setTimeout(() => {
+          $(locationID + ' .weapon-container').show(200);
+        }, 300);
+        this.stoppedOnWeapon[playerNumber] = '';
+      }
+
+      // empty weapon node
+      let weaponImgNode = document.createElement('img');
+      weaponImgNode.classList.add('weapon');
+
+
+      // if next location has weapon, swap them
+      if (endLocation.weapon !== null) {
+
+        // hide weapon when stepping on it
+        $(endLocationID + ' .weapon-container').hide();
+        this.stoppedOnWeapon[playerNumber] = endLocationID;
+
+        // debug
+        // console.log(endLocationID + ' has weapon');
+        // console.log('swapping...');
+
+        // swap weapons
+        let tempWeapon = this.players[playerNumber]._weapon; // temporarily storing players weapon
+        this.players[playerNumber]._weapon = endLocation.weapon; // moving field weapon to player
+        endLocation.weapon = tempWeapon; // asigning temporary weapon to field
+
+        // re-draw nodes
+        weaponImgNode.setAttribute('src', tempWeapon.src);
+        weaponImgNode.setAttribute('title',tempWeapon.name + ' does ' + tempWeapon.damage + ' damage.');
+        $(endLocationID + ' .weapon-container img').replaceWith(weaponImgNode);
+      }
+
+      // move player container
+      console.log('i ' + i + ' - tried.. ');
+      $(startLocationID + ' .player-container').fadeOut(200, () => {
+        $(endLocationID).prepend($(startLocationID + ' .player-container'));
+
+        // change players weapon in hand
+        let weaponImgNodeClone = weaponImgNode.cloneNode(false);
+        weaponImgNodeClone.setAttribute('src', this.players[playerNumber]._weapon.src);
+        weaponImgNodeClone.setAttribute('title', this.players[playerNumber]._weapon.name + ' does ' + this.players[playerNumber]._weapon.damage + ' damage.');
+
+        // continue moving player
+        $(endLocationID + ' .player-container .weapon').replaceWith(weaponImgNodeClone);
+        $(endLocationID + ' .player-container').fadeIn(200);
+        console.log('i ' + i + ' - done');
+      });
+
+      // adjust Y location
+      this.players[playerNumber]._playerLocationX++;
+
+    }else if(direction === 'left'){
+      // move left
+      let startLocation = this.getCurrentPlayerLocation(playerNumber);
+      let startLocationID = '#loc_' + this.players[playerNumber]._playerLocationY + '_' + this.players[playerNumber]._playerLocationX;
+      let endLocation = this.gameData[this.players[playerNumber]._playerLocationY][this.players[playerNumber]._playerLocationX - 1];
+      let endLocationID = '#loc_' + this.players[playerNumber]._playerLocationY + '_' + (this.players[playerNumber]._playerLocationX - 1);
+
+      //debug for now
+      // console.log(startLocationID,endLocationID);
+
+      // if player is to reveal weapon which he stands on, show it
+      if (this.stoppedOnWeapon[playerNumber] !== '') {
+        let locationID = this.stoppedOnWeapon[playerNumber];
+        setTimeout(() => {
+          $(locationID + ' .weapon-container').show(200);
+        }, 300);
+        this.stoppedOnWeapon[playerNumber] = '';
+      }
+
+      // empty weapon node
+      let weaponImgNode = document.createElement('img');
+      weaponImgNode.classList.add('weapon');
+
+
+      // if next location has weapon, swap them
+      if (endLocation.weapon !== null) {
+
+        // hide weapon when stepping on it
+        $(endLocationID + ' .weapon-container').hide();
+        this.stoppedOnWeapon[playerNumber] = endLocationID;
+
+        // debug
+        // console.log(endLocationID + ' has weapon');
+        // console.log('swapping...');
+
+        // swap weapons
+        let tempWeapon = this.players[playerNumber]._weapon; // temporarily storing players weapon
+        this.players[playerNumber]._weapon = endLocation.weapon; // moving field weapon to player
+        endLocation.weapon = tempWeapon; // asigning temporary weapon to field
+
+        // re-draw nodes
+        weaponImgNode.setAttribute('src', tempWeapon.src);
+        weaponImgNode.setAttribute('title',tempWeapon.name + ' does ' + tempWeapon.damage + ' damage.');
+        $(endLocationID + ' .weapon-container img').replaceWith(weaponImgNode);
+      }
+
+      // move player container
+      console.log('i ' + i + ' - tried.. ');
+      $(startLocationID + ' .player-container').fadeOut(200, () => {
+        $(endLocationID).prepend($(startLocationID + ' .player-container'));
+
+        // change players weapon in hand
+        let weaponImgNodeClone = weaponImgNode.cloneNode(false);
+        weaponImgNodeClone.setAttribute('src', this.players[playerNumber]._weapon.src);
+        weaponImgNodeClone.setAttribute('title', this.players[playerNumber]._weapon.name + ' does ' + this.players[playerNumber]._weapon.damage + ' damage.');
+
+        // continue moving player
+        $(endLocationID + ' .player-container .weapon').replaceWith(weaponImgNodeClone);
+        $(endLocationID + ' .player-container').fadeIn(200);
+        console.log('i ' + i + ' - done');
+      });
+
+      // adjust Y location
+      this.players[playerNumber]._playerLocationX--;
     }
-
-    // moves player one field at a time
-    // if next location has weapon
-    // - assign new weapon to player
-    // - assing players weapon to location
-    // - draw player with new weapon (add relevant pictures together)
-    // - update player stats
-    // - if last itearation - hide swapped weapon
-    // - blink out old player + weapon
-    // - blink in player icon + new weapon
-
-    // if player keep on switching weapons through squares animations
-    // happen as he 'goes'
-
-
-    // if player is to reveal weapon which he stands on, show it
-    //       if (this.stoppedOnWeapon[playerNumber] !== '') {
-    //         let locationID = this.stoppedOnWeapon[playerNumber];
-    //         setTimeout(() => {
-    //           $(locationID + ' .weapon-container img').show(300);
-    //         }, 500);
-    //         this.stoppedOnWeapon[playerNumber] = '';
-    //       }
-
 
   }
 

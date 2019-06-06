@@ -35,19 +35,13 @@ $(function () {
           console.log(currentGame.stoppedOnWeapon);
           // move player
           currentGame.movePlayer(turn, endLocationID);
+
           // console.log(currentGame.gameData);
           // console.log(e);
 
-          //TODO improve mouseenter and mouseleave on other player
+          //TODO redo mouse enter and leave for whole application
 
-          // Event works as 'mouseleave' on '.fight' but the movement has to be super fast. I could
-          // implement .hide() and then it works better but it implies that I have to find a way to .remove()
-          // third child element somehow, why does it work only when moving fast over element?
-
-
-          //TODO passing over two weapons at once.. fix this
-          // along with standing on one weapon and moving to next weapon..
-
+          //TODO create function that will only swap weapons (and call it each swap occurs)
 
           // check abs value between players, if it's 1 enter fight mode
           // or when players selects other players location
