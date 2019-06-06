@@ -163,10 +163,6 @@ class Board {
     return gameNode;
   }
 
-  sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
-
   async movePlayer(playerNumber, endLocationID) {
 
     let endX = parseInt(endLocationID[6]);
@@ -192,24 +188,27 @@ class Board {
       movePlayer += (startY - endY);
       for (let i = 1; i < movePlayer; i++) {
         this.migratePlayer(playerNumber, 0, i);
-        console.log(i + ' going to sleep');
+        // console.log(i + ' going to sleep');
         await this.sleep(500);
-        console.log(i + ' wake up');
+        // console.log(i + ' wake up');
       }
     }else if(movingDown) {
       movePlayer += (endY - startY);
       for (let i = 1; i < movePlayer; i++) {
-        // call migratePlayer();
+        this.migratePlayer(playerNumber, 1, i);
+        await this.sleep(500);
       }
     }else if(movingRight) {
       movePlayer += (endX - startX);
       for (let i = 1; i < movePlayer; i++) {
-        // call migratePlayer();
+        this.migratePlayer(playerNumber, 2, i);
+        await this.sleep(500);
       }
     }else if(movingLeft) {
       movePlayer += (startX - endX);
       for (let i = 1; i < movePlayer; i++) {
-        // call migratePlayer();
+        this.migratePlayer(playerNumber, 3, i);
+        await this.sleep(500);
       }
     }
 
@@ -421,7 +420,6 @@ class Board {
     }
     */
 
-
   }
 
   migratePlayer(playerNumber, direction, i) {
@@ -432,10 +430,24 @@ class Board {
       let endLocationID = '#loc_' + (this.players[playerNumber]._playerLocationY - 1) + '_' + this.players[playerNumber]._playerLocationX;
 
       //debug for now
-      console.log(startLocationID,endLocationID);
+      // console.log(startLocationID,endLocationID);
+
+      // if player is to reveal weapon which he stands on, show it
+      if (this.stoppedOnWeapon[playerNumber] !== '') {
+        let locationID = this.stoppedOnWeapon[playerNumber];
+        setTimeout(() => {
+          $(locationID + ' .weapon-container').show(300);
+        }, 300);
+        this.stoppedOnWeapon[playerNumber] = '';
+      }
 
       // if next location has weapon, swap them
       if (endLocation.weapon !== null) {
+        // hide weapon when stepping on it
+        $(endLocationID + ' .weapon-container').hide();
+        this.stoppedOnWeapon[playerNumber] = endLocationID;
+
+        // $(startLocationID + ' .weapon-container img').hide();
         console.log(endLocationID + ' has weapon');
         console.log('swapping...');
 
@@ -458,6 +470,8 @@ class Board {
       //   console.log('time');
       // }, 500);
 
+
+
       // move player container
       console.log('i ' + i + ' - tried.. ');
       $(startLocationID + ' .player-container').fadeOut(200, () => {
@@ -465,11 +479,6 @@ class Board {
         $(endLocationID + ' .player-container').fadeIn(200);
         console.log('i ' + i + ' - done');
       });
-
-
-      // $(startLocationID + ' .player-container').fadeOut(250);
-      // $(endLocationID).prepend($(startLocationID + ' .player-container'));
-      // $(endLocationID + ' .player-container').fadeIn(250);
 
       // adjust Y location
       this.players[playerNumber]._playerLocationY--;
@@ -534,6 +543,10 @@ class Board {
   }
 
   // Helper Methods
+
+  sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 
   randomStartLocation() {
     if (this.spawnFlag) {
