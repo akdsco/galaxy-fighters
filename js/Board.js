@@ -163,7 +163,11 @@ class Board {
     return gameNode;
   }
 
-  movePlayer(playerNumber, endLocationID) {
+  sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  async movePlayer(playerNumber, endLocationID) {
 
     let endX = parseInt(endLocationID[6]);
     let endY = parseInt(endLocationID[4]);
@@ -182,10 +186,15 @@ class Board {
     let startLocation = this.gameData[startY][startX];
     this.drawPlayersPath(startLocation, false, playerNumber);
 
+
+
     if(movingUp) {
       movePlayer += (startY - endY);
       for (let i = 1; i < movePlayer; i++) {
-        this.migratePlayer(playerNumber, 0);
+        this.migratePlayer(playerNumber, 0, i);
+        console.log(i + ' going to sleep');
+        await this.sleep(500);
+        console.log(i + ' wake up');
       }
     }else if(movingDown) {
       movePlayer += (endY - startY);
@@ -415,7 +424,7 @@ class Board {
 
   }
 
-  migratePlayer(playerNumber, direction) {
+  migratePlayer(playerNumber, direction, i) {
     if(direction === 0) {
       let startLocation = this.getCurrentPlayerLocation(playerNumber);
       let startLocationID = '#loc_' + this.players[playerNumber]._playerLocationY + '_' + this.players[playerNumber]._playerLocationX;
@@ -427,7 +436,7 @@ class Board {
 
       // if next location has weapon, swap them
       if (endLocation.weapon !== null) {
-        console.log(endLocationID + 'has weapon.');
+        console.log(endLocationID + ' has weapon');
         console.log('swapping...');
 
         // swap weapons
@@ -445,12 +454,22 @@ class Board {
 
       }
 
+      // setTimeout(() => {
+      //   console.log('time');
+      // }, 500);
+
       // move player container
-      $(startLocationID + ' .player-container').fadeOut(250, () => {
+      console.log('i ' + i + ' - tried.. ');
+      $(startLocationID + ' .player-container').fadeOut(200, () => {
         $(endLocationID).prepend($(startLocationID + ' .player-container'));
-        $(endLocationID + ' .player-container').fadeIn(250);
-        console.log('done this');
+        $(endLocationID + ' .player-container').fadeIn(200);
+        console.log('i ' + i + ' - done');
       });
+
+
+      // $(startLocationID + ' .player-container').fadeOut(250);
+      // $(endLocationID).prepend($(startLocationID + ' .player-container'));
+      // $(endLocationID + ' .player-container').fadeIn(250);
 
       // adjust Y location
       this.players[playerNumber]._playerLocationY--;

@@ -26,13 +26,13 @@ gulp.task('processIMG', async () => {
 
 gulp.task('processJS', async () => {
   gulp.src('js/*.js')
-      .pipe(jshint({
-        esversion: 8
-      }))
-      .pipe(jshint.reporter('default'))
-      .pipe(babel({
-        presets: ["@babel/preset-env"]
-      }))
+      // .pipe(jshint({
+      //   esversion: 8
+      // }))
+      // .pipe(jshint.reporter('default'))
+      // .pipe(babel({
+      //   presets: ["@babel/preset-env"]
+      // }))
       .pipe(gulp.dest('dist/js'));
 });
 
