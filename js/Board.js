@@ -436,20 +436,26 @@ class Board {
       if (this.stoppedOnWeapon[playerNumber] !== '') {
         let locationID = this.stoppedOnWeapon[playerNumber];
         setTimeout(() => {
-          $(locationID + ' .weapon-container').show(300);
+          $(locationID + ' .weapon-container').show(200);
         }, 300);
         this.stoppedOnWeapon[playerNumber] = '';
       }
 
+      // empty weapon node
+      let weaponImgNode = document.createElement('img');
+      weaponImgNode.classList.add('weapon');
+
+
       // if next location has weapon, swap them
       if (endLocation.weapon !== null) {
+
         // hide weapon when stepping on it
         $(endLocationID + ' .weapon-container').hide();
         this.stoppedOnWeapon[playerNumber] = endLocationID;
 
-        // $(startLocationID + ' .weapon-container img').hide();
-        console.log(endLocationID + ' has weapon');
-        console.log('swapping...');
+        // debug
+        // console.log(endLocationID + ' has weapon');
+        // console.log('swapping...');
 
         // swap weapons
         let tempWeapon = this.players[playerNumber]._weapon; // temporarily storing players weapon
@@ -457,25 +463,21 @@ class Board {
         endLocation.weapon = tempWeapon; // asigning temporary weapon to field
 
         // re-draw nodes
-        let weaponImgNode = document.createElement('img');
-        weaponImgNode.classList.add('weapon');
         weaponImgNode.setAttribute('src', tempWeapon.src);
         $(endLocationID + ' .weapon-container img').replaceWith(weaponImgNode);
-
-        // change players weapon in hand
-
       }
-
-      // setTimeout(() => {
-      //   console.log('time');
-      // }, 500);
-
-
 
       // move player container
       console.log('i ' + i + ' - tried.. ');
       $(startLocationID + ' .player-container').fadeOut(200, () => {
         $(endLocationID).prepend($(startLocationID + ' .player-container'));
+
+        // change players weapon in hand
+        let weaponImgNodeClone = weaponImgNode.cloneNode(false);
+        weaponImgNodeClone.setAttribute('src', this.players[playerNumber]._weapon.src);
+
+        // continue moving player
+        $(endLocationID + ' .player-container .weapon').replaceWith(weaponImgNodeClone);
         $(endLocationID + ' .player-container').fadeIn(200);
         console.log('i ' + i + ' - done');
       });
