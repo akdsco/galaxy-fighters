@@ -17,6 +17,11 @@ gulp.task('processCSS', async () => {
       .pipe(gulp.dest('dist/css'));
 });
 
+gulp.task('babelPolyfill', async () => {
+  gulp.src('node_modules/babel-polyfill/browser.js')
+      .pipe(gulp.dest('dist/node_modules/babel-polyfill'));
+});
+
 gulp.task('processIMG', async () => {
   gulp.src('img/*.*')
       .pipe(gulp.dest('dist/img'));
@@ -27,7 +32,7 @@ gulp.task('processIMG', async () => {
 gulp.task('processJS', async () => {
   gulp.src('js/*.js')
       // .pipe(jshint({
-      //   esversion: 8
+        // esversion: 8
       // }))
       // .pipe(jshint.reporter('default'))
       // .pipe(babel({
@@ -37,7 +42,7 @@ gulp.task('processJS', async () => {
 });
 
 gulp.task('default', (callback) => {
-  runSequence(['processHTML','processCSS','processIMG', 'processJS'], 'watch', callback);
+  runSequence(['processHTML','processCSS','babelPolyfill','processIMG', 'processJS'], 'watch', callback);
 });
 
 gulp.task('watch', ['browserSync'], () => {

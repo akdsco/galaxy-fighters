@@ -235,24 +235,7 @@ class Board {
 
       // if next location has weapon, swap them
       if (endLocation.weapon !== null) {
-
-        // hide weapon when stepping on it
-        $(endLocationID + ' .weapon-container').hide();
-        this.stoppedOnWeapon[playerNumber] = endLocationID;
-
-        // debug
-        // console.log(endLocationID + ' has weapon');
-        // console.log('swapping...');
-
-        // swap weapons
-        let tempWeapon = this.players[playerNumber]._weapon; // temporarily storing players weapon
-        this.players[playerNumber]._weapon = endLocation.weapon; // moving field weapon to player
-        endLocation.weapon = tempWeapon; // asigning temporary weapon to field
-
-        // re-draw nodes
-        weaponImgNode.setAttribute('src', tempWeapon.src);
-        weaponImgNode.setAttribute('title',tempWeapon.name + ' does ' + tempWeapon.damage + ' damage.');
-        $(endLocationID + ' .weapon-container img').replaceWith(weaponImgNode);
+        $(endLocationID + ' .weapon-container img').replaceWith(this.swapWeapons(endLocationID,endLocation,playerNumber,weaponImgNode));
       }
 
       // move player container
@@ -300,24 +283,7 @@ class Board {
 
       // if next location has weapon, swap them
       if (endLocation.weapon !== null) {
-
-        // hide weapon when stepping on it
-        $(endLocationID + ' .weapon-container').hide();
-        this.stoppedOnWeapon[playerNumber] = endLocationID;
-
-        // debug
-        // console.log(endLocationID + ' has weapon');
-        // console.log('swapping...');
-
-        // swap weapons
-        let tempWeapon = this.players[playerNumber]._weapon; // temporarily storing players weapon
-        this.players[playerNumber]._weapon = endLocation.weapon; // moving field weapon to player
-        endLocation.weapon = tempWeapon; // asigning temporary weapon to field
-
-        // re-draw nodes
-        weaponImgNode.setAttribute('src', tempWeapon.src);
-        weaponImgNode.setAttribute('title',tempWeapon.name + ' does ' + tempWeapon.damage + ' damage.');
-        $(endLocationID + ' .weapon-container img').replaceWith(weaponImgNode);
+        $(endLocationID + ' .weapon-container img').replaceWith(this.swapWeapons(endLocationID,endLocation,playerNumber,weaponImgNode));
       }
 
       // move player container
@@ -366,27 +332,10 @@ class Board {
 
       // if next location has weapon, swap them
       if (endLocation.weapon !== null) {
-
-        // hide weapon when stepping on it
-        $(endLocationID + ' .weapon-container').hide();
-        this.stoppedOnWeapon[playerNumber] = endLocationID;
-
-        // debug
-        // console.log(endLocationID + ' has weapon');
-        // console.log('swapping...');
-
-        // swap weapons
-        let tempWeapon = this.players[playerNumber]._weapon; // temporarily storing players weapon
-        this.players[playerNumber]._weapon = endLocation.weapon; // moving field weapon to player
-        endLocation.weapon = tempWeapon; // asigning temporary weapon to field
-
-        // re-draw nodes
-        weaponImgNode.setAttribute('src', tempWeapon.src);
-        weaponImgNode.setAttribute('title',tempWeapon.name + ' does ' + tempWeapon.damage + ' damage.');
-        $(endLocationID + ' .weapon-container img').replaceWith(weaponImgNode);
+        $(endLocationID + ' .weapon-container img').replaceWith(this.swapWeapons(endLocationID,endLocation,playerNumber,weaponImgNode));
       }
 
-      // move player container
+      // move players container
       console.log('i ' + i + ' - tried.. ');
       $(startLocationID + ' .player-container').fadeOut(200, () => {
         $(endLocationID).prepend($(startLocationID + ' .player-container'));
@@ -431,24 +380,7 @@ class Board {
 
       // if next location has weapon, swap them
       if (endLocation.weapon !== null) {
-
-        // hide weapon when stepping on it
-        $(endLocationID + ' .weapon-container').hide();
-        this.stoppedOnWeapon[playerNumber] = endLocationID;
-
-        // debug
-        // console.log(endLocationID + ' has weapon');
-        // console.log('swapping...');
-
-        // swap weapons
-        let tempWeapon = this.players[playerNumber]._weapon; // temporarily storing players weapon
-        this.players[playerNumber]._weapon = endLocation.weapon; // moving field weapon to player
-        endLocation.weapon = tempWeapon; // asigning temporary weapon to field
-
-        // re-draw nodes
-        weaponImgNode.setAttribute('src', tempWeapon.src);
-        weaponImgNode.setAttribute('title',tempWeapon.name + ' does ' + tempWeapon.damage + ' damage.');
-        $(endLocationID + ' .weapon-container img').replaceWith(weaponImgNode);
+        $(endLocationID + ' .weapon-container img').replaceWith(this.swapWeapons(endLocationID,endLocation,playerNumber,weaponImgNode));
       }
 
       // move player container
@@ -477,6 +409,27 @@ class Board {
 
   sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  swapWeapons(endLocationID, endLocation, playerNumber, weaponImgNode) {
+    // hide weapon when stepping on it
+    $(endLocationID + ' .weapon-container').hide();
+    this.stoppedOnWeapon[playerNumber] = endLocationID;
+
+    // debug
+    // console.log(endLocationID + ' has weapon');
+    // console.log('swapping...');
+
+    // swap weapons
+    let tempWeapon = this.players[playerNumber]._weapon; // temporarily storing players weapon
+    this.players[playerNumber]._weapon = endLocation.weapon; // moving weapon from square to players hand
+    endLocation.weapon = tempWeapon; // asigning temporary weapon to field
+
+    // re-draw nodes
+    weaponImgNode.setAttribute('src', tempWeapon.src);
+    weaponImgNode.setAttribute('title',tempWeapon.name + ' does ' + tempWeapon.damage + ' damage.');
+
+    return weaponImgNode;
   }
 
   randomStartLocation() {

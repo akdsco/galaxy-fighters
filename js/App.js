@@ -32,16 +32,18 @@ $(function () {
 
       switch (turn) {
         case 0:
-          console.log(currentGame.stoppedOnWeapon);
+          // console.log(currentGame.stoppedOnWeapon);
           // move player
           currentGame.movePlayer(turn, endLocationID);
 
           // console.log(currentGame.gameData);
-          // console.log(e);
+          console.log(e);
 
-          //TODO redo mouse enter and leave for whole application
+          //TODO events.. I have no idea how to make it a better experience... :(
 
           //TODO create function that will only swap weapons (and call it each swap occurs)
+
+          //TODO transpiler not working? 'regeneratorRuntime is not defined' and 'Board is not a constructor'
 
           // check abs value between players, if it's 1 enter fight mode
           // or when players selects other players location
@@ -51,10 +53,11 @@ $(function () {
           turn++;
           break;
         case 1:
-          console.log(currentGame.stoppedOnWeapon);
+          // console.log(currentGame.stoppedOnWeapon);
           currentGame.movePlayer(turn, endLocationID);
+          console.log(e);
+
           // console.log(currentGame.gameData);
-          // console.log(e);
 
           turn--;
           break;
@@ -62,40 +65,24 @@ $(function () {
     }
   });
 
-  // $(game).on('mouseenter','.available', ((e) => {
-  //   // if(e.target.classList.contains('available')) {
-  //     if (e.target.childElementCount === 1) {
-  //       $(e.target.firstChild).show();
-  //     } else if (e.target.childElementCount === 2) {
-  //       $(e.target.children[0]).show();
-  //       $(e.target.children[1]).hide();
-  //     }
-  //   // }
-  //
-  // }));
-
-  // $(game).on('mouseleave','.half-opacity', ((e) => {
-  //   if(e.target.parentElement.childElementCount === 1) {
-  //     $(e.target.parentElement.firstChild).hide();
-  //   }
-  // }));
-
   $(game).on('mouseleave','.half-opacity', ((e) => {
     if(e.target.parentElement.classList.contains('available')) {
       if(e.target.parentElement.childElementCount === 1) {
         $(e.target.parentElement.firstChild).hide();
       }
       if(e.target.parentElement.childElementCount === 2) {
-        $(e.target.parentElement.children[0]).hide();
-        $(e.target.parentElement.children[1]).show();
+        $(e.target.parentElement.children[0]).show();
+        $(e.target.parentElement.children[1]).hide();
       }
     }
   }));
 
-  // $(game).on('mouseenter','.weapon-container', ((e) => {
-  //   $(e.target.children[0]).hide();
-  //   $(e.target.children[1]).show();
-  // }));
+  $(game).on('mouseenter','.weapon-container', ((e) => {
+    if(e.target.parentElement.classList.contains('available')) {
+      $(e.target.children[0]).hide();
+      $(e.target.children[1]).show();
+    }
+}));
 
   // handling mouse over available fields as well as over weapons
   $(game).on('mouseenter','td',((e) => {
@@ -109,29 +96,31 @@ $(function () {
       if(e.target.childElementCount === 2) {
         // and one of them is other player, add swords node and show swords
         if(e.target.firstChild.classList.contains('player')) {
-          let swordsNode = document.createElement('img');
-          swordsNode.setAttribute('src','img/weapon/swords.png');
-          swordsNode.setAttribute('width','40');
-          swordsNode.setAttribute('height','40');
-          swordsNode.classList.add('fight');
-          $(e.target).append(swordsNode);
-          $(e.target.children[0]).hide();
-          $(e.target.children[1]).hide();
-          $(e.target.children[2]).show();
+
+          // sensing other player.. redo this
+
+          // let swordsNode = document.createElement('img');
+          // swordsNode.setAttribute('src','img/weapon/swords.png');
+          // swordsNode.setAttribute('width','40');
+          // swordsNode.setAttribute('height','40');
+          // swordsNode.classList.add('fight');
+          // $(e.target).append(swordsNode);
+          // $(e.target.children[0]).hide();
+          // $(e.target.children[1]).hide();
+          // $(e.target.children[2]).show();
 
         } else {
-          // otherwise show player (half-opacity) img
-          $(e.target.children[1]).show();
-          // and hide weapon img
           $(e.target.children[0]).hide();
+          $(e.target.children[1]).show();
         }
       }
       // if square already contains 3 nodes, show swords
-      if(e.target.childElementCount === 3) {
-        $(e.target.children[0]).hide();
-        $(e.target.children[1]).hide();
-        $(e.target.children[2]).show();
-      }
+      // if(e.target.childElementCount === 3) {
+      //   $(e.target.children[0]).hide();
+      //   $(e.target.children[1]).hide();
+      //   $(e.target.children[2]).show();
+      // }
+
 
       // if both players stand on weapon locations that are within reach ?
       // how to behave then when pointing at other player ?
@@ -139,20 +128,6 @@ $(function () {
     }
   }));
 
-
-  //
-  // $(game).on('mouseleave','.fight', ((e) => {
-  //   if(e.target.parentElement.classList.contains('available')) {
-  //     if(e.target.parentElement.childElementCount === 3) {
-  //       // console.log('getting here');
-  //       console.log(e.target.parentElement.children[0]);
-  //       console.log(e.target.parentElement.children[2]);
-  //       // not fully working (only when fast moving mouse over player img)
-  //       $(e.target.parentElement.children[0]).show();
-  //       $(e.target.parentElement.children[2]).remove();
-  //     }
-  //   }
-  // }));
 
 });
 
