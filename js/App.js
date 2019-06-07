@@ -2,20 +2,29 @@ $(function () {
   const gameNode = document.getElementById('game');
   const game = '#game';
   let currentGame = new Board(10);
+
   // debug
   console.log(currentGame);
+
+  // helper function
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 
   $('#play-button').on('click', () => {
     gameNode.prepend(currentGame.createGameNode());
     $('#header').remove();
-    $('main').show();
+    $('main').fadeIn(500);
     turn = 0;
   });
 
-  $('#restart-button').on('click', () => {
-    gameNode.removeChild(gameNode.childNodes[0]);
+  $('#restart-button').on('click', async () => {
+    $(game).fadeOut(400);
+    await sleep(380);
+    gameNode.removeChild(gameNode.firstChild);
     currentGame = new Board(10);
     gameNode.prepend(currentGame.createGameNode());
+    $(game).fadeIn(400);
     turn = 0;
   });
 
@@ -40,8 +49,6 @@ $(function () {
           console.log(e);
 
           //TODO events.. I have no idea how to make it a better experience... :(
-
-          //TODO create function that will only swap weapons (and call it each swap occurs)
 
           //TODO transpiler not working? 'regeneratorRuntime is not defined' and 'Board is not a constructor'
 
