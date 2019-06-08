@@ -430,7 +430,16 @@ class Board {
     weaponImgNode.setAttribute('src', tempWeapon.src);
     weaponImgNode.setAttribute('title',tempWeapon.name + ' does ' + tempWeapon.damage + ' damage.');
 
-
+    //change players weapon img, name and damage in stats box as well
+    if (playerNumber === 0) {
+      $('#playerOneWeaponImg').attr('src',this.players[playerNumber]._weapon.src);
+      $('#playerOneDamage').html('Damage: ' + this.players[playerNumber]._weapon.damage);
+      $('#playerOneWeaponName').html('Weapon: ' + this.players[playerNumber]._weapon.name);
+    } else {
+      $('#playerTwoWeaponImg').attr('src',this.players[playerNumber]._weapon.src);
+      $('#playerTwoDamage').html('Damage: ' + this.players[playerNumber]._weapon.damage);
+      $('#playerTwoWeaponName').html('Weapon: ' + this.players[playerNumber]._weapon.name);
+    }
 
     return weaponImgNode;
   }

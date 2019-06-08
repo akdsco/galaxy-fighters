@@ -28,19 +28,17 @@
       <button class="btn btn-secondary btn-lg mt-2" id="restart-button">Restart</button>
     </div>
 
-    <!-- TODO rewrite code for stats so that it's dynamically sourced from javaScript files -->
-
-    <div class="col-lg-3 col-md-6 mt-md-3 mt-lg-0 statsBox" id="playerOneBox">
+    <div class="col-lg-3 col-md-6 mt-2 mt-md-3 mt-lg-0 statsBox" id="playerOneBox">
       <!-- player one stats -->
       <div class="row align-items-center">
         <div class="col-4 player-container-stats">
           <img class="player-stats" alt="yoda" src="img/yoda-sm.jpg"/>
-          <img class="weapon-stats" alt="laser-sword" src="img/weapon/laser-sword.png"/>
+          <img class="weapon-stats" id="playerOneWeaponImg" alt="laser-sword" src="img/weapon/laser-sword.png"/>
         </div>
         <div class="col-8 mt-3">
           <p class="playerName" id="playerOneName">Yoda</p>
           <p id="playerOneHealth">Health: 100</p>
-          <p id="playerOneWeapon">Weapon: Saber</p>
+          <p id="playerOneWeaponName">Weapon: Light Saber</p>
           <p id="playerOneDamage">Damage: 10</p>
         </div>
       </div>
@@ -50,12 +48,12 @@
       <div class="row align-items-center">
         <div class="col-4 player-container-stats">
           <img class="player-stats" alt="vader" src="img/vader-sm.jpg"/>
-          <img class="weapon-stats" alt="light-saber" src="img/weapon/laser-sword.png"/>
+          <img class="weapon-stats" id="playerTwoWeaponImg" alt="light-saber" src="img/weapon/laser-sword.png"/>
         </div>
         <div class="col-8 mt-3">
           <p class="playerName" id="playerTwoName">Vader</p>
           <p id="playerTwoHealth">Health: 100</p>
-          <p id="playerTwoWeapon">Weapon: Saber</p>
+          <p id="playerTwoWeaponName">Weapon: Light Saber</p>
           <p id="playerTwoDamage">Damage: 10</p>
         </div>
       </div>

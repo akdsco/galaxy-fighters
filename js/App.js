@@ -4,7 +4,7 @@ $(function () {
   let currentGame = new Board(10);
 
   // debug
-  console.log(currentGame);
+  // console.log(currentGame);
 
   // helper function
   function sleep(ms) {
