@@ -97,3 +97,29 @@ td {
     font-size: 1.1em;
     color: black;
 }
+
+.player-container-stats {
+    position: relative;
+    margin: auto;
+    /*top: 4px;*/
+    /*left: 2px;*/
+    /*width: 50px;*/
+    /*height: 50px;*/
+}
+
+.player-stats {
+    position: relative;
+    z-index: 1;
+    width: 70px;
+    height: 70px;
+}
+
+.weapon-stats {
+    position: absolute;
+    transform: rotate(20deg);
+    z-index: 2;
+    top: 1rem;
+    left: 2rem;
+    width: 2.8rem;
+    height: 2.8rem;
+}

@@ -52,6 +52,9 @@ $(function () {
 
           //TODO transpiler not working? 'regeneratorRuntime is not defined' and 'Board is not a constructor'
 
+          //TODO make weapon in info panels change as player change them on the field
+
+
           // check abs value between players, if it's 1 enter fight mode
           // or when players selects other players location
           // when fight is over, display winners name and quit = true;

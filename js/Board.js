@@ -3,12 +3,13 @@ class Board {
     this.size = size;
     this.gameData = [];
     this.weaponStorage = [{name: 'Red Saber', damage: 20, src: 'img/weapon/red-saber.png'},
-      {name: 'Sword', damage: 30, src: 'img/weapon/sword.png'},
-      {name: 'Shotgun', damage: 40, src: 'img/weapon/shotgun.png'},
-      {name: 'Rifle', damage: 50, src: 'img/weapon/rifle.png'}];
-    this.players = [new Player(1, 'Yoda'), new Player(2, 'Vader')];
+                          {name: 'Sword', damage: 30, src: 'img/weapon/sword.png'},
+                          {name: 'Shotgun', damage: 40, src: 'img/weapon/shotgun.png'},
+                          {name: 'Rifle', damage: 50, src: 'img/weapon/rifle.png'}];
+    this.players = [new Player(1, 'Yoda'),
+                    new Player(2, 'Vader')];
     this.spawnFlag = true;
-    this.stoppedOnWeapon = ['', ''];
+    this.stoppedOnWeapon = ['',''];
     this.initializeGameData();
     this.addBlockedLocations(17);
     this.addWeapons(4);
@@ -429,6 +430,8 @@ class Board {
     weaponImgNode.setAttribute('src', tempWeapon.src);
     weaponImgNode.setAttribute('title',tempWeapon.name + ' does ' + tempWeapon.damage + ' damage.');
 
+
+
     return weaponImgNode;
   }
 
@@ -460,7 +463,7 @@ class Board {
     return this.gameData[Math.floor((Math.random() * this.size))][Math.floor((Math.random() * this.size))];
   }
 
-  /* TODO mofity square erases all instances of 'half-opacity' the first time it goes over. It's not needed to do it
+  /* TODO modify square erases all instances of 'half-opacity' the first time it goes over. It's not needed to do it
    * so many times.. how about you change this?
   */
 

@@ -24,20 +24,18 @@
 
 <main class="container">
   <div class="row">
-    <div class="col-md-6 text-center" id="game"><!--  Inject Game Here -->
+    <div class="col-lg-6 text-center" id="game"><!--  Inject Game Here -->
       <button class="btn btn-secondary btn-lg mt-2" id="restart-button">Restart</button>
     </div>
 
     <!-- TODO rewrite code for stats so that it's dynamically sourced from javaScript files -->
 
-    <div class="col-md-3 statsBox" id="playerOneBox">
+    <div class="col-lg-3 col-md-6 mt-md-3 mt-lg-0 statsBox" id="playerOneBox">
       <!-- player one stats -->
       <div class="row align-items-center">
-        <div class="col-4">
-          <img class="img-fluid" alt="yoda" src="img/yoda-sm.jpg"/>
-          <div class="col-12 mt-4">
-            <img class="img-fluid" alt="laser-sword" src="img/weapon/laser-sword.png"/>
-          </div>
+        <div class="col-4 player-container-stats">
+          <img class="player-stats" alt="yoda" src="img/yoda-sm.jpg"/>
+          <img class="weapon-stats" alt="laser-sword" src="img/weapon/laser-sword.png"/>
         </div>
         <div class="col-8 mt-3">
           <p class="playerName" id="playerOneName">Yoda</p>
@@ -47,14 +45,12 @@
         </div>
       </div>
     </div>
-    <div class="col-md-3 statsBox" id="playerTwoBox">
+    <div class="col-lg-3 col-md-6 mt-md-3 mt-lg-0 statsBox" id="playerTwoBox">
       <!-- player two stats -->
       <div class="row align-items-center">
-        <div class="col-4">
-          <img class="img-fluid" alt="vader" src="img/vader-sm.jpg"/>
-          <div class="col-12 mt-4">
-            <img class="img-fluid" alt="light-saber" src="img/weapon/laser-sword.png"/>
-          </div>
+        <div class="col-4 player-container-stats">
+          <img class="player-stats" alt="vader" src="img/vader-sm.jpg"/>
+          <img class="weapon-stats" alt="light-saber" src="img/weapon/laser-sword.png"/>
         </div>
         <div class="col-8 mt-3">
           <p class="playerName" id="playerTwoName">Vader</p>
