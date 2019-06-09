@@ -4,7 +4,7 @@ $(function () {
   let currentGame = new Board(10);
 
   // debug
-  // console.log(currentGame);
+  console.log(currentGame);
 
   // helper function
   function sleep(ms) {
@@ -45,9 +45,8 @@ $(function () {
           // console.log(currentGame.stoppedOnWeapon);
           // move player
           currentGame.movePlayer(turn, endLocationID);
-
           console.log(currentGame.gameData);
-          console.log(e);
+          // console.log(e);
 
           //TODO events.. I have no idea how to make it a better experience... :(
 
@@ -63,10 +62,10 @@ $(function () {
           break;
         case 1:
           // console.log(currentGame.stoppedOnWeapon);
+          // move player
           currentGame.movePlayer(turn, endLocationID);
-          console.log(e);
-
           console.log(currentGame.gameData);
+          // console.log(e);
 
           turn--;
           break;

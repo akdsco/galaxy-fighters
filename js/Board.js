@@ -4,8 +4,8 @@ class Board {
     this.gameData = [];
     this.weaponStorage = [{name: 'Red Saber', damage: 20, src: 'img/weapon/red-saber.png'},
                           {name: 'Sword', damage: 30, src: 'img/weapon/sword.png'},
-                          {name: 'Shotgun', damage: 40, src: 'img/weapon/shotgun.png'},
-                          {name: 'M42', damage: 50, src: 'img/weapon/rifle.png'}];
+                          {name: 'Rifle', damage: 40, src: 'img/weapon/rifle.png'},
+                          {name: 'M42', damage: 50, src: 'img/weapon/m42.png'}];
     this.players = [new Player(1, 'Yoda'),
                     new Player(2, 'Vader')];
     this.spawnFlag = true;
@@ -247,7 +247,7 @@ class Board {
       }
 
       // move player container
-      console.log('i ' + i + ' - tried.. ');
+      // console.log('i ' + i + ' - tried.. ');
       $(startLocationID + ' .player-container').fadeOut(200, () => {
         $(endLocationID).prepend($(startLocationID + ' .player-container'));
 
@@ -259,11 +259,12 @@ class Board {
         // continue moving player
         $(endLocationID + ' .player-container .weapon').replaceWith(weaponImgNodeClone);
         $(endLocationID + ' .player-container').fadeIn(200);
-        console.log('i ' + i + ' - done');
+        // console.log('i ' + i + ' - done');
       });
 
       // adjust Y location
-      this.players[playerNumber]._playerLocationY--;
+      this.players[playerNumber]._playerLocationY -= 1;
+      this.enterFight();
 
     }else if(direction === 'down'){
       let startLocation = this.getCurrentPlayerLocation(playerNumber);
@@ -294,7 +295,7 @@ class Board {
       }
 
       // move player container
-      console.log('i ' + i + ' - tried.. ');
+      // console.log('i ' + i + ' - tried.. ');
       $(startLocationID + ' .player-container').fadeOut(200, () => {
         $(endLocationID).prepend($(startLocationID + ' .player-container'));
 
@@ -307,11 +308,12 @@ class Board {
         // continue moving player
         $(endLocationID + ' .player-container .weapon').replaceWith(weaponImgNodeClone);
         $(endLocationID + ' .player-container').fadeIn(200);
-        console.log('i ' + i + ' - done');
+        // console.log('i ' + i + ' - done');
       });
 
       // adjust Y location
-      this.players[playerNumber]._playerLocationY++;
+      this.players[playerNumber]._playerLocationY += 1;
+      this.enterFight();
 
     }else if(direction === 'right'){
       let startLocation = this.getCurrentPlayerLocation(playerNumber);
@@ -342,7 +344,7 @@ class Board {
       }
 
       // move players container
-      console.log('i ' + i + ' - tried.. ');
+      // console.log('i ' + i + ' - tried.. ');
       $(startLocationID + ' .player-container').fadeOut(200, () => {
         $(endLocationID).prepend($(startLocationID + ' .player-container'));
 
@@ -354,11 +356,12 @@ class Board {
         // continue moving player
         $(endLocationID + ' .player-container .weapon').replaceWith(weaponImgNodeClone);
         $(endLocationID + ' .player-container').fadeIn(200);
-        console.log('i ' + i + ' - done');
+        // console.log('i ' + i + ' - done');
       });
 
       // adjust X location
-      this.players[playerNumber]._playerLocationX++;
+      this.players[playerNumber]._playerLocationX += 1;
+      this.enterFight();
 
     }else if(direction === 'left'){
       let startLocation = this.getCurrentPlayerLocation(playerNumber);
@@ -389,7 +392,7 @@ class Board {
       }
 
       // move player container
-      console.log('i ' + i + ' - tried.. ');
+      // console.log('i ' + i + ' - tried.. ');
       $(startLocationID + ' .player-container').fadeOut(200, () => {
         $(endLocationID).prepend($(startLocationID + ' .player-container'));
 
@@ -401,11 +404,37 @@ class Board {
         // continue moving player
         $(endLocationID + ' .player-container .weapon').replaceWith(weaponImgNodeClone);
         $(endLocationID + ' .player-container').fadeIn(200);
-        console.log('i ' + i + ' - done');
+        // console.log('i ' + i + ' - done');
       });
 
       // adjust X location
-      this.players[playerNumber]._playerLocationX--;
+      this.players[playerNumber]._playerLocationX -= 1;
+      this.enterFight();
+    }
+  }
+
+  enterFight() {
+    const playerOneY = this.players[0]._playerLocationY;
+    const playerTwoY = this.players[1]._playerLocationY;
+    const playerOneX = this.players[0]._playerLocationX;
+    const playerTwoX = this.players[1]._playerLocationX;
+
+    // debug
+    console.log('X: ' + Math.abs(playerOneY - playerTwoY));
+    console.log('Y: ' + Math.abs(playerTwoX - playerOneX));
+
+    if ((((Math.abs(playerOneY - playerTwoY)) === 0) && ((Math.abs(playerOneX - playerTwoX)) <= 1)) ||
+        (((Math.abs(playerOneX - playerTwoX)) === 0) && ((Math.abs(playerOneY - playerTwoY)) <= 1))) {
+      // move content from stats to modal
+      $('#fightBody').replaceWith($('#fightBox'));
+      // erase game board
+      $('main').remove();
+      // make sure background stays the same
+      $('body').css({'background':'url(\'../img/bckgd-trooper.jpg\')','background-size':'cover'});
+      // open modal without option of closing it down by clicking away from it
+      $('#fightMode').modal({
+        backdrop: 'static'
+      })
     }
 
   }
