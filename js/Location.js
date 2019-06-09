@@ -54,7 +54,7 @@ class Location {
       }
     }
 
-    // add half-opacity images for first player moves
+    // add half-opacity images for first turn
     if (this.isAvailable) {
       tdNode.classList.add('available');
       // make sure to add weapon image if it was generated inside first players available fields

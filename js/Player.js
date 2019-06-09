@@ -8,8 +8,4 @@ class Player {
     this._number = number;
   }
 
-  generateStats(playerNumber) {
-
-  }
-
 }

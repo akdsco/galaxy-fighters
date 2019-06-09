@@ -45,7 +45,7 @@ $(function () {
           // move player
           currentGame.movePlayer(turn, endLocationID);
 
-          // console.log(currentGame.gameData);
+          console.log(currentGame.gameData);
           console.log(e);
 
           //TODO events.. I have no idea how to make it a better experience... :(
@@ -67,7 +67,7 @@ $(function () {
           currentGame.movePlayer(turn, endLocationID);
           console.log(e);
 
-          // console.log(currentGame.gameData);
+          console.log(currentGame.gameData);
 
           turn--;
           break;

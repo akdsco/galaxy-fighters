@@ -28,16 +28,13 @@ td {
     height: 48px;
     width: 48px;
     font-size: 13px;
-    /*position: relative;*/
-    /*top: 0;*/
-    /*left: 0;*/
 }
 
 .player-container {
     position: relative;
     margin: auto;
-    top: 4px;
-    left: 2px;
+    top: 2px;
+    left: 1px;
     width: 45px;
     height: 45px;
 }
