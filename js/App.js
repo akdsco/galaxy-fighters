@@ -23,6 +23,7 @@ $(function () {
     await sleep(380);
     gameNode.removeChild(gameNode.firstChild);
     currentGame = new Board(10);
+    currentGame.resetPlayersStats();
     gameNode.prepend(currentGame.createGameNode());
     $(game).fadeIn(400);
     turn = 0;
@@ -51,8 +52,6 @@ $(function () {
           //TODO events.. I have no idea how to make it a better experience... :(
 
           //TODO transpiler not working? 'regeneratorRuntime is not defined' and 'Board is not a constructor'
-
-          //TODO make weapon in info panels change as player change them on the field
 
 
           // check abs value between players, if it's 1 enter fight mode

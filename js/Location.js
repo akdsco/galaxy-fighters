@@ -86,8 +86,5 @@ class Location {
     return tdNode;
   }
 
-  // changePlayersLocation (locationY, locationX) {
-  //
-  // }
 
 }

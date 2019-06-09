@@ -5,7 +5,7 @@ class Board {
     this.weaponStorage = [{name: 'Red Saber', damage: 20, src: 'img/weapon/red-saber.png'},
                           {name: 'Sword', damage: 30, src: 'img/weapon/sword.png'},
                           {name: 'Shotgun', damage: 40, src: 'img/weapon/shotgun.png'},
-                          {name: 'Rifle', damage: 50, src: 'img/weapon/rifle.png'}];
+                          {name: 'M42', damage: 50, src: 'img/weapon/rifle.png'}];
     this.players = [new Player(1, 'Yoda'),
                     new Player(2, 'Vader')];
     this.spawnFlag = true;
@@ -504,6 +504,16 @@ class Board {
     const y = this.players[playerNumber]._playerLocationY;
     const x = this.players[playerNumber]._playerLocationX;
     return this.gameData[y][x];
+  }
+
+  resetPlayersStats() {
+    let number = 'One';
+    for (let i = 0; i < 2; i++) {
+      $('#player' + number + 'WeaponImg').attr('src', this.players[i]._weapon.src);
+      $('#player' + number + 'Damage').html('Damage: ' + this.players[i]._weapon.damage);
+      $('#player' + number + 'WeaponName').html('Weapon: ' + this.players[i]._weapon.name);
+      number = 'Two';
+    }
   }
 
 }
