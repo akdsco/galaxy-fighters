@@ -9,7 +9,7 @@ class Location {
     this.isWeaponDisplayed = false;
   }
 
-  addLocationNode() {
+  createLocationNode() {
     // create nodes
     const tdNode = document.createElement('td');
     const container = document.createElement('div');

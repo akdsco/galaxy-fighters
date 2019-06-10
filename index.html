@@ -34,14 +34,14 @@
     <div class="col-lg-6">
       <div class="container-fluid" id="fightBox">
         <div class="row">
-          <div class="col-lg-6 col-md-6 mt-2 mt-md-3 mt-lg-0 statsBox" id="playerOneBox">
+          <div class="col-lg-6 col-md-6 mt-2 mt-md-3 mt-lg-0 statsBox" id="player-0-Box">
             <!-- player one stats -->
             <div class="row align-items-center">
               <div class="col-7 my-3 text-right">
-                <p class="playerName" id="playerOneName"></p>
-                <p id="playerOneHealth"></p>
-                <p id="playerOneWeaponName"></p>
-                <p id="playerOneDamage"></p>
+                <p class="playerName" id="player-0-Name"></p>
+                <p id="player-0-Health"></p>
+                <p id="player-0-WeaponName"></p>
+                <p id="player-0-Damage"></p>
               </div>
               <div class="col-3 player-container-stats">
                 <img class="player-stats" alt="yoda" src="img/yoda-sm.jpg"/>
@@ -49,7 +49,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-6 col-md-6 mt-md-3 mt-lg-0 statsBox" id="playerTwoBox">
+          <div class="col-lg-6 col-md-6 mt-md-3 mt-lg-0 statsBox" id="player-1-Box">
             <!-- player two stats -->
             <div class="row align-items-center">
               <div class="col-3 col-md-4 player-container-stats">
@@ -57,10 +57,10 @@
                 <img class="weapon-stats" id="playerTwoWeaponImg" alt="light-saber" src="img/weapon/light-saber.png"/>
               </div>
               <div class="col-7 col-md-7 my-3">
-                <p class="playerName" id="playerTwoName"></p>
-                <p id="playerTwoHealth"></p>
-                <p id="playerTwoWeaponName"></p>
-                <p id="playerTwoDamage"></p>
+                <p class="playerName" id="player-1-Name"></p>
+                <p id="player-1-Health"></p>
+                <p id="player-1-WeaponName"></p>
+                <p id="player-1-Damage"></p>
               </div>
             </div>
           </div>
@@ -90,15 +90,15 @@
       </div>
       <div class="container-fluid">
         <div class="row text-center">
-          <div class="col-6 my-2" id="playerOneButtons">
+          <div class="col-6 my-2" id="player-0-Buttons">
   <!--          <button type="button" class="btn btn-secondary mx-auto" data-dismiss="modal">Close</button>-->
-            <button type="button" id="playerOneBlock" class="btn btn-primary">Block</button>
-            <button type="button" id="playerOneAttack" class="btn btn-danger">Attack</button>
+            <button type="button" id="player-0-Block" class="btn btn-primary blockButton">Block</button>
+            <button type="button" id="player-0-Attack" class="btn btn-danger attackButton">Attack</button>
           </div>
-          <div class="col-6 my-2" id="playerTwoButtons">
+          <div class="col-6 my-2" id="player-1-Buttons">
   <!--          <button type="button" class="btn btn-primary">Save changes</button>-->
-            <button type="button" id="playerTwoAttack" class="btn btn-danger">Attack</button>
-            <button type="button" id="playerTwoBlock" class="btn btn-primary">Block</button>
+            <button type="button" id="player-1-Attack" class="btn btn-danger attackButton">Attack</button>
+            <button type="button" id="player-1-Block" class="btn btn-primary blockButton">Block</button>
           </div>
         </div>
       </div>

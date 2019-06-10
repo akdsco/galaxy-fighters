@@ -73,6 +73,42 @@ $(function () {
     }
   });
 
+  // control buttons during fight mode
+
+  $('.blockButton').on('click', (e) => {
+    console.log('block button clicked');
+    console.log(e);
+    console.log(turn);
+
+    switch (turn) {
+      case 0:
+        currentGame.defend(turn);
+        turn++;
+        break;
+      case 1:
+        currentGame.defend(turn);
+        turn--;
+        break;
+    }
+  });
+
+  $('.attackButton').on('click', (e) => {
+    console.log('attack button clicked');
+    console.log(e);
+    console.log(turn);
+
+    switch (turn) {
+      case 0:
+        currentGame.attack(turn);
+        turn++;
+        break;
+      case 1:
+        currentGame.attack(turn);
+        turn--;
+        break;
+    }
+  });
+
   $(game).on('mouseleave','.half-opacity', ((e) => {
     if(e.target.parentElement.classList.contains('available')) {
       if(e.target.parentElement.childElementCount === 1) {

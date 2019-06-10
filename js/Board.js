@@ -16,7 +16,7 @@ class Board {
     this.addPlayers(this.players);
     // as a final step
     this.createGameNode();
-    this.setPlayerStats();
+    this.addPlayerStats();
   }
 
   // populate gameData array with Location objects
@@ -162,24 +162,19 @@ class Board {
     for (let i = 0; i < this.size; i++) {
       let tr = document.createElement('tr');
       for (let j = 0; j < this.size; j++) {
-        tr.appendChild(this.gameData[i][j].addLocationNode());
+        tr.appendChild(this.gameData[i][j].createLocationNode());
       }
       gameNode.appendChild(tr);
     }
     return gameNode;
   }
 
-  setPlayerStats() {
-    let id = 'One';
+  addPlayerStats() {
     for (let i = 0; i < 2; i++){
-      console.log('been here');
-      console.log(id);
-      $('#player' + id + 'Name').text(this.players[i]._name);
-      $('#player' + id + 'Health').text('Health: ' + this.players[i]._health);
-      $('#player' + id + 'WeaponName').text(this.players[i]._weapon.name);
-      $('#player' + id + 'Damage').text('Damage: ' + this.players[i]._weapon.damage);
-
-      id = 'Two';
+      $('#player-' + i + '-Name').text(this.players[i]._name);
+      $('#player-' + i + '-Health').text('Health: ' + this.players[i]._health);
+      $('#player-' + i + '-WeaponName').text(this.players[i]._weapon.name);
+      $('#player-' + i + '-Damage').text('Damage: ' + this.players[i]._weapon.damage);
     }
   }
 
@@ -455,91 +450,89 @@ class Board {
       $('#fightMode').modal({
         backdrop: 'static'
       });
-      this.fight(playerNumber);
-    }
-  }
 
-  fight(playerNumber) {
-    let attackingID;
-    let defendingID;
-
-    if(playerNumber === 0) {
-      attackingID = 'One';
-      defendingID = 'Two';
-    } else {
-      attackingID = 'Two';
-      defendingID = 'One';
-    }
-
-    // set up css for turn (depending on who attacked, gets to attack or block first)
-    $('#player' + attackingID + 'Box').css({'border':'20px solid green'});
-    $('#player' + defendingID + 'Block').prop('disabled', true);
-    $('#player' + defendingID + 'Attack').prop('disabled', true);
-
-    let bothPlayersBreathe = () => {
-      let result = 2;
-      for (let i = 0; i < 2; i++) {
-        if (this.players[i]._health < 0) {
-          result = i;
-          return result;
-        }
+      // set up css for turn (depending on who attacked, gets to attack or block first)
+      $('#player-' + playerNumber + '-Box').css({'border':'20px solid green'});
+      if (playerNumber === 1) {
+        playerNumber--;
+      } else {
+        playerNumber++;
       }
-      return result
+      $('#player-' + playerNumber + '-Block').prop('disabled', true);
+      $('#player-' + playerNumber + '-Attack').prop('disabled', true);
+
     }
-
-    let turn = playerNumber;
-    console.log('turn: ' + turn);
-
-    console.log('BPB: ' + (bothPlayersBreathe() === 2));
-    while (bothPlayersBreathe === 2) {
-      switch (turn) {
-        case 0:
-          this.attack(turn);
-          console.log('inside case 0');
-          turn++;
-          break;
-        case 1:
-          this.attack(turn);
-          console.log('inside case 1');
-          turn--;
-          break;
-      }
-    }
-
-    // one player has less than 0 health.. and we can find out which by running bothPlayersBreathe
-
   }
 
   attack(playerNumber) {
-    console.log('anythigm?');
-    let attackingID;
-    let defendingID;
+    if(playerNumber === 0) {
+      console.log('lower player 0 life');
 
-    if(playerNumber === 1) {
-      attackingID = 'One';
-      defendingID = 'Two';
+      // swap sides
+      $('#player-0-Box').css({'border':'20px solid green'});
+      $('#player-0-Block').prop('disabled', false);
+      $('#player-0-Attack').prop('disabled', false);
+
+      // calculate damage done by player one and adjust his health level
+      let damage = this.players[1]._weapon.damage;
+      if (this.players[playerNumber]._isFortified) {
+        damage /= 2;
+      }
+      this.players[0]._health -= damage;
+
+      // update front-end
+      $('#player-0-Health').text('Health: ' + this.players[0]._health);
+
+      $('#player-1-Box').css({'border':'20px solid grey'});
+      $('#player-1-Block').prop('disabled', true);
+      $('#player-1-Attack').prop('disabled', true);
     } else {
-      attackingID = 'Two';
-      defendingID = 'One';
+      console.log('lower player 1 life');
+
+      // swap sides
+      $('#player-1-Box').css({'border':'20px solid green'});
+      $('#player-1-Block').prop('disabled', false);
+      $('#player-1-Attack').prop('disabled', false);
+
+      // calculate damage done by player one and adjust his health level
+      let damage = this.players[0]._weapon.damage;
+      if (this.players[playerNumber]._isFortified) {
+        damage /= 2;
+      }
+      this.players[1]._health -= damage;
+
+      // update front-end
+      $('#player-1-Health').text('Health: ' + this.players[0]._health);
+
+      $('#player-0-Box').css({'border':'20px solid grey'});
+      $('#player-0-Block').prop('disabled', true);
+      $('#player-0-Attack').prop('disabled', true);
     }
-    console.log(attackingID);
+  }
 
-    $('#player' + attackingID + 'Block').on('click', (e) =>  {
-      console.log('clicked Block');
-      this.players[playerNumber]._isFortified = true;
-      $('#player' + attackingID + 'Box').css({'border':'20px solid blue'});
-    });
-
-    $('#player' + attackingID + 'Attack').on('click', (e) => {
-      console.log('clicked Attack');
-
-    });
+  defend(playerNumber) {
+    if(playerNumber === 0) {
+      console.log('turn on player 0 defense');
+    } else {
+      console.log('turn on player 1 defense');
+    }
   }
 
   // Helper Methods
 
   sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  bothPlayersBreathe() {
+    let result = 2;
+    for (let i = 0; i < 2; i++) {
+      if (this.players[i]._health < 0) {
+        result = i;
+        return result;
+      }
+    }
+    return result
   }
 
   swapWeapons(endLocationID, endLocation, playerNumber, weaponImgNode) {
