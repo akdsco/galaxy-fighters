@@ -1,3 +1,8 @@
+
+//TODO events.. I have no idea how to make it a better experience... :(
+
+//TODO transpiler not working? 'regeneratorRuntime is not defined' and 'Board is not a constructor'
+
 $(function () {
   const gameNode = document.getElementById('game');
   const game = '#game';
@@ -42,28 +47,18 @@ $(function () {
 
       switch (turn) {
         case 0:
-          // console.log(currentGame.stoppedOnWeapon);
-          // move player
           currentGame.movePlayer(turn, endLocationID);
+
+          // debug
           // console.log(currentGame.gameData);
           // console.log(e);
-
-          //TODO events.. I have no idea how to make it a better experience... :(
-
-          //TODO transpiler not working? 'regeneratorRuntime is not defined' and 'Board is not a constructor'
-
-
-          // check abs value between players, if it's 1 enter fight mode
-          // or when players selects other players location
-          // when fight is over, display winners name and quit = true;
-
 
           turn++;
           break;
         case 1:
-          // console.log(currentGame.stoppedOnWeapon);
-          // move player
           currentGame.movePlayer(turn, endLocationID);
+
+          // debug
           // console.log(currentGame.gameData);
           // console.log(e);
 
@@ -75,8 +70,8 @@ $(function () {
 
   // control buttons during fight mode
 
-  $('.blockButton').on('click', (e) => {
-    console.log('block button clicked');
+  $('.defendButton').on('click', (e) => {
+    console.log('defend button clicked');
     console.log(e);
     console.log(turn);
 
@@ -96,17 +91,23 @@ $(function () {
     console.log('attack button clicked');
     console.log(e);
     console.log(turn);
+    const p0 = '#player-0-';
+    const p1 = '#player-1-';
 
     switch (turn) {
       case 0:
-        currentGame.attack(turn);
+        currentGame.attack(turn,p0,p1);
         turn++;
         break;
       case 1:
-        currentGame.attack(turn);
+        currentGame.attack(turn,p0,p1);
         turn--;
         break;
     }
+  });
+
+  $('#closeGame').on('click',() => {
+    window.close();
   });
 
   $(game).on('mouseleave','.half-opacity', ((e) => {

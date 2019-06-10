@@ -121,3 +121,13 @@ td {
     width: 2.8rem;
     height: 2.8rem;
 }
+
+/* Winner Modal */
+
+.modalHeader {
+    color: forestgreen;
+}
+
+#winnerInfo {
+    min-height: 35vh;
+}

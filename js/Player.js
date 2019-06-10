@@ -6,7 +6,7 @@ class Player {
     this._playerLocationX = 0;
     this._weapon = {name: 'Light Saber', damage: 10, src: 'img/weapon/light-saber.png'};
     this._number = number;
-    this._isFortified = false;
+    this._isDefending = false;
   }
 
 }

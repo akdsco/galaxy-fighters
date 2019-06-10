@@ -440,7 +440,7 @@ class Board {
       // erase game board
       $('main').fadeOut(300);
       await this.sleep(500);
-      $('main').remove();
+      // $('main').remove();
 
       // make sure CSS will work as intended afterwards
       // $('body').css({'background':'url(\'../img/bckgd-trooper.jpg\')','background-size':'cover'});
@@ -451,105 +451,115 @@ class Board {
         backdrop: 'static'
       });
 
-      // set up css for turn (depending on who attacked, gets to attack or block first)
+      // set up css for turn (depending on who attacked, gets to attack or defend first)
       $('#player-' + playerNumber + '-Box').css({'border':'20px solid green'});
       if (playerNumber === 1) {
         playerNumber--;
       } else {
         playerNumber++;
       }
-      $('#player-' + playerNumber + '-Block').prop('disabled', true);
+      $('#player-' + playerNumber + '-Defend').prop('disabled', true);
       $('#player-' + playerNumber + '-Attack').prop('disabled', true);
 
     }
   }
 
   attack(playerNumber) {
+    const p0 = '#player-0-';
+    const p1 = '#player-1-';
+
     if(playerNumber === 0) {
       console.log('lower player 0 life');
 
       // swap sides
-      $('#player-0-Box').css({'border':'20px solid green'});
-      $('#player-0-Block').prop('disabled', false);
-      $('#player-0-Attack').prop('disabled', false);
+      $(p0 + 'Box').css({'border':'20px solid green'});
+      $(p0 + 'Defend').prop('disabled', false);
+      $(p0 + 'Attack').prop('disabled', false);
 
-      // calculate damage done by player one and adjust his health level
+      // calculate damage and adjust health level
       let damage = this.players[1]._weapon.damage;
-      if (this.players[playerNumber]._isFortified) {
+      if (this.players[0]._isDefending) {
         damage /= 2;
-        this.players[playerNumber]._isFortified = false;
+        this.players[0]._isDefending = false;
+        $(p0 + 'Box').css({'background':'white'});
       }
       this.players[0]._health -= damage;
 
-      // update front-end
-      $('#player-0-Health').text('Health: ' + this.players[0]._health);
+      // check if player 1 won
+      if (this.isPlayerOutOfBreath() === 0) {
+        this.displayGameWinner(1);
+      }
 
-      $('#player-1-Box').css({'border':'20px solid grey'});
-      $('#player-1-Block').prop('disabled', true);
-      $('#player-1-Attack').prop('disabled', true);
+      // update front-end
+      $(p0 + 'Health').text('Health: ' + this.players[0]._health);
+      $(p1 + 'Box').css({'border':'20px solid grey'});
+      $(p1 + 'Defend').prop('disabled', true);
+      $(p1 + 'Attack').prop('disabled', true);
     } else {
       console.log('lower player 1 life');
 
       // swap sides
-      $('#player-1-Box').css({'border':'20px solid green'});
-      $('#player-1-Block').prop('disabled', false);
-      $('#player-1-Attack').prop('disabled', false);
+      $(p1 + 'Box').css({'border':'20px solid green'});
+      $(p1 + 'Defend').prop('disabled', false);
+      $(p1 + 'Attack').prop('disabled', false);
 
       // calculate damage done by player one and adjust his health level
       let damage = this.players[0]._weapon.damage;
-      if (this.players[playerNumber]._isFortified) {
+      if (this.players[1]._isDefending) {
         damage /= 2;
-        this.players[playerNumber]._isFortified = false;
+        this.players[1]._isDefending = false;
+        $(p1 + 'Box').css({'background':'white'});
       }
       this.players[1]._health -= damage;
 
-      // update front-end
-      $('#player-1-Health').text('Health: ' + this.players[1]._health);
+      // check if player 1 won
+      if (this.isPlayerOutOfBreath() === 1) {
+        this.displayGameWinner(0);
+      }
 
-      $('#player-0-Box').css({'border':'20px solid grey'});
-      $('#player-0-Block').prop('disabled', true);
-      $('#player-0-Attack').prop('disabled', true);
+      // update front-end
+      $(p1 + 'Health').text('Health: ' + this.players[1]._health);
+      $(p0 + 'Box').css({'border':'20px solid grey'});
+      $(p0 + 'Defend').prop('disabled', true);
+      $(p0 + 'Attack').prop('disabled', true);
     }
   }
 
   defend(playerNumber) {
+    const p0 = '#player-0-';
+    const p1 = '#player-1-';
+
     if(playerNumber === 0) {
       console.log('turn on player 1 defense');
 
-      // defense on
-      $('#player-1-Box').css({'border':'20px solid blue'});
-      $('#player-1-Block').prop('disabled', true);
-      $('#player-1-Attack').prop('disabled', true);
+      // draw shielf
+      $(p1 + 'Box').css({'background':'rgba(51, 204, 255,.5)'});
+      $(p1 + 'Defend').prop('disabled', true);
+      $(p1 + 'Attack').prop('disabled', true);
 
-      // switch isFortified flag
-      this.players[1]._isFortified = true;
-
-      // update front-end
-      // $('#player-0-Health').text('Health: ' + this.players[0]._health);
+      // switch isDefending flag
+      this.players[1]._isDefending = true;
 
       // swap sides
-      $('#player-0-Box').css({'border':'20px solid green'});
-      $('#player-0-Block').prop('disabled', false);
-      $('#player-0-Attack').prop('disabled', false);
+      $(p0 + 'Box').css({'border':'20px solid green'});
+      $(p0 + 'Defend').prop('disabled', false);
+      $(p0 + 'Attack').prop('disabled', false);
 
     } else {
       console.log('turn on player 0 defense');
 
-      // defense on
-      $('#player-0-Box').css({'border':'20px solid blue'});
-      $('#player-0-Block').prop('disabled', true);
-      $('#player-0-Attack').prop('disabled', true);
+      // draw shield
+      $(p0 + 'Box').css({'background':'rgba(51, 204, 255,.5)'});
+      $(p0 + 'Defend').prop('disabled', true);
+      $(p0 + 'Attack').prop('disabled', true);
 
-      // switch isFortified flag
-      this.players[0]._isFortified = true;
-
-      // update front-end
-      // $('#player-1-Health').text('Health: ' + this.players[0]._health);
+      // switch isDefending flag
+      this.players[0]._isDefending = true;
 
       // swap sides
-      $('#player-1-Box').css({'border':'20px solid green'});
-      $('#player-1-Block').prop('disabled', false);
-      $('#player-1-Attack').prop('disabled', false);
+      $(p1 + 'Box').css({'border':'20px solid green'});
+      $(p1 + 'Defend').prop('disabled', false);
+      $(p1 + 'Attack').prop('disabled', false);
     }
   }
 
@@ -559,15 +569,27 @@ class Board {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
-  bothPlayersBreathe() {
+  isPlayerOutOfBreath() {
     let result = 2;
     for (let i = 0; i < 2; i++) {
-      if (this.players[i]._health < 0) {
+      if (this.players[i]._health <= 0) {
         result = i;
         return result;
       }
     }
     return result
+  }
+
+  displayGameWinner(playerNumber) {
+    // close modal
+    $('#fightMode').modal('hide');
+    // update winners modal
+    $('#winnersImg').attr('src','img/' + this.players[playerNumber]._name.toLowerCase() + '-sm.jpg');
+    $('#winnersHeader').text(this.players[playerNumber]._name + ' wins !!!');
+    // show winner modal
+    $('#winnerModal').modal({
+      backdrop: 'static'
+    })
   }
 
   swapWeapons(endLocationID, endLocation, playerNumber, weaponImgNode) {
@@ -589,14 +611,15 @@ class Board {
     weaponImgNode.setAttribute('title',tempWeapon.name + ' does ' + tempWeapon.damage + ' damage.');
 
     //change players weapon img, name and damage in stats box as well
+    let selector = '#player-' + playerNumber + '-';
     if (playerNumber === 0) {
-      $('#playerOneWeaponImg').attr('src',this.players[playerNumber]._weapon.src);
-      $('#player-0-Damage').html('Damage: ' + this.players[playerNumber]._weapon.damage);
-      $('#player-0-WeaponName').html(this.players[playerNumber]._weapon.name);
+      $(selector + 'WeaponImg').attr('src',this.players[playerNumber]._weapon.src);
+      $(selector + 'Damage').html('Damage: ' + this.players[playerNumber]._weapon.damage);
+      $(selector + 'WeaponName').html(this.players[playerNumber]._weapon.name);
     } else {
-      $('#playerTwoWeaponImg').attr('src',this.players[playerNumber]._weapon.src);
-      $('#player-1-Damage').html('Damage: ' + this.players[playerNumber]._weapon.damage);
-      $('#player-1-WeaponName').html(this.players[playerNumber]._weapon.name);
+      $(selector + 'WeaponImg').attr('src',this.players[playerNumber]._weapon.src);
+      $(selector + 'Damage').html('Damage: ' + this.players[playerNumber]._weapon.damage);
+      $(selector + 'WeaponName').html(this.players[playerNumber]._weapon.name);
     }
 
     return weaponImgNode;
@@ -635,13 +658,14 @@ class Board {
   */
 
   modifySquareImg(idString, playerNumber, value, imgNode) {
+    const selector = '.half-opacity';
     if (playerNumber === 1) {
       // modifies player one - (checks current player and modifies second for next round)
       if (value) {
         imgNode.setAttribute('src', 'img/yoda-sm.jpg');
         $(idString).append(imgNode);
       } else {
-        $('.half-opacity').remove();
+        $(selector).remove();
       }
     } else {
       // modifies player two
@@ -649,7 +673,7 @@ class Board {
         imgNode.setAttribute('src', 'img/vader-sm.jpg');
         $(idString).append(imgNode);
       } else {
-        $('.half-opacity').remove();
+        $(selector).remove();
       }
     }
   }
@@ -661,12 +685,10 @@ class Board {
   }
 
   resetPlayersStats() {
-    let number = 'One';
     for (let i = 0; i < 2; i++) {
-      $('#player' + number + 'WeaponImg').attr('src', this.players[i]._weapon.src);
-      $('#player' + number + 'Damage').html('Damage: ' + this.players[i]._weapon.damage);
-      $('#player' + number + 'WeaponName').html(this.players[i]._weapon.name);
-      number = 'Two';
+      $('#player-' + i + '-WeaponImg').attr('src', this.players[i]._weapon.src);
+      $('#player-' + i + '-Damage').html('Damage: ' + this.players[i]._weapon.damage);
+      $('#player-' + i + '-WeaponName').html(this.players[i]._weapon.name);
     }
   }
 

@@ -25,7 +25,7 @@
 <main class="container">
   <div class="row">
     <div class="col-lg-6 text-center" id="game"><!--  Inject Game Here -->
-      <button class="btn btn-secondary btn-lg mt-2" id="restart-button">Restart</button>
+      <button class="btn btn-secondary btn-lg mt-2" id="restart-button">Restart Game</button>
       <!-- Button trigger modal -->
 <!--      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#fightMode">-->
 <!--        Fight Mode-->
@@ -34,8 +34,9 @@
     <div class="col-lg-6">
       <div class="container-fluid" id="fightBox">
         <div class="row">
+<!--          <button type="button" data-toggle="modal" data-target="#winnerModal">Launch modal</button>-->
           <div class="col-lg-6 col-md-6 mt-2 mt-md-3 mt-lg-0 statsBox" id="player-0-Box">
-            <!-- player one stats -->
+            <!-- player one -->
             <div class="row align-items-center">
               <div class="col-7 my-3 text-right">
                 <p class="playerName" id="player-0-Name"></p>
@@ -45,16 +46,16 @@
               </div>
               <div class="col-3 player-container-stats">
                 <img class="player-stats" alt="yoda" src="img/yoda-sm.jpg"/>
-                <img class="weapon-stats" id="playerOneWeaponImg" alt="laser-sword" src="img/weapon/light-saber.png"/>
+                <img class="weapon-stats" id="player-0-WeaponImg" alt="laser-sword" src="img/weapon/light-saber.png"/>
               </div>
             </div>
           </div>
           <div class="col-lg-6 col-md-6 mt-md-3 mt-lg-0 statsBox" id="player-1-Box">
-            <!-- player two stats -->
+            <!-- player two -->
             <div class="row align-items-center">
               <div class="col-3 col-md-4 player-container-stats">
                 <img class="player-stats" alt="vader" src="img/vader-sm.jpg"/>
-                <img class="weapon-stats" id="playerTwoWeaponImg" alt="light-saber" src="img/weapon/light-saber.png"/>
+                <img class="weapon-stats" id="player-1-WeaponImg" alt="light-saber" src="img/weapon/light-saber.png"/>
               </div>
               <div class="col-7 col-md-7 my-3">
                 <p class="playerName" id="player-1-Name"></p>
@@ -71,7 +72,6 @@
 </main>
 
 <!-- Fight Mode Modal-->
-
 <div class="modal fade" id="fightMode" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
@@ -92,13 +92,13 @@
         <div class="row text-center">
           <div class="col-6 my-2" id="player-0-Buttons">
   <!--          <button type="button" class="btn btn-secondary mx-auto" data-dismiss="modal">Close</button>-->
-            <button type="button" id="player-0-Block" class="btn btn-primary blockButton">Block</button>
+            <button type="button" id="player-0-Defend" class="btn btn-primary defendButton">Defend</button>
             <button type="button" id="player-0-Attack" class="btn btn-danger attackButton">Attack</button>
           </div>
           <div class="col-6 my-2" id="player-1-Buttons">
   <!--          <button type="button" class="btn btn-primary">Save changes</button>-->
             <button type="button" id="player-1-Attack" class="btn btn-danger attackButton">Attack</button>
-            <button type="button" id="player-1-Block" class="btn btn-primary blockButton">Block</button>
+            <button type="button" id="player-1-Defend" class="btn btn-primary defendButton">Defend</button>
           </div>
         </div>
       </div>
@@ -106,16 +106,35 @@
   </div>
 </div>
 
-<!-- Credits -->
+<!-- Winner Announcement Modal-->
+<div class="modal fade" id="winnerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="row mx-auto align-items-center" id="winnerInfo">
+        <div class="col-4">
+          <img src="" alt="winner-image" id="winnersImg">
+        </div>
+        <div class="col-8">
+          <h1 class="modalHeader text-center" id="winnersHeader"></h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col text-center">
+          <button type="button" class="btn btn-secondary mb-3" id="playAgain" data-dismiss="modal">Play Again</button>
+          <button type="button" class="btn btn-danger mb-3" id="closeGame">Exit Game</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
+<!-- Credits -->
 <div id="credit">Icons made by <a href="https://www.freepik.com/" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
+
 <!-- Load JavaScript-->
 
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"
-        crossorigin="anonymous">
-</script>
-<!-- Popper & Bootstrap JS -->
+<!-- jQuery, Popper & Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
