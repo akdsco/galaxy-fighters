@@ -27,43 +27,45 @@
     <div class="col-lg-6 text-center" id="game"><!--  Inject Game Here -->
       <button class="btn btn-secondary btn-lg mt-2" id="restart-button">Restart</button>
       <!-- Button trigger modal -->
-      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#fightMode">
-        Fight Mode
-      </button>
+<!--      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#fightMode">-->
+<!--        Fight Mode-->
+<!--      </button>-->
     </div>
     <div class="col-lg-6">
-      <div class="row" id="fightBox">
-      <div class="col-lg-6 col-md-6 mt-2 mt-md-3 mt-lg-0 statsBox" id="playerOneBox">
-        <!-- player one stats -->
-        <div class="row align-items-center">
-          <div class="col-4 player-container-stats">
-            <img class="player-stats" alt="yoda" src="img/yoda-sm.jpg"/>
-            <img class="weapon-stats" id="playerOneWeaponImg" alt="laser-sword" src="img/weapon/light-saber.png"/>
+      <div class="container-fluid" id="fightBox">
+        <div class="row">
+          <div class="col-lg-6 col-md-6 mt-2 mt-md-3 mt-lg-0 statsBox" id="playerOneBox">
+            <!-- player one stats -->
+            <div class="row align-items-center">
+              <div class="col-7 my-3 text-right">
+                <p class="playerName" id="playerOneName"></p>
+                <p id="playerOneHealth"></p>
+                <p id="playerOneWeaponName"></p>
+                <p id="playerOneDamage"></p>
+              </div>
+              <div class="col-3 player-container-stats">
+                <img class="player-stats" alt="yoda" src="img/yoda-sm.jpg"/>
+                <img class="weapon-stats" id="playerOneWeaponImg" alt="laser-sword" src="img/weapon/light-saber.png"/>
+              </div>
+            </div>
           </div>
-          <div class="col-8 mt-3">
-            <p class="playerName" id="playerOneName">Yoda</p>
-            <p id="playerOneHealth">Health: 100</p>
-            <p id="playerOneWeaponName">Weapon: Light Saber</p>
-            <p id="playerOneDamage">Damage: 10</p>
+          <div class="col-lg-6 col-md-6 mt-md-3 mt-lg-0 statsBox" id="playerTwoBox">
+            <!-- player two stats -->
+            <div class="row align-items-center">
+              <div class="col-3 col-md-4 player-container-stats">
+                <img class="player-stats" alt="vader" src="img/vader-sm.jpg"/>
+                <img class="weapon-stats" id="playerTwoWeaponImg" alt="light-saber" src="img/weapon/light-saber.png"/>
+              </div>
+              <div class="col-7 col-md-7 my-3">
+                <p class="playerName" id="playerTwoName"></p>
+                <p id="playerTwoHealth"></p>
+                <p id="playerTwoWeaponName"></p>
+                <p id="playerTwoDamage"></p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="col-lg-6 col-md-6 mt-md-3 mt-lg-0 statsBox" id="playerTwoBox">
-        <!-- player two stats -->
-        <div class="row align-items-center">
-          <div class="col-4 player-container-stats">
-            <img class="player-stats" alt="vader" src="img/vader-sm.jpg"/>
-            <img class="weapon-stats" id="playerTwoWeaponImg" alt="light-saber" src="img/weapon/light-saber.png"/>
-          </div>
-          <div class="col-8 mt-3">
-            <p class="playerName" id="playerTwoName">Vader</p>
-            <p id="playerTwoHealth">Health: 100</p>
-            <p id="playerTwoWeaponName">Weapon: Light Saber</p>
-            <p id="playerTwoDamage">Damage: 10</p>
-          </div>
-        </div>
-      </div>
-    </div>
     </div>
   </div>
 </main>
@@ -73,29 +75,31 @@
 <div class="modal fade" id="fightMode" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalCenterTitle">Fight !!!</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+      <div class="container-fluid">
+        <div class="row text-center my-2">
+          <div class="col-12">
+            <h5 class="">Fight !!!</h5>
+          </div>
+  <!--        <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+  <!--          <span aria-hidden="true">&times;</span>-->
+  <!--        </button>-->
+        </div>
       </div>
       <div class="modal-body" id="fightBody">
-<!--        <div class="row">-->
-<!--          <div class="col-6">-->
-<!--            <img class="player-stats" alt="yoda" src="img/yoda-sm.jpg"/>-->
-<!--            <img class="weapon-stats" id="playerOneWeaponImg" alt="laser-sword" src="img/weapon/light-saber.png"/>-->
-<!--          </div>-->
-<!--          <div class="col-6">-->
-<!--            ...-->
-<!--          </div>-->
-<!--        </div>-->
+      <!-- Fight Info lands here when players starts fight-->
       </div>
-      <div class="row">
-        <div class="col-6">
-          <button type="button" class="btn btn-secondary mx-auto" data-dismiss="modal">Close</button>
-        </div>
-        <div class="col-6">
-          <button type="button" class="btn btn-primary">Save changes</button>
+      <div class="container-fluid">
+        <div class="row text-center">
+          <div class="col-6 my-2" id="playerOneButtons">
+  <!--          <button type="button" class="btn btn-secondary mx-auto" data-dismiss="modal">Close</button>-->
+            <button type="button" id="playerOneBlock" class="btn btn-primary">Block</button>
+            <button type="button" id="playerOneAttack" class="btn btn-danger">Attack</button>
+          </div>
+          <div class="col-6 my-2" id="playerTwoButtons">
+  <!--          <button type="button" class="btn btn-primary">Save changes</button>-->
+            <button type="button" id="playerTwoAttack" class="btn btn-danger">Attack</button>
+            <button type="button" id="playerTwoBlock" class="btn btn-primary">Block</button>
+          </div>
         </div>
       </div>
     </div>

@@ -3,9 +3,9 @@ class Board {
     this.size = size;
     this.gameData = [];
     this.weaponStorage = [{name: 'Red Saber', damage: 20, src: 'img/weapon/red-saber.png'},
-                          {name: 'Sword', damage: 30, src: 'img/weapon/sword.png'},
-                          {name: 'Rifle', damage: 40, src: 'img/weapon/rifle.png'},
-                          {name: 'M42', damage: 50, src: 'img/weapon/m42.png'}];
+                          {name: 'Mighty Sword', damage: 30, src: 'img/weapon/sword.png'},
+                          {name: 'Long Rifle', damage: 40, src: 'img/weapon/rifle.png'},
+                          {name: 'Machine Gun', damage: 50, src: 'img/weapon/m42.png'}];
     this.players = [new Player(1, 'Yoda'),
                     new Player(2, 'Vader')];
     this.spawnFlag = true;
@@ -16,6 +16,7 @@ class Board {
     this.addPlayers(this.players);
     // as a final step
     this.createGameNode();
+    this.setPlayerStats();
   }
 
   // populate gameData array with Location objects
@@ -168,6 +169,20 @@ class Board {
     return gameNode;
   }
 
+  setPlayerStats() {
+    let id = 'One';
+    for (let i = 0; i < 2; i++){
+      console.log('been here');
+      console.log(id);
+      $('#player' + id + 'Name').text(this.players[i]._name);
+      $('#player' + id + 'Health').text('Health: ' + this.players[i]._health);
+      $('#player' + id + 'WeaponName').text(this.players[i]._weapon.name);
+      $('#player' + id + 'Damage').text('Damage: ' + this.players[i]._weapon.damage);
+
+      id = 'Two';
+    }
+  }
+
   async movePlayer(playerNumber, endLocationID) {
 
     let endX = parseInt(endLocationID[6]);
@@ -264,7 +279,7 @@ class Board {
 
       // adjust Y location
       this.players[playerNumber]._playerLocationY -= 1;
-      this.enterFight();
+      this.enterFight(playerNumber);
 
     }else if(direction === 'down'){
       let startLocation = this.getCurrentPlayerLocation(playerNumber);
@@ -313,7 +328,7 @@ class Board {
 
       // adjust Y location
       this.players[playerNumber]._playerLocationY += 1;
-      this.enterFight();
+      this.enterFight(playerNumber);
 
     }else if(direction === 'right'){
       let startLocation = this.getCurrentPlayerLocation(playerNumber);
@@ -361,7 +376,7 @@ class Board {
 
       // adjust X location
       this.players[playerNumber]._playerLocationX += 1;
-      this.enterFight();
+      this.enterFight(playerNumber);
 
     }else if(direction === 'left'){
       let startLocation = this.getCurrentPlayerLocation(playerNumber);
@@ -409,40 +424,122 @@ class Board {
 
       // adjust X location
       this.players[playerNumber]._playerLocationX -= 1;
-      this.enterFight();
+      this.enterFight(playerNumber);
     }
   }
 
-  enterFight() {
+  async enterFight(playerNumber) {
     const playerOneY = this.players[0]._playerLocationY;
     const playerTwoY = this.players[1]._playerLocationY;
     const playerOneX = this.players[0]._playerLocationX;
     const playerTwoX = this.players[1]._playerLocationX;
 
     // debug
-    console.log('X: ' + Math.abs(playerOneY - playerTwoY));
-    console.log('Y: ' + Math.abs(playerTwoX - playerOneX));
+    // console.log('X: ' + Math.abs(playerOneY - playerTwoY));
+    // console.log('Y: ' + Math.abs(playerTwoX - playerOneX));
 
     if ((((Math.abs(playerOneY - playerTwoY)) === 0) && ((Math.abs(playerOneX - playerTwoX)) <= 1)) ||
         (((Math.abs(playerOneX - playerTwoX)) === 0) && ((Math.abs(playerOneY - playerTwoY)) <= 1))) {
       // move content from stats to modal
       $('#fightBody').replaceWith($('#fightBox'));
       // erase game board
+      $('main').fadeOut(300);
+      await this.sleep(500);
       $('main').remove();
-      // make sure background stays the same
-      $('body').css({'background':'url(\'../img/bckgd-trooper.jpg\')','background-size':'cover'});
+
+      // make sure CSS will work as intended afterwards
+      // $('body').css({'background':'url(\'../img/bckgd-trooper.jpg\')','background-size':'cover'});
+      $('.player-container-stats').css({'position':'relative','margin':'auto'})
+      $('.statsBox').css({'border':'20px solid #989898'})
       // open modal without option of closing it down by clicking away from it
       $('#fightMode').modal({
         backdrop: 'static'
-      })
+      });
+      this.fight(playerNumber);
+    }
+  }
+
+  fight(playerNumber) {
+    let attackingID;
+    let defendingID;
+
+    if(playerNumber === 0) {
+      attackingID = 'One';
+      defendingID = 'Two';
+    } else {
+      attackingID = 'Two';
+      defendingID = 'One';
     }
 
+    // set up css for turn (depending on who attacked, gets to attack or block first)
+    $('#player' + attackingID + 'Box').css({'border':'20px solid green'});
+    $('#player' + defendingID + 'Block').prop('disabled', true);
+    $('#player' + defendingID + 'Attack').prop('disabled', true);
+
+    let bothPlayersBreathe = () => {
+      let result = 2;
+      for (let i = 0; i < 2; i++) {
+        if (this.players[i]._health < 0) {
+          result = i;
+          return result;
+        }
+      }
+      return result
+    }
+
+    let turn = playerNumber;
+    console.log('turn: ' + turn);
+
+    console.log('BPB: ' + (bothPlayersBreathe() === 2));
+    while (bothPlayersBreathe === 2) {
+      switch (turn) {
+        case 0:
+          this.attack(turn);
+          console.log('inside case 0');
+          turn++;
+          break;
+        case 1:
+          this.attack(turn);
+          console.log('inside case 1');
+          turn--;
+          break;
+      }
+    }
+
+    // one player has less than 0 health.. and we can find out which by running bothPlayersBreathe
+
+  }
+
+  attack(playerNumber) {
+    console.log('anythigm?');
+    let attackingID;
+    let defendingID;
+
+    if(playerNumber === 1) {
+      attackingID = 'One';
+      defendingID = 'Two';
+    } else {
+      attackingID = 'Two';
+      defendingID = 'One';
+    }
+    console.log(attackingID);
+
+    $('#player' + attackingID + 'Block').on('click', (e) =>  {
+      console.log('clicked Block');
+      this.players[playerNumber]._isFortified = true;
+      $('#player' + attackingID + 'Box').css({'border':'20px solid blue'});
+    });
+
+    $('#player' + attackingID + 'Attack').on('click', (e) => {
+      console.log('clicked Attack');
+
+    });
   }
 
   // Helper Methods
 
   sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   swapWeapons(endLocationID, endLocation, playerNumber, weaponImgNode) {
@@ -467,11 +564,11 @@ class Board {
     if (playerNumber === 0) {
       $('#playerOneWeaponImg').attr('src',this.players[playerNumber]._weapon.src);
       $('#playerOneDamage').html('Damage: ' + this.players[playerNumber]._weapon.damage);
-      $('#playerOneWeaponName').html('Weapon: ' + this.players[playerNumber]._weapon.name);
+      $('#playerOneWeaponName').html(this.players[playerNumber]._weapon.name);
     } else {
       $('#playerTwoWeaponImg').attr('src',this.players[playerNumber]._weapon.src);
       $('#playerTwoDamage').html('Damage: ' + this.players[playerNumber]._weapon.damage);
-      $('#playerTwoWeaponName').html('Weapon: ' + this.players[playerNumber]._weapon.name);
+      $('#playerTwoWeaponName').html(this.players[playerNumber]._weapon.name);
     }
 
     return weaponImgNode;
@@ -540,7 +637,7 @@ class Board {
     for (let i = 0; i < 2; i++) {
       $('#player' + number + 'WeaponImg').attr('src', this.players[i]._weapon.src);
       $('#player' + number + 'Damage').html('Damage: ' + this.players[i]._weapon.damage);
-      $('#player' + number + 'WeaponName').html('Weapon: ' + this.players[i]._weapon.name);
+      $('#player' + number + 'WeaponName').html(this.players[i]._weapon.name);
       number = 'Two';
     }
   }

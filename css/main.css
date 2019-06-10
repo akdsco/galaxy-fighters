@@ -1,6 +1,7 @@
 body {
     background: url('../img/bckgd-trooper.jpg') right;
     background-size: cover;
+    min-height: 100vh;
 }
 
 p {
@@ -101,7 +102,7 @@ td {
 
 .player-container-stats {
     position: relative;
-    margin: auto;
+    /*margin: auto;*/
 }
 
 .player-stats {

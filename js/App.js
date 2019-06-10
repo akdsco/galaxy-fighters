@@ -8,7 +8,7 @@ $(function () {
 
   // helper function
   function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   $('#play-button').on('click', () => {
@@ -45,7 +45,7 @@ $(function () {
           // console.log(currentGame.stoppedOnWeapon);
           // move player
           currentGame.movePlayer(turn, endLocationID);
-          console.log(currentGame.gameData);
+          // console.log(currentGame.gameData);
           // console.log(e);
 
           //TODO events.. I have no idea how to make it a better experience... :(
@@ -64,7 +64,7 @@ $(function () {
           // console.log(currentGame.stoppedOnWeapon);
           // move player
           currentGame.movePlayer(turn, endLocationID);
-          console.log(currentGame.gameData);
+          // console.log(currentGame.gameData);
           // console.log(e);
 
           turn--;
