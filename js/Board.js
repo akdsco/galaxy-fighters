@@ -477,6 +477,7 @@ class Board {
       let damage = this.players[1]._weapon.damage;
       if (this.players[playerNumber]._isFortified) {
         damage /= 2;
+        this.players[playerNumber]._isFortified = false;
       }
       this.players[0]._health -= damage;
 
@@ -498,11 +499,12 @@ class Board {
       let damage = this.players[0]._weapon.damage;
       if (this.players[playerNumber]._isFortified) {
         damage /= 2;
+        this.players[playerNumber]._isFortified = false;
       }
       this.players[1]._health -= damage;
 
       // update front-end
-      $('#player-1-Health').text('Health: ' + this.players[0]._health);
+      $('#player-1-Health').text('Health: ' + this.players[1]._health);
 
       $('#player-0-Box').css({'border':'20px solid grey'});
       $('#player-0-Block').prop('disabled', true);
@@ -512,9 +514,42 @@ class Board {
 
   defend(playerNumber) {
     if(playerNumber === 0) {
-      console.log('turn on player 0 defense');
-    } else {
       console.log('turn on player 1 defense');
+
+      // defense on
+      $('#player-1-Box').css({'border':'20px solid blue'});
+      $('#player-1-Block').prop('disabled', true);
+      $('#player-1-Attack').prop('disabled', true);
+
+      // switch isFortified flag
+      this.players[1]._isFortified = true;
+
+      // update front-end
+      // $('#player-0-Health').text('Health: ' + this.players[0]._health);
+
+      // swap sides
+      $('#player-0-Box').css({'border':'20px solid green'});
+      $('#player-0-Block').prop('disabled', false);
+      $('#player-0-Attack').prop('disabled', false);
+
+    } else {
+      console.log('turn on player 0 defense');
+
+      // defense on
+      $('#player-0-Box').css({'border':'20px solid blue'});
+      $('#player-0-Block').prop('disabled', true);
+      $('#player-0-Attack').prop('disabled', true);
+
+      // switch isFortified flag
+      this.players[0]._isFortified = true;
+
+      // update front-end
+      // $('#player-1-Health').text('Health: ' + this.players[0]._health);
+
+      // swap sides
+      $('#player-1-Box').css({'border':'20px solid green'});
+      $('#player-1-Block').prop('disabled', false);
+      $('#player-1-Attack').prop('disabled', false);
     }
   }
 
@@ -556,12 +591,12 @@ class Board {
     //change players weapon img, name and damage in stats box as well
     if (playerNumber === 0) {
       $('#playerOneWeaponImg').attr('src',this.players[playerNumber]._weapon.src);
-      $('#playerOneDamage').html('Damage: ' + this.players[playerNumber]._weapon.damage);
-      $('#playerOneWeaponName').html(this.players[playerNumber]._weapon.name);
+      $('#player-0-Damage').html('Damage: ' + this.players[playerNumber]._weapon.damage);
+      $('#player-0-WeaponName').html(this.players[playerNumber]._weapon.name);
     } else {
       $('#playerTwoWeaponImg').attr('src',this.players[playerNumber]._weapon.src);
-      $('#playerTwoDamage').html('Damage: ' + this.players[playerNumber]._weapon.damage);
-      $('#playerTwoWeaponName').html(this.players[playerNumber]._weapon.name);
+      $('#player-1-Damage').html('Damage: ' + this.players[playerNumber]._weapon.damage);
+      $('#player-1-WeaponName').html(this.players[playerNumber]._weapon.name);
     }
 
     return weaponImgNode;
