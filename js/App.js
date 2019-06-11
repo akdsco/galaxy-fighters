@@ -1,5 +1,3 @@
-//TODO events.. I have no idea how to make it a better experience... :(
-
 //TODO transpiler not working? 'regeneratorRuntime is not defined' and 'Board is not a constructor'
 
 $(function () {
@@ -88,33 +86,16 @@ $(function () {
     }
   });
 
-
+  // when mouse enters available square that holds weapon
   $(game).on('mouseenter', '.weapon-container', ((e) => {
     if (e.target.parentElement.classList.contains('available')) {
       console.log('mouseenter weapon container');
-      console.log('hides first target element');
-      $(e.target.children[0]).hide();
+      console.log('hides target element');
+      $(e.target).hide();
       console.log('shows targets parent element second child');
       $(e.target.parentElement.children[1]).show();
     }
   }));
-
-  $(game).on('mouseleave','.weapon-container', ((e) => {
-    if (e.target.parentElement.classList.contains('available')) {
-      console.log('mouseleave weapon container that is within available td');
-      console.log($(e.target.parentElement.children[0]));
-      console.log('shows targets parent element first child');
-      $(e.target.parentElement.children[0]).show();
-      console.log('hides targets parent element second child');
-      $(e.target.parentElement.children[1]).hide();
-    }
-  }));
-
-
-
-
-
-
 
   // when mouse over available field that contains only .half-opacity img
   $(game).on('mouseenter', 'td', ((e) => {
@@ -128,12 +109,14 @@ $(function () {
     }
   }));
 
-  // when mouse leaves available field that contains only .half-opacity img
+  // when mouse available square that displays .half-opacity image
   $(game).on('mouseleave', '.half-opacity', ((e) => {
     if (e.target.parentElement.classList.contains('available')) {
       if (e.target.parentElement.childElementCount === 1) {
-        console.log('mouse left .half-op with 1 elem');
-        $(e.target.parentElement.firstChild).hide();
+        $(e.target.parentElement.children[0]).hide();
+      } else if(e.target.parentElement.childElementCount === 2) {
+        $(e.target.parentElement.children[0]).show();
+        $(e.target.parentElement.children[1]).hide();
       }
     }
   }));
