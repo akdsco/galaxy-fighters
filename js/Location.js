@@ -2,7 +2,7 @@ class Location {
   constructor(row, col) {
     this._locationY = row;
     this._locationX = col;
-    this.isBlocked = false;
+    this._isBlocked = false;
     this.isAvailable = false;
     this.weapon = null;
     this.player = null;
@@ -26,7 +26,7 @@ class Location {
     // tdNode.innerText = 'y'+ this._locationY + ' ' + 'x'+this._locationX;
 
     // draw blocked locations
-    if (this.isBlocked) {
+    if (this._isBlocked) {
       tdNode.classList.add('blocked');
     }
 

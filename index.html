@@ -5,9 +5,9 @@
   <title>JavaScript Board Game</title>
 
   <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+  <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-        crossorigin="anonymous">
+        rel="stylesheet">
 
   <!-- Custom CSS -->
   <link rel="stylesheet" href="css/main.css">
@@ -25,13 +25,13 @@
 <main class="container">
   <div class="row">
     <div class="col-lg-6 text-center" id="game"><!--  Inject Game Here -->
-      <button class="btn btn-secondary btn-lg mt-2" id="restart-button">Restart Game</button>
+      <button class="btn btn-secondary btn-lg mt-2" id="restartGame">Restart Game</button>
       <!-- Button trigger modal -->
 <!--      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#fightMode">-->
 <!--        Fight Mode-->
 <!--      </button>-->
     </div>
-    <div class="col-lg-6">
+    <div class="col-lg-6" id="rightColumn">
       <div class="container-fluid" id="fightBox">
         <div class="row">
 <!--          <button type="button" data-toggle="modal" data-target="#winnerModal">Launch modal</button>-->
@@ -44,7 +44,7 @@
                 <p id="player-0-WeaponName"></p>
                 <p id="player-0-Damage"></p>
               </div>
-              <div class="col-3 player-container-stats">
+              <div class="col-3 player-container-stats" id="player-0-Container">
                 <img class="player-stats" alt="yoda" src="img/yoda-sm.jpg"/>
                 <img class="weapon-stats" id="player-0-WeaponImg" alt="laser-sword" src="img/weapon/light-saber.png"/>
               </div>
@@ -53,7 +53,7 @@
           <div class="col-lg-6 col-md-6 mt-md-3 mt-lg-0 statsBox" id="player-1-Box">
             <!-- player two -->
             <div class="row align-items-center">
-              <div class="col-3 col-md-4 player-container-stats">
+              <div class="col-3 col-md-4 player-container-stats" id="player-1-Container">
                 <img class="player-stats" alt="vader" src="img/vader-sm.jpg"/>
                 <img class="weapon-stats" id="player-1-WeaponImg" alt="light-saber" src="img/weapon/light-saber.png"/>
               </div>

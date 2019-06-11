@@ -33,8 +33,8 @@ class Board {
     let i = 0;
     while (i < quantity) {
       let randomLocation = this.randomLocation();
-      if (!randomLocation.isBlocked) {
-        randomLocation.isBlocked = true;
+      if (!randomLocation._isBlocked) {
+        randomLocation._isBlocked = true;
         i++;
       }
       randomLocation = null;
@@ -45,7 +45,7 @@ class Board {
     let i = 0;
     while (i < quantity) {
       let randomLocation = this.randomLocation();
-      if (!randomLocation.isBlocked && randomLocation.weapon === null) {
+      if (!randomLocation._isBlocked && randomLocation.weapon === null) {
         randomLocation.weapon = this.weaponStorage[i];
         // print distribution of weapons to console for testing
         console.log('y' + randomLocation._locationY + ',' + 'x' + randomLocation._locationX + ' = ' + randomLocation.weapon.name + " - " + randomLocation.weapon.damage);
@@ -84,7 +84,7 @@ class Board {
               break start;
             } else {
               // if location above is blocked or occupied by other player, skip direction
-              if ((this.gameData[squareObject._locationY - j][squareObject._locationX].isBlocked) || (this.gameData[squareObject._locationY - j][squareObject._locationX].player !== null)) {
+              if ((this.gameData[squareObject._locationY - j][squareObject._locationX]._isBlocked) || (this.gameData[squareObject._locationY - j][squareObject._locationX].player !== null)) {
                 break start;
               } else {
                 // location is available, add half-opacity player img and toggle class 'available'
@@ -102,7 +102,7 @@ class Board {
               break start;
             } else {
               // if location below is blocked or occupied by other player, skip direction
-              if ((this.gameData[squareObject._locationY + j][squareObject._locationX].isBlocked) || (this.gameData[squareObject._locationY + j][squareObject._locationX].player !== null)) {
+              if ((this.gameData[squareObject._locationY + j][squareObject._locationX]._isBlocked) || (this.gameData[squareObject._locationY + j][squareObject._locationX].player !== null)) {
                 break start;
               } else {
                 // location is available, add half-opacity player img and toggle class 'available'
@@ -120,7 +120,7 @@ class Board {
               break start;
             } else {
               // if location on left is blocked or occupied by other player, skip direction
-              if ((this.gameData[squareObject._locationY][squareObject._locationX - j].isBlocked) || (this.gameData[squareObject._locationY][squareObject._locationX - j].player !== null)) {
+              if ((this.gameData[squareObject._locationY][squareObject._locationX - j]._isBlocked) || (this.gameData[squareObject._locationY][squareObject._locationX - j].player !== null)) {
                 break start;
               } else {
                 // location is available, add half-opacity player img and toggle class 'available'
@@ -138,7 +138,7 @@ class Board {
               break start;
             } else {
               // if location on right is blocked or occupied by other player, skip direction
-              if ((this.gameData[squareObject._locationY][squareObject._locationX + j].isBlocked) || (this.gameData[squareObject._locationY][squareObject._locationX + j].player !== null)) {
+              if ((this.gameData[squareObject._locationY][squareObject._locationX + j]._isBlocked) || (this.gameData[squareObject._locationY][squareObject._locationX + j].player !== null)) {
                 break start;
               } else {
                 // location is available, add half-opacity player img and toggle class 'available'
@@ -436,23 +436,22 @@ class Board {
     if ((((Math.abs(playerOneY - playerTwoY)) === 0) && ((Math.abs(playerOneX - playerTwoX)) <= 1)) ||
         (((Math.abs(playerOneX - playerTwoX)) === 0) && ((Math.abs(playerOneY - playerTwoY)) <= 1))) {
       // move content from stats to modal
-      $('#fightBody').replaceWith($('#fightBox'));
+      $('#fightBody').append($('#fightBox'));
       // erase game board
       $('main').fadeOut(300);
       await this.sleep(500);
       // $('main').remove();
 
       // make sure CSS will work as intended afterwards
-      // $('body').css({'background':'url(\'../img/bckgd-trooper.jpg\')','background-size':'cover'});
       $('.player-container-stats').css({'position':'relative','margin':'auto'})
-      $('.statsBox').css({'border':'20px solid #989898'})
+      $('.statsBox').css({'border':'5px solid #989898'})
       // open modal without option of closing it down by clicking away from it
       $('#fightMode').modal({
         backdrop: 'static'
       });
 
       // set up css for turn (depending on who attacked, gets to attack or defend first)
-      $('#player-' + playerNumber + '-Box').css({'border':'20px solid green'});
+      $('#player-' + playerNumber + '-Box').css({'border':'5px solid green'});
       if (playerNumber === 1) {
         playerNumber--;
       } else {
@@ -464,24 +463,29 @@ class Board {
     }
   }
 
-  attack(playerNumber) {
-    const p0 = '#player-0-';
-    const p1 = '#player-1-';
+  attack(playerNumber,p0,p1) {
 
     if(playerNumber === 0) {
       console.log('lower player 0 life');
 
       // swap sides
-      $(p0 + 'Box').css({'border':'20px solid green'});
-      $(p0 + 'Defend').prop('disabled', false);
-      $(p0 + 'Attack').prop('disabled', false);
+      $(p0 + 'Box').css({'border':'5px solid green'});
+      if (this.players[0]._isDefending) {
+        console.log('a');
+        $(p0 + 'Defend').prop('disabled', false);
+        $(p0 + 'Attack').prop('disabled', false);
+      } else {
+        $(p0 + 'Defend').prop('disabled', false);
+        $(p0 + 'Attack').prop('disabled', false);
+      }
 
       // calculate damage and adjust health level
       let damage = this.players[1]._weapon.damage;
       if (this.players[0]._isDefending) {
         damage /= 2;
         this.players[0]._isDefending = false;
-        $(p0 + 'Box').css({'background':'white'});
+        // $(p0 + 'Box').css({'background':'white'});
+        $(p0 + 'Container ' + 'img:last-child').remove();
       }
       this.players[0]._health -= damage;
 
@@ -492,23 +496,30 @@ class Board {
 
       // update front-end
       $(p0 + 'Health').text('Health: ' + this.players[0]._health);
-      $(p1 + 'Box').css({'border':'20px solid grey'});
+      $(p1 + 'Box').css({'border':'5px solid grey'});
       $(p1 + 'Defend').prop('disabled', true);
       $(p1 + 'Attack').prop('disabled', true);
     } else {
       console.log('lower player 1 life');
 
       // swap sides
-      $(p1 + 'Box').css({'border':'20px solid green'});
-      $(p1 + 'Defend').prop('disabled', false);
-      $(p1 + 'Attack').prop('disabled', false);
+      $(p1 + 'Box').css({'border':'5px solid green'});
+      if (this.players[1]._isDefending) {
+        console.log('b');
+        $(p1 + 'Defend').prop('disabled', false);
+        $(p1 + 'Attack').prop('disabled', false);
+      } else {
+        $(p1 + 'Defend').prop('disabled', false);
+        $(p1 + 'Attack').prop('disabled', false);
+      }
 
       // calculate damage done by player one and adjust his health level
       let damage = this.players[0]._weapon.damage;
       if (this.players[1]._isDefending) {
         damage /= 2;
         this.players[1]._isDefending = false;
-        $(p1 + 'Box').css({'background':'white'});
+        // $(p1 + 'Box').css({'background':'white'});
+        $(p1 + 'Container ' + 'img:last-child').remove();
       }
       this.players[1]._health -= damage;
 
@@ -519,21 +530,26 @@ class Board {
 
       // update front-end
       $(p1 + 'Health').text('Health: ' + this.players[1]._health);
-      $(p0 + 'Box').css({'border':'20px solid grey'});
+      $(p0 + 'Box').css({'border':'5px solid grey'});
       $(p0 + 'Defend').prop('disabled', true);
       $(p0 + 'Attack').prop('disabled', true);
     }
   }
 
-  defend(playerNumber) {
-    const p0 = '#player-0-';
-    const p1 = '#player-1-';
+  defend(playerNumber, p0, p1) {
+
+    // shield to add
+    let shieldImgNode = document.createElement('img');
+    shieldImgNode.setAttribute('src','../img/weapon/shield.png');
+    shieldImgNode.setAttribute('display','none');
+    shieldImgNode.classList.add('shield');
 
     if(playerNumber === 0) {
       console.log('turn on player 1 defense');
 
-      // draw shielf
-      $(p1 + 'Box').css({'background':'rgba(51, 204, 255,.5)'});
+      // draw shield
+      $(p1 + 'Container').append(shieldImgNode);
+      // $(p1 + 'Box').css({'background':'rgba(51, 204, 255,.5)'});
       $(p1 + 'Defend').prop('disabled', true);
       $(p1 + 'Attack').prop('disabled', true);
 
@@ -541,15 +557,23 @@ class Board {
       this.players[1]._isDefending = true;
 
       // swap sides
-      $(p0 + 'Box').css({'border':'20px solid green'});
-      $(p0 + 'Defend').prop('disabled', false);
-      $(p0 + 'Attack').prop('disabled', false);
+      $(p1 + 'Box').css({'border':'5px solid grey'});
+      $(p0 + 'Box').css({'border':'5px solid green'});
+      if(this.players[0]._isDefending) {
+        console.log('c');
+        $(p0 + 'Defend').prop('disabled', true);
+        $(p0 + 'Attack').prop('disabled', false);
+      } else {
+        $(p0 + 'Defend').prop('disabled', false);
+        $(p0 + 'Attack').prop('disabled', false);
+      }
 
     } else {
       console.log('turn on player 0 defense');
 
       // draw shield
-      $(p0 + 'Box').css({'background':'rgba(51, 204, 255,.5)'});
+      $(p0 + 'Container').append(shieldImgNode);
+      // $(p0 + 'Box').css({'background':'rgba(51, 204, 255,.5)'});
       $(p0 + 'Defend').prop('disabled', true);
       $(p0 + 'Attack').prop('disabled', true);
 
@@ -557,10 +581,18 @@ class Board {
       this.players[0]._isDefending = true;
 
       // swap sides
-      $(p1 + 'Box').css({'border':'20px solid green'});
-      $(p1 + 'Defend').prop('disabled', false);
-      $(p1 + 'Attack').prop('disabled', false);
+      $(p0 + 'Box').css({'border':'5px solid grey'});
+      $(p1 + 'Box').css({'border':'5px solid green'});
+      if(this.players[1]._isDefending) {
+        console.log('d');
+        $(p1 + 'Defend').prop('disabled', true);
+        $(p1 + 'Attack').prop('disabled', false);
+      } else {
+        $(p1 + 'Defend').prop('disabled', false);
+        $(p1 + 'Attack').prop('disabled', false);
+      }
     }
+
   }
 
   // Helper Methods
@@ -632,7 +664,7 @@ class Board {
       this.spawnFlag = !this.spawnFlag;
       while (true) {
         let randomLocation = this.gameData[Math.floor(Math.random() * (max - min + 1)) + min][Math.floor(Math.random() * (max - min + 1)) + min];
-        if (randomLocation.isBlocked === false && randomLocation.weapon === null) {
+        if (randomLocation._isBlocked === false && randomLocation.weapon === null) {
           return randomLocation;
         }
       }
@@ -642,7 +674,7 @@ class Board {
       this.spawnFlag = !this.spawnFlag;
       while (true) {
         let randomLocation = this.gameData[Math.floor(Math.random() * (max - min + 1)) + min][Math.floor(Math.random() * (max - min + 1)) + min];
-        if (randomLocation.isBlocked === false && randomLocation.weapon === null) {
+        if (randomLocation._isBlocked === false && randomLocation.weapon === null) {
           return randomLocation;
         }
       }

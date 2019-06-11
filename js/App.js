@@ -9,7 +9,7 @@ $(function () {
   let currentGame = new Board(10);
 
   // debug
-  console.log(currentGame);
+  // console.log(currentGame);
 
   // helper function
   function sleep(ms) {
@@ -23,7 +23,7 @@ $(function () {
     turn = 0;
   });
 
-  $('#restart-button').on('click', async () => {
+  $('#restartGame').on('click', async () => {
     $(game).fadeOut(400);
     await sleep(380);
     gameNode.removeChild(gameNode.firstChild);
@@ -31,6 +31,23 @@ $(function () {
     currentGame.resetPlayersStats();
     gameNode.prepend(currentGame.createGameNode());
     $(game).fadeIn(400);
+    turn = 0;
+  });
+
+  $('#playAgain').on('click', () => {
+    // reset game to original state
+    gameNode.removeChild(gameNode.firstChild);
+    currentGame = new Board(10);
+    currentGame.resetPlayersStats();
+    gameNode.prepend(currentGame.createGameNode());
+    $('#player-0-Box').css({'border':'2px solid burlywood'});
+    $('#player-1-Box').css({'border':'2px solid burlywood'});
+    $('#player-1-Defend').prop('disabled', false);
+    $('#player-1-Attack').prop('disabled', false);
+    $('#player-0-Defend').prop('disabled', false);
+    $('#player-0-Attack').prop('disabled', false);
+    $('#rightColumn').append($('#fightBox'));
+    $('main').fadeIn(500);
     turn = 0;
   });
 
@@ -70,27 +87,22 @@ $(function () {
 
   // control buttons during fight mode
 
-  $('.defendButton').on('click', (e) => {
-    console.log('defend button clicked');
-    console.log(e);
-    console.log(turn);
-
+  $('.defendButton').on('click', () => {
+    const p0 = '#player-0-';
+    const p1 = '#player-1-';
     switch (turn) {
       case 0:
-        currentGame.defend(turn);
+        currentGame.defend(turn,p0,p1);
         turn++;
         break;
       case 1:
-        currentGame.defend(turn);
+        currentGame.defend(turn,p0,p1);
         turn--;
         break;
     }
   });
 
-  $('.attackButton').on('click', (e) => {
-    console.log('attack button clicked');
-    console.log(e);
-    console.log(turn);
+  $('.attackButton').on('click', () => {
     const p0 = '#player-0-';
     const p1 = '#player-1-';
 

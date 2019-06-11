@@ -65,8 +65,16 @@ td {
     height: 28px;
 }
 
+.shield {
+    position: absolute;
+    z-index: 3;
+    top: 20px;
+    left: 28px;
+    height: 48px;
+}
+
 .blocked {
-    background-color: black;
+    background-color: grey;
     border-radius: 15%;
 }
 
