@@ -14,9 +14,9 @@ class Board {
     this.addBlockedLocations(17);
     this.addWeapons(4);
     this.addPlayers(this.players);
+    this.addPlayerStats();
     // as a final step
     this.createGameNode();
-    this.addPlayerStats();
   }
 
   // populate gameData array with Location objects
@@ -29,6 +29,7 @@ class Board {
     }
   }
 
+  // block random locations (creating obstacles field)
   addBlockedLocations(quantity) {
     let i = 0;
     while (i < quantity) {
@@ -41,6 +42,7 @@ class Board {
     }
   }
 
+  // adding weapons from weaponStorage to randomly selected, available locations
   addWeapons(quantity) {
     let i = 0;
     while (i < quantity) {
@@ -54,6 +56,7 @@ class Board {
     }
   }
 
+  // adding players to random locations in top left and bottom right corners (away from each other)
   addPlayers(array) {
     let flag = true;
 
@@ -69,6 +72,7 @@ class Board {
     }
   }
 
+  // drawing or erasing players available 'walk' path
   drawPlayersPath(squareObject, value, playerNumber) {
     for (let i = 0; i < 4; i++) {
       start: for (let j = 1; j < 4; j++) {
@@ -169,6 +173,7 @@ class Board {
     return gameNode;
   }
 
+  // filling stats box with relevant data
   addPlayerStats() {
     for (let i = 0; i < 2; i++){
       $('#player-' + i + '-Name').text(this.players[i]._name);
@@ -178,6 +183,7 @@ class Board {
     }
   }
 
+  // moving player from start to end square
   async movePlayer(playerNumber, endLocationID) {
 
     let endX = parseInt(endLocationID[6]);
@@ -208,7 +214,7 @@ class Board {
     this.drawPlayersPath(startLocation, false, playerNumber);
 
     for (let i = 1; i < movePlayer; i++) {
-      this.migratePlayer(playerNumber, direction, i);
+      this.migratePlayer(playerNumber, direction);
       await this.sleep(400);
     }
 
@@ -227,7 +233,8 @@ class Board {
 
   }
 
-  migratePlayer(playerNumber, direction, i) {
+  // migrates data and changes visual representation on table
+  migratePlayer(playerNumber, direction) {
     if(direction === 'up') {
       let startLocation = this.getCurrentPlayerLocation(playerNumber);
       let startLocationID = '#loc_' + this.players[playerNumber]._playerLocationY + '_' + this.players[playerNumber]._playerLocationX;
@@ -423,6 +430,7 @@ class Board {
     }
   }
 
+  // disables board and brings fight modal on
   async enterFight(playerNumber) {
     const playerOneY = this.players[0]._playerLocationY;
     const playerTwoY = this.players[1]._playerLocationY;
@@ -463,6 +471,7 @@ class Board {
     }
   }
 
+  // changes data after players attack
   attack(playerNumber,p0,p1) {
 
     if(playerNumber === 0) {
@@ -536,9 +545,10 @@ class Board {
     }
   }
 
+  // changes data after players defense deployment
   defend(playerNumber, p0, p1) {
 
-    // shield to add
+    // shield image node
     let shieldImgNode = document.createElement('img');
     shieldImgNode.setAttribute('src','../img/weapon/shield.png');
     shieldImgNode.setAttribute('display','none');
@@ -547,7 +557,7 @@ class Board {
     if(playerNumber === 0) {
       console.log('turn on player 1 defense');
 
-      // draw shield
+      // append shield
       $(p1 + 'Container').append(shieldImgNode);
       // $(p1 + 'Box').css({'background':'rgba(51, 204, 255,.5)'});
       $(p1 + 'Defend').prop('disabled', true);
@@ -571,7 +581,7 @@ class Board {
     } else {
       console.log('turn on player 0 defense');
 
-      // draw shield
+      // append shield
       $(p0 + 'Container').append(shieldImgNode);
       // $(p0 + 'Box').css({'background':'rgba(51, 204, 255,.5)'});
       $(p0 + 'Defend').prop('disabled', true);
@@ -613,7 +623,7 @@ class Board {
   }
 
   displayGameWinner(playerNumber) {
-    // close modal
+    // hide fight modal
     $('#fightMode').modal('hide');
     // update winners modal
     $('#winnersImg').attr('src','img/' + this.players[playerNumber]._name.toLowerCase() + '-sm.jpg');
