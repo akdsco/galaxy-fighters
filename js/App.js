@@ -96,10 +96,8 @@ class App {
     // when mouse enters available square that holds weapon
     $(this.game).on('mouseenter', '.weapon-container', ((e) => {
       if (e.target.parentElement.classList.contains('available')) {
-        console.log('mouseenter weapon container');
-        console.log('hides target element');
-        $(e.target).hide();
-        console.log('shows targets parent element second child');
+        // hide weapon if you'd like
+        // $(e.target).hide();
         $(e.target.parentElement.children[1]).show();
       }
     }));
@@ -107,7 +105,6 @@ class App {
     // when mouse enters available field that contains only .half-opacity img
     $(this.game).on('mouseenter', 'td', ((e) => {
       if (e.target.classList.contains('available')) {
-        console.log('mouseenter td that is available');
 
         // player (half-opacity) img only in td
         if (e.target.childElementCount === 1) {
