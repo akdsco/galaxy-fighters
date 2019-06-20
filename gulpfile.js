@@ -1,6 +1,7 @@
 const gulp = require('gulp');
 const jshint = require('gulp-jshint');
 const babel = require('gulp-babel');
+const uglify = require('gulp-uglify');
 const runSequence = require('run-sequence');
 const browserSync = require('browser-sync').create();
 
@@ -31,13 +32,21 @@ gulp.task('processIMG', async () => {
 
 gulp.task('processJS', async () => {
   gulp.src('js/*.js')
-      // .pipe(jshint({
-        // esversion: 8
-      // }))
-      // .pipe(jshint.reporter('default'))
+      .pipe(jshint({
+        esversion: 8
+      }))
+      .pipe(jshint.reporter('default'))
       // .pipe(babel({
-      //   presets: ["@babel/preset-env"]
+      //   // presets: ['env']
+      //   // presets: ["@babel/preset-env"]
+      //   // presets: ["@babel/preset-env"]
+      //   // presets: [ "es2015", "stage-0" ]
+      //   // presets: ["@babel/preset-env"],
+      //   // plugins: [
+      //   //   ["@babel/transform-runtime"]
+      //   // ]
       // }))
+      // .pipe(uglify())
       .pipe(gulp.dest('dist/js'));
 });
 

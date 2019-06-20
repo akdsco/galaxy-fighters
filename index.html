@@ -25,17 +25,12 @@
 
 <main class="container">
   <div class="row">
-    <div class="col-lg-6 text-center" id="game"><!--  Inject Game Here -->
-      <button class="btn btn-secondary btn-lg mt-2" id="restartGame">Shake the Board</button>
-      <!-- Button trigger modal -->
-<!--      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#fightMode">-->
-<!--        Fight Mode-->
-<!--      </button>-->
+    <div class="col-lg-6 text-center" id="game"><!--  Inject Game Node Here -->
+      <button class="btn btn-secondary btn-lg mt-2" id="restartGame">Earthquake!</button>
     </div>
     <div class="col-lg-6" id="rightColumn">
       <div class="container-fluid" id="fightBox">
         <div class="row">
-<!--          <button type="button" data-toggle="modal" data-target="#winnerModal">Launch modal</button>-->
           <div class="col-lg-6 col-md-6 mt-2 mt-md-3 mt-lg-0 statsBox" id="player-0-Box">
             <!-- player one -->
             <div class="row align-items-center">
@@ -140,10 +135,15 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 <!-- Custom JS -->
+<script src="js/Util.js"></script>
 <script src="js/Player.js"></script>
 <script src="js/Location.js"></script>
 <script src="js/Board.js"></script>
 <script src="js/App.js"></script>
+<script> $(function () {
+              new App();
+            });
+</script>
 
 </body>
 </html>

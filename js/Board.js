@@ -215,7 +215,7 @@ class Board {
 
     for (let i = 1; i < movePlayer; i++) {
       this.migratePlayer(playerNumber, direction);
-      await this.sleep(400);
+      await sleep(400);
     }
 
     // move players data to new square
@@ -451,8 +451,8 @@ class Board {
       // $('main').remove();
 
       // make sure CSS will work as intended afterwards
-      $('.player-container-stats').css({'position':'relative','margin':'auto'})
-      $('.statsBox').css({'border':'5px solid #989898'})
+      $('.player-container-stats').css({'position':'relative','margin':'auto'});
+      $('.statsBox').css({'border':'5px solid #989898'});
       // open modal without option of closing it down by clicking away from it
       $('#fightMode').modal({
         backdrop: 'static'
@@ -619,7 +619,7 @@ class Board {
         return result;
       }
     }
-    return result
+    return result;
   }
 
   displayGameWinner(playerNumber) {
@@ -631,7 +631,7 @@ class Board {
     // show winner modal
     $('#winnerModal').modal({
       backdrop: 'static'
-    })
+    });
   }
 
   swapWeapons(endLocationID, endLocation, playerNumber, weaponImgNode) {

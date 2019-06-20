@@ -2,7 +2,7 @@
   "name": "javascript-board-game",
   "version": "1.0.0",
   "description": "simple board game with two players",
-  "main": "index.js",
+  "main": "Board.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -21,11 +21,14 @@
     "@babel/preset-env": "^7.4.5",
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
-    "browser-sync": "^2.26.5",
-    "gulp": "^3.9.1",
+    "browser-sync": "^2.26.7",
     "gulp-babel": "^8.0.0",
     "gulp-jshint": "^2.1.0",
+    "gulp-uglify": "^3.0.2",
     "jshint": "^2.10.2",
     "run-sequence": "^2.2.1"
+  },
+  "dependencies": {
+    "gulp": "^3.9.1"
   }
 }
