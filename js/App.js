@@ -11,7 +11,6 @@ class App {
     this.initiateControlButtonsHandlers();
     this.initiateMovementHandlers();
     this.initiateFightModeHandlers();
-
   }
 
   initiateControlButtonsHandlers() {
@@ -21,13 +20,13 @@ class App {
       this.gameNode.prepend(this.currentGame.createGameNode());
       $('#header').remove();
       $('main').fadeIn(500);
-      // this.turn = 0;
     });
 
     $('#restartGame').on('click', async () => {
       $(this.game).fadeOut(400);
       await sleep(380);
       this.gameNode.removeChild(this.gameNode.firstChild);
+      Player.number = 1;
       this.currentGame = new Board(10);
       this.currentGame.resetPlayersStats();
       this.gameNode.prepend(this.currentGame.createGameNode());
