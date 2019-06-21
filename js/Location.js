@@ -30,7 +30,7 @@ class Location {
       tdNode.classList.add('blocked');
     }
 
-    // draw players + their weapons
+    // draw _players + their weapons
 
     //TODO wrap player and weapon into one 'div' element and move them together, swap weapon element only when crossing
     // weapon location
@@ -57,7 +57,7 @@ class Location {
     // add half-opacity images for first turn
     if (this.isAvailable) {
       tdNode.classList.add('available');
-      // make sure to add weapon image if it was generated inside first players available fields
+      // make sure to add weapon image if it was generated inside first _players available fields
       if(this.weapon !== null) {
         container.classList.add('weapon-container');
         this.isWeaponDisplayed = true;

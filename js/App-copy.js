@@ -70,7 +70,7 @@ $(function () {
           currentGame.movePlayer(turn, endLocationID);
 
           // debug
-          // console.log(currentGame.gameData);
+          // console.log(currentGame._gameData);
           // console.log(e);
 
           turn++;
@@ -79,7 +79,7 @@ $(function () {
           currentGame.movePlayer(turn, endLocationID);
 
           // debug
-          // console.log(currentGame.gameData);
+          // console.log(currentGame._gameData);
           // console.log(e);
 
           turn--;

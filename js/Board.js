@@ -1,39 +1,39 @@
 class Board {
   constructor(size) {
-    this.size = size;
-    this.gameData = [];
-    this.weaponStorage = [{name: 'Red Saber', damage: 20, src: 'img/weapon/red-saber.png'},
+    this._size = size;
+    this._gameData = [];
+    this._weaponStorage = [{name: 'Red Saber', damage: 20, src: 'img/weapon/red-saber.png'},
                           {name: 'Mighty Sword', damage: 30, src: 'img/weapon/sword.png'},
                           {name: 'Long Rifle', damage: 40, src: 'img/weapon/rifle.png'},
                           {name: 'Machine Gun', damage: 50, src: 'img/weapon/m42.png'}];
-    this.players = [new Player(1, 'Yoda'),
+    this._players = [new Player(1, 'Yoda'),
                     new Player(2, 'Vader')];
-    this.spawnFlag = true;
-    this.stoppedOnWeapon = ['',''];
-    this.initializeGameData();
-    this.addBlockedLocations(17);
-    this.addWeapons(4);
-    this.addPlayers(this.players);
-    this.addPlayerStats();
+    this._spawnFlag = true;
+    this._stoppedOnWeapon = ['',''];
+    this._initializeGameData();
+    this._addBlockedLocations(17);
+    this._addWeapons(4);
+    this._addPlayers(this._players);
+    this._addPlayerStats();
     // as a final step
     this.createGameNode();
   }
 
-  // populate gameData array with Location objects
-  initializeGameData() {
-    for (let i = 0; i < this.size; i++) {
-      this.gameData[i] = [];
-      for (let j = 0; j < this.size; j++) {
-        this.gameData[i][j] = new Location(i, j);
+  // populate _gameData array with Location objects
+  _initializeGameData() {
+    for (let i = 0; i < this._size; i++) {
+      this._gameData[i] = [];
+      for (let j = 0; j < this._size; j++) {
+        this._gameData[i][j] = new Location(i, j);
       }
     }
   }
 
   // block random locations (creating obstacles field)
-  addBlockedLocations(quantity) {
+  _addBlockedLocations(quantity) {
     let i = 0;
     while (i < quantity) {
-      let randomLocation = this.randomLocation();
+      let randomLocation = this._randomLocation();
       if (!randomLocation._isBlocked) {
         randomLocation._isBlocked = true;
         i++;
@@ -42,38 +42,38 @@ class Board {
     }
   }
 
-  // adding weapons from weaponStorage to randomly selected, available locations
-  addWeapons(quantity) {
+  // adding weapons from _weaponStorage to randomly selected, available locations
+  _addWeapons(quantity) {
     let i = 0;
     while (i < quantity) {
-      let randomLocation = this.randomLocation();
+      let randomLocation = this._randomLocation();
       if (!randomLocation._isBlocked && randomLocation.weapon === null) {
-        randomLocation.weapon = this.weaponStorage[i];
+        randomLocation.weapon = this._weaponStorage[i];
         // print distribution of weapons to console for testing
-        // console.log('y' + randomLocation._locationY + ',' + 'x' + randomLocation._locationX + ' = ' + randomLocation.weapon.name + " - " + randomLocation.weapon.damage);
+        // console.log('y' + _randomLocation._locationY + ',' + 'x' + _randomLocation._locationX + ' = ' + _randomLocation.weapon.name + " - " + _randomLocation.weapon.damage);
         i++;
       }
     }
   }
 
-  // adding players to random locations in top left and bottom right corners (away from each other)
-  addPlayers(array) {
+  // adding _players to random locations in top left and bottom right corners (away from each other)
+  _addPlayers(array) {
     let flag = true;
 
     for (let i = 0; i < array.length; i++) {
-      let randomLocation = this.randomStartLocation();
+      let randomLocation = this._randomStartLocation();
       array[i]._playerLocationY = randomLocation._locationY;
       array[i]._playerLocationX = randomLocation._locationX;
       randomLocation.player = array[i];
       if (flag) {
-        this.drawPlayersPath(randomLocation, true);
+        this._drawPlayersPath(randomLocation, true);
         flag = !flag;
       }
     }
   }
 
-  // drawing or erasing players available 'walk' path
-  drawPlayersPath(squareObject, value, playerNumber) {
+  // drawing or erasing _players available 'walk' path
+  _drawPlayersPath(squareObject, value, playerNumber) {
     for (let i = 0; i < 4; i++) {
       start: for (let j = 1; j < 4; j++) {
 
@@ -88,33 +88,33 @@ class Board {
               break start;
             } else {
               // if location above is blocked or occupied by other player, skip direction
-              if ((this.gameData[squareObject._locationY - j][squareObject._locationX]._isBlocked) || (this.gameData[squareObject._locationY - j][squareObject._locationX].player !== null)) {
+              if ((this._gameData[squareObject._locationY - j][squareObject._locationX]._isBlocked) || (this._gameData[squareObject._locationY - j][squareObject._locationX].player !== null)) {
                 break start;
               } else {
                 // location is available, add half-opacity player img and toggle class 'available'
-                this.gameData[squareObject._locationY - j][squareObject._locationX].isAvailable = value;
+                this._gameData[squareObject._locationY - j][squareObject._locationX].isAvailable = value;
                 // change display
                 let idString = '#loc_' + (squareObject._locationY - j) + '_' + squareObject._locationX;
                 $(idString).toggleClass('available');
-                this.modifySquareImg(idString, playerNumber, value, imgNode);
+                this._modifySquareImg(idString, playerNumber, value, imgNode);
               }
             }
             break;
           case 1: // moving down
-            if ((squareObject._locationY + j) > (this.size - 1)) {
+            if ((squareObject._locationY + j) > (this._size - 1)) {
               // if player is currently at bottom border of board, skip direction
               break start;
             } else {
               // if location below is blocked or occupied by other player, skip direction
-              if ((this.gameData[squareObject._locationY + j][squareObject._locationX]._isBlocked) || (this.gameData[squareObject._locationY + j][squareObject._locationX].player !== null)) {
+              if ((this._gameData[squareObject._locationY + j][squareObject._locationX]._isBlocked) || (this._gameData[squareObject._locationY + j][squareObject._locationX].player !== null)) {
                 break start;
               } else {
                 // location is available, add half-opacity player img and toggle class 'available'
-                this.gameData[squareObject._locationY + j][squareObject._locationX].isAvailable = value;
+                this._gameData[squareObject._locationY + j][squareObject._locationX].isAvailable = value;
                 // change display
                 let idString = '#loc_' + (squareObject._locationY + j) + '_' + squareObject._locationX;
                 $(idString).toggleClass('available');
-                this.modifySquareImg(idString, playerNumber, value, imgNode);
+                this._modifySquareImg(idString, playerNumber, value, imgNode);
               }
             }
             break;
@@ -124,33 +124,33 @@ class Board {
               break start;
             } else {
               // if location on left is blocked or occupied by other player, skip direction
-              if ((this.gameData[squareObject._locationY][squareObject._locationX - j]._isBlocked) || (this.gameData[squareObject._locationY][squareObject._locationX - j].player !== null)) {
+              if ((this._gameData[squareObject._locationY][squareObject._locationX - j]._isBlocked) || (this._gameData[squareObject._locationY][squareObject._locationX - j].player !== null)) {
                 break start;
               } else {
                 // location is available, add half-opacity player img and toggle class 'available'
-                this.gameData[squareObject._locationY][squareObject._locationX - j].isAvailable = value;
+                this._gameData[squareObject._locationY][squareObject._locationX - j].isAvailable = value;
                 // change display
                 let idString = '#loc_' + (squareObject._locationY) + '_' + (squareObject._locationX - j);
                 $(idString).toggleClass('available');
-                this.modifySquareImg(idString, playerNumber, value, imgNode);
+                this._modifySquareImg(idString, playerNumber, value, imgNode);
               }
             }
             break;
           case 3: // moving right
-            if ((squareObject._locationX + j) > (this.size - 1)) {
+            if ((squareObject._locationX + j) > (this._size - 1)) {
               // if player is currently at right border of board, skip direction
               break start;
             } else {
               // if location on right is blocked or occupied by other player, skip direction
-              if ((this.gameData[squareObject._locationY][squareObject._locationX + j]._isBlocked) || (this.gameData[squareObject._locationY][squareObject._locationX + j].player !== null)) {
+              if ((this._gameData[squareObject._locationY][squareObject._locationX + j]._isBlocked) || (this._gameData[squareObject._locationY][squareObject._locationX + j].player !== null)) {
                 break start;
               } else {
                 // location is available, add half-opacity player img and toggle class 'available'
-                this.gameData[squareObject._locationY][squareObject._locationX + j].isAvailable = value;
+                this._gameData[squareObject._locationY][squareObject._locationX + j].isAvailable = value;
                 // change display
                 let idString = '#loc_' + (squareObject._locationY) + '_' + (squareObject._locationX + j);
                 $(idString).toggleClass('available');
-                this.modifySquareImg(idString, playerNumber, value, imgNode);
+                this._modifySquareImg(idString, playerNumber, value, imgNode);
               }
             }
         }
@@ -163,10 +163,10 @@ class Board {
     let gameNode = document.createElement('table');
     gameNode.setAttribute('id', 'gameTable');
 
-    for (let i = 0; i < this.size; i++) {
+    for (let i = 0; i < this._size; i++) {
       let tr = document.createElement('tr');
-      for (let j = 0; j < this.size; j++) {
-        tr.appendChild(this.gameData[i][j].createLocationNode());
+      for (let j = 0; j < this._size; j++) {
+        tr.appendChild(this._gameData[i][j].createLocationNode());
       }
       gameNode.appendChild(tr);
     }
@@ -174,12 +174,12 @@ class Board {
   }
 
   // filling stats box with relevant data
-  addPlayerStats() {
+  _addPlayerStats() {
     for (let i = 0; i < 2; i++){
-      $('#player-' + i + '-Name').text(this.players[i]._name);
-      $('#player-' + i + '-Health').text('Health: ' + this.players[i]._health);
-      $('#player-' + i + '-WeaponName').text(this.players[i]._weapon.name);
-      $('#player-' + i + '-Damage').text('Damage: ' + this.players[i]._weapon.damage);
+      $('#player-' + i + '-Name').text(this._players[i]._name);
+      $('#player-' + i + '-Health').text('Health: ' + this._players[i]._health);
+      $('#player-' + i + '-WeaponName').text(this._players[i]._weapon.name);
+      $('#player-' + i + '-Damage').text('Damage: ' + this._players[i]._weapon.damage);
     }
   }
 
@@ -189,8 +189,8 @@ class Board {
     let endX = parseInt(endLocationID[6]);
     let endY = parseInt(endLocationID[4]);
 
-    let startX = this.players[playerNumber]._playerLocationX;
-    let startY = this.players[playerNumber]._playerLocationY;
+    let startX = this._players[playerNumber]._playerLocationX;
+    let startY = this._players[playerNumber]._playerLocationY;
 
     let direction = '';
     let movePlayer = 1;
@@ -209,233 +209,243 @@ class Board {
       movePlayer += (endX - startX);
     }
 
-    // disable current players available fields
-    let startLocation = this.gameData[startY][startX];
-    this.drawPlayersPath(startLocation, false, playerNumber);
+    // disable current _players available fields
+    let startLocation = this._gameData[startY][startX];
+    this._drawPlayersPath(startLocation, false, playerNumber);
 
     for (let i = 1; i < movePlayer; i++) {
-      this.migratePlayer(playerNumber, direction);
+      this._migratePlayer(playerNumber, direction);
       await sleep(400);
     }
 
-    // move players data to new square
-    this.gameData[endY][endX].player = startLocation.player;
+    // move _players data to new square
+    this._gameData[endY][endX].player = startLocation.player;
     startLocation.player = null;
 
     // enable movement for next player
     if (playerNumber === 0) {
-      let nextPlayerLocation = this.getCurrentPlayerLocation(1);
-      this.drawPlayersPath(nextPlayerLocation, true, playerNumber);
+      let nextPlayerLocation = this._getCurrentPlayerLocation(1);
+      this._drawPlayersPath(nextPlayerLocation, true, playerNumber);
     } else {
-      let nextPlayerLocation = this.getCurrentPlayerLocation(0);
-      this.drawPlayersPath(nextPlayerLocation, true, playerNumber);
+      let nextPlayerLocation = this._getCurrentPlayerLocation(0);
+      this._drawPlayersPath(nextPlayerLocation, true, playerNumber);
     }
 
   }
 
   // migrates data and changes visual representation on table
-  migratePlayer(playerNumber, direction) {
-    if(direction === 'up') {
-      let startLocation = this.getCurrentPlayerLocation(playerNumber);
-      let startLocationID = '#loc_' + this.players[playerNumber]._playerLocationY + '_' + this.players[playerNumber]._playerLocationX;
-      let endLocation = this.gameData[this.players[playerNumber]._playerLocationY - 1][this.players[playerNumber]._playerLocationX];
-      let endLocationID = '#loc_' + (this.players[playerNumber]._playerLocationY - 1) + '_' + this.players[playerNumber]._playerLocationX;
-
-      //debug for now
-      // console.log(startLocationID,endLocationID);
-
-      // if player is to reveal weapon which he stands on, show it
-      if (this.stoppedOnWeapon[playerNumber] !== '') {
-        let locationID = this.stoppedOnWeapon[playerNumber];
-        setTimeout(() => {
-          $(locationID + ' .weapon-container').show(200);
-        }, 300);
-        this.stoppedOnWeapon[playerNumber] = '';
-      }
-
-      // empty weapon node
-      let weaponImgNode = document.createElement('img');
-      weaponImgNode.classList.add('weapon');
-
-
-      // if next location has weapon, swap them
-      if (endLocation.weapon !== null) {
-        $(endLocationID + ' .weapon-container img').replaceWith(this.swapWeapons(endLocationID,endLocation,playerNumber,weaponImgNode));
-      }
-
-      // move player container
-      // console.log('i ' + i + ' - tried.. ');
-      $(startLocationID + ' .player-container').fadeOut(200, () => {
-        $(endLocationID).prepend($(startLocationID + ' .player-container'));
-
-        // change players weapon in hand
-        let weaponImgNodeClone = weaponImgNode.cloneNode(false);
-        weaponImgNodeClone.setAttribute('src', this.players[playerNumber]._weapon.src);
-        weaponImgNodeClone.setAttribute('title', this.players[playerNumber]._weapon.name + ' does ' + this.players[playerNumber]._weapon.damage + ' damage.');
-
-        // continue moving player
-        $(endLocationID + ' .player-container .weapon').replaceWith(weaponImgNodeClone);
-        $(endLocationID + ' .player-container').fadeIn(200);
-        // console.log('i ' + i + ' - done');
-      });
-
-      // adjust Y location
-      this.players[playerNumber]._playerLocationY -= 1;
-      this.enterFight(playerNumber);
-
+  _migratePlayer(playerNumber, direction) {
+    if (direction === 'up'){
+      this._migrateUp(playerNumber,direction);
     }else if(direction === 'down'){
-      let startLocation = this.getCurrentPlayerLocation(playerNumber);
-      let startLocationID = '#loc_' + this.players[playerNumber]._playerLocationY + '_' + this.players[playerNumber]._playerLocationX;
-      let endLocation = this.gameData[this.players[playerNumber]._playerLocationY + 1][this.players[playerNumber]._playerLocationX];
-      let endLocationID = '#loc_' + (this.players[playerNumber]._playerLocationY + 1) + '_' + this.players[playerNumber]._playerLocationX;
-
-      //debug for now
-      // console.log(startLocationID,endLocationID);
-
-      // if player is to reveal weapon which he stands on, show it
-      if (this.stoppedOnWeapon[playerNumber] !== '') {
-        let locationID = this.stoppedOnWeapon[playerNumber];
-        setTimeout(() => {
-          $(locationID + ' .weapon-container').show(200);
-        }, 300);
-        this.stoppedOnWeapon[playerNumber] = '';
-      }
-
-      // empty weapon node
-      let weaponImgNode = document.createElement('img');
-      weaponImgNode.classList.add('weapon');
-
-
-      // if next location has weapon, swap them
-      if (endLocation.weapon !== null) {
-        $(endLocationID + ' .weapon-container img').replaceWith(this.swapWeapons(endLocationID,endLocation,playerNumber,weaponImgNode));
-      }
-
-      // move player container
-      // console.log('i ' + i + ' - tried.. ');
-      $(startLocationID + ' .player-container').fadeOut(200, () => {
-        $(endLocationID).prepend($(startLocationID + ' .player-container'));
-
-        // change players weapon in hand
-        let weaponImgNodeClone = weaponImgNode.cloneNode(false);
-        weaponImgNodeClone.setAttribute('src', this.players[playerNumber]._weapon.src);
-        weaponImgNodeClone.setAttribute('title', this.players[playerNumber]._weapon.name + ' does ' + this.players[playerNumber]._weapon.damage + ' damage.');
-
-
-        // continue moving player
-        $(endLocationID + ' .player-container .weapon').replaceWith(weaponImgNodeClone);
-        $(endLocationID + ' .player-container').fadeIn(200);
-        // console.log('i ' + i + ' - done');
-      });
-
-      // adjust Y location
-      this.players[playerNumber]._playerLocationY += 1;
-      this.enterFight(playerNumber);
-
+      this._migrateDown(playerNumber,direction);
     }else if(direction === 'right'){
-      let startLocation = this.getCurrentPlayerLocation(playerNumber);
-      let startLocationID = '#loc_' + this.players[playerNumber]._playerLocationY + '_' + this.players[playerNumber]._playerLocationX;
-      let endLocation = this.gameData[this.players[playerNumber]._playerLocationY][this.players[playerNumber]._playerLocationX + 1];
-      let endLocationID = '#loc_' + this.players[playerNumber]._playerLocationY + '_' + (this.players[playerNumber]._playerLocationX + 1);
-
-      //debug for now
-      // console.log(startLocationID,endLocationID);
-
-      // if player is to reveal weapon which he stands on, show it
-      if (this.stoppedOnWeapon[playerNumber] !== '') {
-        let locationID = this.stoppedOnWeapon[playerNumber];
-        setTimeout(() => {
-          $(locationID + ' .weapon-container').show(200);
-        }, 300);
-        this.stoppedOnWeapon[playerNumber] = '';
-      }
-
-      // empty weapon node
-      let weaponImgNode = document.createElement('img');
-      weaponImgNode.classList.add('weapon');
-
-
-      // if next location has weapon, swap them
-      if (endLocation.weapon !== null) {
-        $(endLocationID + ' .weapon-container img').replaceWith(this.swapWeapons(endLocationID,endLocation,playerNumber,weaponImgNode));
-      }
-
-      // move players container
-      // console.log('i ' + i + ' - tried.. ');
-      $(startLocationID + ' .player-container').fadeOut(200, () => {
-        $(endLocationID).prepend($(startLocationID + ' .player-container'));
-
-        // change players weapon in hand
-        let weaponImgNodeClone = weaponImgNode.cloneNode(false);
-        weaponImgNodeClone.setAttribute('src', this.players[playerNumber]._weapon.src);
-        weaponImgNodeClone.setAttribute('title', this.players[playerNumber]._weapon.name + ' does ' + this.players[playerNumber]._weapon.damage + ' damage.');
-
-        // continue moving player
-        $(endLocationID + ' .player-container .weapon').replaceWith(weaponImgNodeClone);
-        $(endLocationID + ' .player-container').fadeIn(200);
-        // console.log('i ' + i + ' - done');
-      });
-
-      // adjust X location
-      this.players[playerNumber]._playerLocationX += 1;
-      this.enterFight(playerNumber);
-
+      this._migrateRight(playerNumber,direction);
     }else if(direction === 'left'){
-      let startLocation = this.getCurrentPlayerLocation(playerNumber);
-      let startLocationID = '#loc_' + this.players[playerNumber]._playerLocationY + '_' + this.players[playerNumber]._playerLocationX;
-      let endLocation = this.gameData[this.players[playerNumber]._playerLocationY][this.players[playerNumber]._playerLocationX - 1];
-      let endLocationID = '#loc_' + this.players[playerNumber]._playerLocationY + '_' + (this.players[playerNumber]._playerLocationX - 1);
-
-      //debug for now
-      // console.log(startLocationID,endLocationID);
-
-      // if player is to reveal weapon which he stands on, show it
-      if (this.stoppedOnWeapon[playerNumber] !== '') {
-        let locationID = this.stoppedOnWeapon[playerNumber];
-        setTimeout(() => {
-          $(locationID + ' .weapon-container').show(200);
-        }, 300);
-        this.stoppedOnWeapon[playerNumber] = '';
-      }
-
-      // empty weapon node
-      let weaponImgNode = document.createElement('img');
-      weaponImgNode.classList.add('weapon');
-
-
-      // if next location has weapon, swap them
-      if (endLocation.weapon !== null) {
-        $(endLocationID + ' .weapon-container img').replaceWith(this.swapWeapons(endLocationID,endLocation,playerNumber,weaponImgNode));
-      }
-
-      // move player container
-      // console.log('i ' + i + ' - tried.. ');
-      $(startLocationID + ' .player-container').fadeOut(200, () => {
-        $(endLocationID).prepend($(startLocationID + ' .player-container'));
-
-        // change players weapon in hand
-        let weaponImgNodeClone = weaponImgNode.cloneNode(false);
-        weaponImgNodeClone.setAttribute('src', this.players[playerNumber]._weapon.src);
-        weaponImgNodeClone.setAttribute('title', this.players[playerNumber]._weapon.name + ' does ' + this.players[playerNumber]._weapon.damage + ' damage.');
-
-        // continue moving player
-        $(endLocationID + ' .player-container .weapon').replaceWith(weaponImgNodeClone);
-        $(endLocationID + ' .player-container').fadeIn(200);
-        // console.log('i ' + i + ' - done');
-      });
-
-      // adjust X location
-      this.players[playerNumber]._playerLocationX -= 1;
-      this.enterFight(playerNumber);
+      this._migrateLeft(playerNumber,direction);
     }
   }
 
+  _migrateUp(playerNumber, direction) {
+    if (direction === 'up') {
+      let startLocation = this._getCurrentPlayerLocation(playerNumber);
+      let startLocationID = '#loc_' + this._players[playerNumber]._playerLocationY + '_' + this._players[playerNumber]._playerLocationX;
+      let endLocation = this._gameData[this._players[playerNumber]._playerLocationY - 1][this._players[playerNumber]._playerLocationX];
+      let endLocationID = '#loc_' + (this._players[playerNumber]._playerLocationY - 1) + '_' + this._players[playerNumber]._playerLocationX;
+
+      //debug for now
+      // console.log(startLocationID,endLocationID);
+
+      // if player is to reveal weapon which he stands on, show it
+      if (this._stoppedOnWeapon[playerNumber] !== '') {
+        let locationID = this._stoppedOnWeapon[playerNumber];
+        setTimeout(() => {
+          $(locationID + ' .weapon-container').show(200);
+        }, 300);
+        this._stoppedOnWeapon[playerNumber] = '';
+      }
+
+      // empty weapon node
+      let weaponImgNode = document.createElement('img');
+      weaponImgNode.classList.add('weapon');
+
+      // if next location has weapon, swap them
+      if (endLocation.weapon !== null) {
+        $(endLocationID + ' .weapon-container img').replaceWith(this._swapWeapons(endLocationID, endLocation, playerNumber, weaponImgNode));
+      }
+
+      // move player container
+      // console.log('i ' + i + ' - tried.. ');
+      $(startLocationID + ' .player-container').fadeOut(200, () => {
+        $(endLocationID).prepend($(startLocationID + ' .player-container'));
+
+        // change _players weapon in hand
+        let weaponImgNodeClone = weaponImgNode.cloneNode(false);
+        weaponImgNodeClone.setAttribute('src', this._players[playerNumber]._weapon.src);
+        weaponImgNodeClone.setAttribute('title', this._players[playerNumber]._weapon.name + ' does ' + this._players[playerNumber]._weapon.damage + ' damage.');
+
+        // continue moving player
+        $(endLocationID + ' .player-container .weapon').replaceWith(weaponImgNodeClone);
+        $(endLocationID + ' .player-container').fadeIn(200);
+        // console.log('i ' + i + ' - done');
+      });
+
+      // adjust Y location
+      this._players[playerNumber]._playerLocationY -= 1;
+      this._enterFight(playerNumber);
+    }
+  }
+
+  _migrateDown(playerNumber, direction) {
+    let startLocation = this._getCurrentPlayerLocation(playerNumber);
+    let startLocationID = '#loc_' + this._players[playerNumber]._playerLocationY + '_' + this._players[playerNumber]._playerLocationX;
+    let endLocation = this._gameData[this._players[playerNumber]._playerLocationY + 1][this._players[playerNumber]._playerLocationX];
+    let endLocationID = '#loc_' + (this._players[playerNumber]._playerLocationY + 1) + '_' + this._players[playerNumber]._playerLocationX;
+
+    //debug for now
+    // console.log(startLocationID,endLocationID);
+
+    // if player is to reveal weapon which he stands on, show it
+    if (this._stoppedOnWeapon[playerNumber] !== '') {
+      let locationID = this._stoppedOnWeapon[playerNumber];
+      setTimeout(() => {
+        $(locationID + ' .weapon-container').show(200);
+      }, 300);
+      this._stoppedOnWeapon[playerNumber] = '';
+    }
+
+    // empty weapon node
+    let weaponImgNode = document.createElement('img');
+    weaponImgNode.classList.add('weapon');
+
+    // if next location has weapon, swap them
+    if (endLocation.weapon !== null) {
+      $(endLocationID + ' .weapon-container img').replaceWith(this._swapWeapons(endLocationID,endLocation,playerNumber,weaponImgNode));
+    }
+
+    // move player container
+    // console.log('i ' + i + ' - tried.. ');
+    $(startLocationID + ' .player-container').fadeOut(200, () => {
+      $(endLocationID).prepend($(startLocationID + ' .player-container'));
+
+      // change _players weapon in hand
+      let weaponImgNodeClone = weaponImgNode.cloneNode(false);
+      weaponImgNodeClone.setAttribute('src', this._players[playerNumber]._weapon.src);
+      weaponImgNodeClone.setAttribute('title', this._players[playerNumber]._weapon.name + ' does ' + this._players[playerNumber]._weapon.damage + ' damage.');
+
+      // continue moving player
+      $(endLocationID + ' .player-container .weapon').replaceWith(weaponImgNodeClone);
+      $(endLocationID + ' .player-container').fadeIn(200);
+      // console.log('i ' + i + ' - done');
+    });
+
+    // adjust Y location
+    this._players[playerNumber]._playerLocationY += 1;
+    this._enterFight(playerNumber);
+  }
+
+  _migrateRight(playerNumber, direction) {
+    let startLocation = this._getCurrentPlayerLocation(playerNumber);
+    let startLocationID = '#loc_' + this._players[playerNumber]._playerLocationY + '_' + this._players[playerNumber]._playerLocationX;
+    let endLocation = this._gameData[this._players[playerNumber]._playerLocationY][this._players[playerNumber]._playerLocationX + 1];
+    let endLocationID = '#loc_' + this._players[playerNumber]._playerLocationY + '_' + (this._players[playerNumber]._playerLocationX + 1);
+
+    //debug for now
+    // console.log(startLocationID,endLocationID);
+
+    // if player is to reveal weapon which he stands on, show it
+    if (this._stoppedOnWeapon[playerNumber] !== '') {
+      let locationID = this._stoppedOnWeapon[playerNumber];
+      setTimeout(() => {
+        $(locationID + ' .weapon-container').show(200);
+      }, 300);
+      this._stoppedOnWeapon[playerNumber] = '';
+    }
+
+    // empty weapon node
+    let weaponImgNode = document.createElement('img');
+    weaponImgNode.classList.add('weapon');
+
+    // if next location has weapon, swap them
+    if (endLocation.weapon !== null) {
+      $(endLocationID + ' .weapon-container img').replaceWith(this._swapWeapons(endLocationID,endLocation,playerNumber,weaponImgNode));
+    }
+
+    // move _players container
+    // console.log('i ' + i + ' - tried.. ');
+    $(startLocationID + ' .player-container').fadeOut(200, () => {
+      $(endLocationID).prepend($(startLocationID + ' .player-container'));
+
+      // change _players weapon in hand
+      let weaponImgNodeClone = weaponImgNode.cloneNode(false);
+      weaponImgNodeClone.setAttribute('src', this._players[playerNumber]._weapon.src);
+      weaponImgNodeClone.setAttribute('title', this._players[playerNumber]._weapon.name + ' does ' + this._players[playerNumber]._weapon.damage + ' damage.');
+
+      // continue moving player
+      $(endLocationID + ' .player-container .weapon').replaceWith(weaponImgNodeClone);
+      $(endLocationID + ' .player-container').fadeIn(200);
+      // console.log('i ' + i + ' - done');
+    });
+
+    // adjust X location
+    this._players[playerNumber]._playerLocationX += 1;
+    this._enterFight(playerNumber);
+  }
+
+  _migrateLeft(playerNumber, direction) {
+    let startLocation = this._getCurrentPlayerLocation(playerNumber);
+    let startLocationID = '#loc_' + this._players[playerNumber]._playerLocationY + '_' + this._players[playerNumber]._playerLocationX;
+    let endLocation = this._gameData[this._players[playerNumber]._playerLocationY][this._players[playerNumber]._playerLocationX - 1];
+    let endLocationID = '#loc_' + this._players[playerNumber]._playerLocationY + '_' + (this._players[playerNumber]._playerLocationX - 1);
+
+    //debug for now
+    // console.log(startLocationID,endLocationID);
+
+    // if player is to reveal weapon which he stands on, show it
+    if (this._stoppedOnWeapon[playerNumber] !== '') {
+      let locationID = this._stoppedOnWeapon[playerNumber];
+      setTimeout(() => {
+        $(locationID + ' .weapon-container').show(200);
+      }, 300);
+      this._stoppedOnWeapon[playerNumber] = '';
+    }
+
+    // empty weapon node
+    let weaponImgNode = document.createElement('img');
+    weaponImgNode.classList.add('weapon');
+
+    // if next location has weapon, swap them
+    if (endLocation.weapon !== null) {
+      $(endLocationID + ' .weapon-container img').replaceWith(this._swapWeapons(endLocationID,endLocation,playerNumber,weaponImgNode));
+    }
+
+    // move player container
+    // console.log('i ' + i + ' - tried.. ');
+    $(startLocationID + ' .player-container').fadeOut(200, () => {
+      $(endLocationID).prepend($(startLocationID + ' .player-container'));
+
+      // change _players weapon in hand
+      let weaponImgNodeClone = weaponImgNode.cloneNode(false);
+      weaponImgNodeClone.setAttribute('src', this._players[playerNumber]._weapon.src);
+      weaponImgNodeClone.setAttribute('title', this._players[playerNumber]._weapon.name + ' does ' + this._players[playerNumber]._weapon.damage + ' damage.');
+
+      // continue moving player
+      $(endLocationID + ' .player-container .weapon').replaceWith(weaponImgNodeClone);
+      $(endLocationID + ' .player-container').fadeIn(200);
+      // console.log('i ' + i + ' - done');
+    });
+
+    // adjust X location
+    this._players[playerNumber]._playerLocationX -= 1;
+    this._enterFight(playerNumber);
+  }
+
   // disables board and brings fight modal on
-  async enterFight(playerNumber) {
-    const playerOneY = this.players[0]._playerLocationY;
-    const playerTwoY = this.players[1]._playerLocationY;
-    const playerOneX = this.players[0]._playerLocationX;
-    const playerTwoX = this.players[1]._playerLocationX;
+  async _enterFight(playerNumber) {
+    const playerOneY = this._players[0]._playerLocationY;
+    const playerTwoY = this._players[1]._playerLocationY;
+    const playerOneX = this._players[0]._playerLocationX;
+    const playerTwoX = this._players[1]._playerLocationX;
 
     // debug
     // console.log('X: ' + Math.abs(playerOneY - playerTwoY));
@@ -447,7 +457,7 @@ class Board {
       $('#fightBody').append($('#fightBox'));
       // erase game board
       $('main').fadeOut(300);
-      await this.sleep(500);
+      await sleep(500);
       // $('main').remove();
 
       // make sure CSS will work as intended afterwards
@@ -471,7 +481,7 @@ class Board {
     }
   }
 
-  // changes data after players attack
+  // changes data after _players attack
   attack(playerNumber,p0,p1) {
 
     if(playerNumber === 0) {
@@ -479,7 +489,7 @@ class Board {
 
       // swap sides
       $(p0 + 'Box').css({'border':'5px solid green'});
-      if (this.players[0]._isDefending) {
+      if (this._players[0]._isDefending) {
         console.log('a');
         $(p0 + 'Defend').prop('disabled', false);
         $(p0 + 'Attack').prop('disabled', false);
@@ -489,22 +499,22 @@ class Board {
       }
 
       // calculate damage and adjust health level
-      let damage = this.players[1]._weapon.damage;
-      if (this.players[0]._isDefending) {
+      let damage = this._players[1]._weapon.damage;
+      if (this._players[0]._isDefending) {
         damage /= 2;
-        this.players[0]._isDefending = false;
+        this._players[0]._isDefending = false;
         // $(p0 + 'Box').css({'background':'white'});
         $(p0 + 'Container ' + 'img:last-child').remove();
       }
-      this.players[0]._health -= damage;
+      this._players[0]._health -= damage;
 
       // check if player 1 won
-      if (this.isPlayerOutOfBreath() === 0) {
-        this.displayGameWinner(1);
+      if (this._isPlayerOutOfBreath() === 0) {
+        this._displayGameWinner(1);
       }
 
       // update front-end
-      $(p0 + 'Health').text('Health: ' + this.players[0]._health);
+      $(p0 + 'Health').text('Health: ' + this._players[0]._health);
       $(p1 + 'Box').css({'border':'5px solid grey'});
       $(p1 + 'Defend').prop('disabled', true);
       $(p1 + 'Attack').prop('disabled', true);
@@ -513,7 +523,7 @@ class Board {
 
       // swap sides
       $(p1 + 'Box').css({'border':'5px solid green'});
-      if (this.players[1]._isDefending) {
+      if (this._players[1]._isDefending) {
         console.log('b');
         $(p1 + 'Defend').prop('disabled', false);
         $(p1 + 'Attack').prop('disabled', false);
@@ -523,29 +533,29 @@ class Board {
       }
 
       // calculate damage done by player one and adjust his health level
-      let damage = this.players[0]._weapon.damage;
-      if (this.players[1]._isDefending) {
+      let damage = this._players[0]._weapon.damage;
+      if (this._players[1]._isDefending) {
         damage /= 2;
-        this.players[1]._isDefending = false;
+        this._players[1]._isDefending = false;
         // $(p1 + 'Box').css({'background':'white'});
         $(p1 + 'Container ' + 'img:last-child').remove();
       }
-      this.players[1]._health -= damage;
+      this._players[1]._health -= damage;
 
       // check if player 1 won
-      if (this.isPlayerOutOfBreath() === 1) {
-        this.displayGameWinner(0);
+      if (this._isPlayerOutOfBreath() === 1) {
+        this._displayGameWinner(0);
       }
 
       // update front-end
-      $(p1 + 'Health').text('Health: ' + this.players[1]._health);
+      $(p1 + 'Health').text('Health: ' + this._players[1]._health);
       $(p0 + 'Box').css({'border':'5px solid grey'});
       $(p0 + 'Defend').prop('disabled', true);
       $(p0 + 'Attack').prop('disabled', true);
     }
   }
 
-  // changes data after players defense deployment
+  // changes data after _players defense deployment
   defend(playerNumber, p0, p1) {
 
     // shield image node
@@ -564,12 +574,12 @@ class Board {
       $(p1 + 'Attack').prop('disabled', true);
 
       // switch isDefending flag
-      this.players[1]._isDefending = true;
+      this._players[1]._isDefending = true;
 
       // swap sides
       $(p1 + 'Box').css({'border':'5px solid grey'});
       $(p0 + 'Box').css({'border':'5px solid green'});
-      if(this.players[0]._isDefending) {
+      if(this._players[0]._isDefending) {
         console.log('c');
         $(p0 + 'Defend').prop('disabled', true);
         $(p0 + 'Attack').prop('disabled', false);
@@ -588,12 +598,12 @@ class Board {
       $(p0 + 'Attack').prop('disabled', true);
 
       // switch isDefending flag
-      this.players[0]._isDefending = true;
+      this._players[0]._isDefending = true;
 
       // swap sides
       $(p0 + 'Box').css({'border':'5px solid grey'});
       $(p1 + 'Box').css({'border':'5px solid green'});
-      if(this.players[1]._isDefending) {
+      if(this._players[1]._isDefending) {
         console.log('d');
         $(p1 + 'Defend').prop('disabled', true);
         $(p1 + 'Attack').prop('disabled', false);
@@ -607,14 +617,10 @@ class Board {
 
   // Helper Methods
 
-  sleep(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
-
-  isPlayerOutOfBreath() {
+  _isPlayerOutOfBreath() {
     let result = 2;
     for (let i = 0; i < 2; i++) {
-      if (this.players[i]._health <= 0) {
+      if (this._players[i]._health <= 0) {
         result = i;
         return result;
       }
@@ -622,68 +628,68 @@ class Board {
     return result;
   }
 
-  displayGameWinner(playerNumber) {
+  _displayGameWinner(playerNumber) {
     // hide fight modal
     $('#fightMode').modal('hide');
     // update winners modal
-    $('#winnersImg').attr('src','img/' + this.players[playerNumber]._name.toLowerCase() + '-sm.jpg');
-    $('#winnersHeader').text(this.players[playerNumber]._name + ' wins !!!');
+    $('#winnersImg').attr('src','img/' + this._players[playerNumber]._name.toLowerCase() + '-sm.jpg');
+    $('#winnersHeader').text(this._players[playerNumber]._name + ' wins !!!');
     // show winner modal
     $('#winnerModal').modal({
       backdrop: 'static'
     });
   }
 
-  swapWeapons(endLocationID, endLocation, playerNumber, weaponImgNode) {
+  _swapWeapons(endLocationID, endLocation, playerNumber, weaponImgNode) {
     // hide weapon when stepping on it
     $(endLocationID + ' .weapon-container').hide();
-    this.stoppedOnWeapon[playerNumber] = endLocationID;
+    this._stoppedOnWeapon[playerNumber] = endLocationID;
 
     // debug
     // console.log(endLocationID + ' has weapon');
     // console.log('swapping...');
 
     // swap weapons
-    let tempWeapon = this.players[playerNumber]._weapon; // temporarily storing players weapon
-    this.players[playerNumber]._weapon = endLocation.weapon; // moving weapon from square to players hand
+    let tempWeapon = this._players[playerNumber]._weapon; // temporarily storing _players weapon
+    this._players[playerNumber]._weapon = endLocation.weapon; // moving weapon from square to _players hand
     endLocation.weapon = tempWeapon; // asigning temporary weapon to field
 
     // re-draw nodes
     weaponImgNode.setAttribute('src', tempWeapon.src);
     weaponImgNode.setAttribute('title',tempWeapon.name + ' does ' + tempWeapon.damage + ' damage.');
 
-    //change players weapon img, name and damage in stats box as well
+    //change _players weapon img, name and damage in stats box as well
     let selector = '#player-' + playerNumber + '-';
     if (playerNumber === 0) {
-      $(selector + 'WeaponImg').attr('src',this.players[playerNumber]._weapon.src);
-      $(selector + 'Damage').html('Damage: ' + this.players[playerNumber]._weapon.damage);
-      $(selector + 'WeaponName').html(this.players[playerNumber]._weapon.name);
+      $(selector + 'WeaponImg').attr('src',this._players[playerNumber]._weapon.src);
+      $(selector + 'Damage').html('Damage: ' + this._players[playerNumber]._weapon.damage);
+      $(selector + 'WeaponName').html(this._players[playerNumber]._weapon.name);
     } else {
-      $(selector + 'WeaponImg').attr('src',this.players[playerNumber]._weapon.src);
-      $(selector + 'Damage').html('Damage: ' + this.players[playerNumber]._weapon.damage);
-      $(selector + 'WeaponName').html(this.players[playerNumber]._weapon.name);
+      $(selector + 'WeaponImg').attr('src',this._players[playerNumber]._weapon.src);
+      $(selector + 'Damage').html('Damage: ' + this._players[playerNumber]._weapon.damage);
+      $(selector + 'WeaponName').html(this._players[playerNumber]._weapon.name);
     }
 
     return weaponImgNode;
   }
 
-  randomStartLocation() {
-    if (this.spawnFlag) {
-      let min = this.size - this.size;
-      let max = this.size - (0.7 * this.size);
-      this.spawnFlag = !this.spawnFlag;
+  _randomStartLocation() {
+    if (this._spawnFlag) {
+      let min = this._size - this._size;
+      let max = this._size - (0.7 * this._size);
+      this._spawnFlag = !this._spawnFlag;
       while (true) {
-        let randomLocation = this.gameData[Math.floor(Math.random() * (max - min + 1)) + min][Math.floor(Math.random() * (max - min + 1)) + min];
+        let randomLocation = this._gameData[Math.floor(Math.random() * (max - min + 1)) + min][Math.floor(Math.random() * (max - min + 1)) + min];
         if (randomLocation._isBlocked === false && randomLocation.weapon === null) {
           return randomLocation;
         }
       }
     } else {
-      let min = (0.6 * this.size);
-      let max = this.size - 1;
-      this.spawnFlag = !this.spawnFlag;
+      let min = (0.6 * this._size);
+      let max = this._size - 1;
+      this._spawnFlag = !this._spawnFlag;
       while (true) {
-        let randomLocation = this.gameData[Math.floor(Math.random() * (max - min + 1)) + min][Math.floor(Math.random() * (max - min + 1)) + min];
+        let randomLocation = this._gameData[Math.floor(Math.random() * (max - min + 1)) + min][Math.floor(Math.random() * (max - min + 1)) + min];
         if (randomLocation._isBlocked === false && randomLocation.weapon === null) {
           return randomLocation;
         }
@@ -691,15 +697,15 @@ class Board {
     }
   }
 
-  randomLocation() {
-    return this.gameData[Math.floor((Math.random() * this.size))][Math.floor((Math.random() * this.size))];
+  _randomLocation() {
+    return this._gameData[Math.floor((Math.random() * this._size))][Math.floor((Math.random() * this._size))];
   }
 
   /* TODO modify square erases all instances of 'half-opacity' the first time it goes over. It's not needed to do it
    * so many times.. how about you change this?
   */
 
-  modifySquareImg(idString, playerNumber, value, imgNode) {
+  _modifySquareImg(idString, playerNumber, value, imgNode) {
     const selector = '.half-opacity';
     if (playerNumber === 1) {
       // modifies player one - (checks current player and modifies second for next round)
@@ -720,17 +726,17 @@ class Board {
     }
   }
 
-  getCurrentPlayerLocation(playerNumber) {
-    const y = this.players[playerNumber]._playerLocationY;
-    const x = this.players[playerNumber]._playerLocationX;
-    return this.gameData[y][x];
+  _getCurrentPlayerLocation(playerNumber) {
+    const y = this._players[playerNumber]._playerLocationY;
+    const x = this._players[playerNumber]._playerLocationX;
+    return this._gameData[y][x];
   }
 
   resetPlayersStats() {
     for (let i = 0; i < 2; i++) {
-      $('#player-' + i + '-WeaponImg').attr('src', this.players[i]._weapon.src);
-      $('#player-' + i + '-Damage').html('Damage: ' + this.players[i]._weapon.damage);
-      $('#player-' + i + '-WeaponName').html(this.players[i]._weapon.name);
+      $('#player-' + i + '-WeaponImg').attr('src', this._players[i]._weapon.src);
+      $('#player-' + i + '-Damage').html('Damage: ' + this._players[i]._weapon.damage);
+      $('#player-' + i + '-WeaponName').html(this._players[i]._weapon.name);
     }
   }
 

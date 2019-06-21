@@ -75,7 +75,7 @@ class App {
             this.currentGame.movePlayer(this.turn, endLocationID);
 
             // debug
-            // console.log(this.currentGame.gameData);
+            // console.log(this.currentGame._gameData);
             // console.log(e);
 
             this.turn++;
@@ -84,7 +84,7 @@ class App {
             this.currentGame.movePlayer(this.turn, endLocationID);
 
             // debug
-            // console.log(this.currentGame.gameData);
+            // console.log(this.currentGame._gameData);
             // console.log(e);
 
             this.turn--;
