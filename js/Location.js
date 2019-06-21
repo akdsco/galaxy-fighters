@@ -1,8 +1,8 @@
 class Location {
   constructor(row, col) {
-    this._locationY = row;
-    this._locationX = col;
-    this._isBlocked = false;
+    this.locationY = row;
+    this.locationX = col;
+    this.isBlocked = false;
     this.isAvailable = false;
     this.weapon = null;
     this.player = null;
@@ -20,13 +20,13 @@ class Location {
     playerImgNode.classList.add('player');
     weaponImgNode.classList.add('weapon');
 
-    tdNode.setAttribute('id','loc_' + this._locationY + '_' + this._locationX);
+    tdNode.setAttribute('id','loc_' + this.locationY + '_' + this.locationX);
 
-    // location numbers debug
-    // tdNode.innerText = 'y'+ this._locationY + ' ' + 'x'+this._locationX;
+    // debug - add location numbers
+    // tdNode.innerText = 'y'+ this.locationY + ' ' + 'x'+this.locationX;
 
     // draw blocked locations
-    if (this._isBlocked) {
+    if (this.isBlocked) {
       tdNode.classList.add('blocked');
     }
 
@@ -37,18 +37,18 @@ class Location {
 
     if (this.player !== null) {
       container.classList.add('player-container');
-      if (this.player._number === 1) {
+      if (this.player.number === 1) {
         playerImgNode.setAttribute('src','img/yoda-sm.jpg');
         container.append(playerImgNode);
-        weaponImgNode.setAttribute('src', this.player._weapon.src);
-        weaponImgNode.setAttribute('title',this.player._weapon.name + ' does ' + this.player._weapon.damage + ' damage.');
+        weaponImgNode.setAttribute('src', this.player.weapon.src);
+        weaponImgNode.setAttribute('title',this.player.weapon.name + ' does ' + this.player.weapon.damage + ' damage.');
         container.append(weaponImgNode);
         tdNode.append(container);
       } else {
         playerImgNode.setAttribute('src','img/vader-sm.jpg');
         container.append(playerImgNode);
-        weaponImgNode.setAttribute('src', this.player._weapon.src);
-        weaponImgNode.setAttribute('title',this.player._weapon.name + ' does ' + this.player._weapon.damage + ' damage.');
+        weaponImgNode.setAttribute('src', this.player.weapon.src);
+        weaponImgNode.setAttribute('title',this.player.weapon.name + ' does ' + this.player.weapon.damage + ' damage.');
         container.append(weaponImgNode);
         tdNode.append(container);
       }
@@ -85,6 +85,5 @@ class Location {
     }
     return tdNode;
   }
-
 
 }
