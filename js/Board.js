@@ -76,8 +76,8 @@ class Board {
       }
 
       // let randomLocation = this._randomStartLocation();
-      array[i].playerLocationY = randomLocation.locationY;
-      array[i].playerLocationX = randomLocation.locationX;
+      // array[i].playerLocationY = randomLocation.locationY;
+      // array[i].playerLocationX = randomLocation.locationX;
       randomLocation.player = array[i];
       if (flag) {
         this._drawPlayersPath(randomLocation, true);
@@ -266,7 +266,6 @@ class Board {
 
   _migrateUp(playerNumber, direction) {
     if (direction === 'up') {
-      // TODO playerLocation
       let startLocation = this._getCurrentPlayerLocation(playerNumber);
       // let startLocationID = '#loc_' + this._players[playerNumber].playerLocationY + '_' + this._players[playerNumber].playerLocationX;
       let startLocationID = '#loc_' + this._playerData[playerNumber][0] + '_' + this._playerData[playerNumber][1];
@@ -315,6 +314,7 @@ class Board {
 
       // adjust Y location
       //TODO playerLocation
+
       this._players[playerNumber].playerLocationY -= 1;
       this._playerData[playerNumber][0]--;
       console.log(this._playerData);
@@ -325,9 +325,12 @@ class Board {
   _migrateDown(playerNumber, direction) {
     //TODO playerLocation
     let startLocation = this._getCurrentPlayerLocation(playerNumber);
-    let startLocationID = '#loc_' + this._players[playerNumber].playerLocationY + '_' + this._players[playerNumber].playerLocationX;
-    let endLocation = this._gameData[this._players[playerNumber].playerLocationY + 1][this._players[playerNumber].playerLocationX];
-    let endLocationID = '#loc_' + (this._players[playerNumber].playerLocationY + 1) + '_' + this._players[playerNumber].playerLocationX;
+    // let startLocationID = '#loc_' + this._players[playerNumber].playerLocationY + '_' + this._players[playerNumber].playerLocationX;
+    let startLocationID = '#loc_' + this._playerData[playerNumber][0] + '_' + this._playerData[playerNumber][1];
+    // let endLocation = this._gameData[this._players[playerNumber].playerLocationY + 1][this._players[playerNumber].playerLocationX];
+    let endLocation = this._gameData[this._playerData[playerNumber][0] + 1][this._playerData[playerNumber][1]];
+    // let endLocationID = '#loc_' + (this._players[playerNumber].playerLocationY + 1) + '_' + this._players[playerNumber].playerLocationX;
+    let endLocationID = '#loc_' + (this._playerData[playerNumber][0] + 1) + '_' + this._playerData[playerNumber][1];
 
     //debug for now
     // console.log(startLocationID,endLocationID);
@@ -369,15 +372,20 @@ class Board {
     // adjust Y location
     //TODO playerLocation
     this._players[playerNumber].playerLocationY += 1;
+    this._playerData[playerNumber][0]++;
+    console.log(this._playerData);
     this._enterFight(playerNumber);
   }
 
   _migrateRight(playerNumber, direction) {
     //TODO playerLocation
     let startLocation = this._getCurrentPlayerLocation(playerNumber);
-    let startLocationID = '#loc_' + this._players[playerNumber].playerLocationY + '_' + this._players[playerNumber].playerLocationX;
-    let endLocation = this._gameData[this._players[playerNumber].playerLocationY][this._players[playerNumber].playerLocationX + 1];
-    let endLocationID = '#loc_' + this._players[playerNumber].playerLocationY + '_' + (this._players[playerNumber].playerLocationX + 1);
+    // let startLocationID = '#loc_' + this._players[playerNumber].playerLocationY + '_' + this._players[playerNumber].playerLocationX;
+    let startLocationID = '#loc_' + this._playerData[playerNumber][0] + '_' + this._playerData[playerNumber][1];
+    // let endLocation = this._gameData[this._players[playerNumber].playerLocationY][this._players[playerNumber].playerLocationX + 1];
+    let endLocation = this._gameData[this._playerData[playerNumber][0]][this._playerData[playerNumber][1] + 1];
+    // let endLocationID = '#loc_' + this._players[playerNumber].playerLocationY + '_' + (this._players[playerNumber].playerLocationX + 1);
+    let endLocationID = '#loc_' + this._playerData[playerNumber][0] + '_' + (this._playerData[playerNumber][1] + 1);
 
     //debug for now
     // console.log(startLocationID,endLocationID);
@@ -419,15 +427,20 @@ class Board {
     // adjust X location
     //TODO playerLocation
     this._players[playerNumber].playerLocationX += 1;
+    this._playerData[playerNumber][1]++;
+    console.log(this._playerData);
     this._enterFight(playerNumber);
   }
 
   _migrateLeft(playerNumber, direction) {
     let startLocation = this._getCurrentPlayerLocation(playerNumber);
     // TODO playerLocation
-    let startLocationID = '#loc_' + this._players[playerNumber].playerLocationY + '_' + this._players[playerNumber].playerLocationX;
-    let endLocation = this._gameData[this._players[playerNumber].playerLocationY][this._players[playerNumber].playerLocationX - 1];
-    let endLocationID = '#loc_' + this._players[playerNumber].playerLocationY + '_' + (this._players[playerNumber].playerLocationX - 1);
+    // let startLocationID = '#loc_' + this._players[playerNumber].playerLocationY + '_' + this._players[playerNumber].playerLocationX;
+    let startLocationID = '#loc_' + this._playerData[playerNumber][0] + '_' + this._playerData[playerNumber][1];
+    // let endLocation = this._gameData[this._players[playerNumber].playerLocationY][this._players[playerNumber].playerLocationX - 1];
+    let endLocation = this._gameData[this._playerData[playerNumber][0]][this._playerData[playerNumber][1] - 1];
+    // let endLocationID = '#loc_' + this._players[playerNumber].playerLocationY + '_' + (this._players[playerNumber].playerLocationX - 1);
+    let endLocationID = '#loc_' + this._playerData[playerNumber][0] + '_' + (this._playerData[playerNumber][1] - 1);
 
     //debug for now
     // console.log(startLocationID,endLocationID);
@@ -451,7 +464,6 @@ class Board {
     }
 
     // move player container
-    // console.log('i ' + i + ' - tried.. ');
     $(startLocationID + ' .player-container').fadeOut(200, () => {
       $(endLocationID).prepend($(startLocationID + ' .player-container'));
 
@@ -469,16 +481,22 @@ class Board {
     // adjust X location
     // TODO playerLocation
     this._players[playerNumber].playerLocationX -= 1;
+    this._playerData[playerNumber][1]--;
+    console.log(this._playerData);
     this._enterFight(playerNumber);
   }
 
   // disables board and brings fight modal on
   async _enterFight(playerNumber) {
     // TODO playerLocation
-    const playerOneY = this._players[0].playerLocationY;
-    const playerTwoY = this._players[1].playerLocationY;
-    const playerOneX = this._players[0].playerLocationX;
-    const playerTwoX = this._players[1].playerLocationX;
+    // const playerOneY = this._players[0].playerLocationY;
+    const playerOneY = this._playerData[0][0];
+    // const playerTwoY = this._players[1].playerLocationY;
+    const playerTwoY = this._playerData[1][0];
+    // const playerOneX = this._players[0].playerLocationX;
+    const playerOneX = this._playerData[0][1];
+    // const playerTwoX = this._players[1].playerLocationX;
+    const playerTwoX = this._playerData[1][1];
 
     // debug
     // console.log('X: ' + Math.abs(playerOneY - playerTwoY));
@@ -758,8 +776,10 @@ class Board {
   }
   //TODO redo this function with usage of array
   _getCurrentPlayerLocation(playerNumber) {
-    const y = this._players[playerNumber].playerLocationY;
-    const x = this._players[playerNumber].playerLocationX;
+    // const y = this._players[playerNumber].playerLocationY;
+    const y = this._playerData[playerNumber][0];
+    // const x = this._players[playerNumber].playerLocationX;
+    const x = this._playerData[playerNumber][1];
     return this._gameData[y][x];
   }
 

@@ -37,6 +37,7 @@ class App {
     $('#playAgain').on('click', () => {
       // reset game to original state
       this.gameNode.removeChild(this.gameNode.firstChild);
+      Player.number = 1;
       this.currentGame = new Board(10);
       this.currentGame.resetPlayersStats();
       this.gameNode.prepend(this.currentGame.createGameNode());
