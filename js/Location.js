@@ -1,7 +1,7 @@
 class Location {
   constructor(row, col) {
-    this.locationY = row;
-    this.locationX = col;
+    this.locY = row;
+    this.locX = col;
     this.isBlocked = false;
     this.isAvailable = false;
     this.weapon = null;
@@ -20,17 +20,17 @@ class Location {
     playerImgNode.classList.add('player');
     weaponImgNode.classList.add('weapon');
 
-    tdNode.setAttribute('id','loc_' + this.locationY + '_' + this.locationX);
+    tdNode.setAttribute('id','loc_' + this.locY + '_' + this.locX);
 
-    // debug - add location numbers
-    // tdNode.innerText = 'y'+ this.locationY + ' ' + 'x'+this.locationX;
+    // debug - add location coordinates
+    // tdNode.innerText = 'locY'+ this.locY + ' ' + 'x'+this.locX;
 
     // draw blocked locations
     if (this.isBlocked) {
       tdNode.classList.add('blocked');
     }
 
-    // draw _players + their weapons
+    // draw players + their weapons
 
     //TODO wrap player and weapon into one 'div' element and move them together, swap weapon element only when crossing
     // weapon location
@@ -57,7 +57,7 @@ class Location {
     // add half-opacity images for first turn
     if (this.isAvailable) {
       tdNode.classList.add('available');
-      // make sure to add weapon image if it was generated inside first _players available fields
+      // make sure to add weapon image if it was generated inside first players available fields
       if(this.weapon !== null) {
         container.classList.add('weapon-container');
         this.isWeaponDisplayed = true;
