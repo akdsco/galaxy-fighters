@@ -541,8 +541,8 @@ class Board {
         this._players[1].isDefending = false;
         $(p1 + 'Container ' + 'img:last-child').remove();
       }
-      if (this._players[1].health <= 0) {
-        this._players[0].health = 0;
+      if (this._players[1].health <= damage) {
+        this._players[1].health = 0;
       } else {
         this._players[1].health -= damage;
       }
