@@ -35,16 +35,16 @@ gulp.task('processJS', async () => {
       .pipe(jshint({
         esversion: 8
       }))
-      .pipe(jshint.reporter('default'))
+      // .pipe(jshint.reporter('default'))
       // .pipe(babel({
-      //   // presets: ['env']
-      //   // presets: ["@babel/preset-env"]
-      //   // presets: ["@babel/preset-env"]
-      //   // presets: [ "es2015", "stage-0" ]
-      //   // presets: ["@babel/preset-env"],
-      //   // plugins: [
-      //   //   ["@babel/transform-runtime"]
-      //   // ]
+        // presets: ['env']
+      // //   presets: ["@babel/preset-env"],
+      // //   // presets: ["@babel/preset-env"]
+      // //   presets: [ "es2015", "stage-0" ]
+      // //   // presets: ["@babel/preset-env"],
+      // //   // plugins: [
+      // //   //   ["@babel/transform-runtime"]
+      // //   // ]
       // }))
       // .pipe(uglify())
       .pipe(gulp.dest('dist/js'));

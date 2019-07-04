@@ -31,10 +31,6 @@ class Location {
     }
 
     // draw players + their weapons
-
-    //TODO wrap player and weapon into one 'div' element and move them together, swap weapon element only when crossing
-    // weapon location
-
     if (this.player !== null) {
       container.classList.add('player-container');
       if (this.player.number === 1) {

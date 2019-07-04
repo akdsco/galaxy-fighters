@@ -1,5 +1,3 @@
-//TODO transpiler not working? 'regeneratorRuntime is not defined' and 'Board is not a constructor'
-
 class App {
   constructor() {
     this.gameNode = document.getElementById('game');
