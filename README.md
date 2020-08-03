@@ -22,7 +22,7 @@ JavaScript syntax.
 
 ### Links
 
- - [Play Game](http://galaxy-fighters.akds.co)
+ - [Play Game](http://galaxy-fighters.akds.me)
 
 ### Skills Learned
 
