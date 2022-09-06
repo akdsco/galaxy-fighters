@@ -20,10 +20,6 @@ I designed the object-oriented application and utilised JavaScript and `jQuery` 
 help in development processes and to make my code available to all browsers, even though I was using the new ES6 
 JavaScript syntax.
 
-### Links
-
- - [Play Game](http://galaxy-fighters.akds.me)
-
 ### Skills Learned
 
 - implement jQuery library in a web application
